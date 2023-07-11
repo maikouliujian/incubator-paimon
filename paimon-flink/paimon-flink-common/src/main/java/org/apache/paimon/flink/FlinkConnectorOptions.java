@@ -147,7 +147,7 @@ public class FlinkConnectorOptions {
                     .stringType()
                     .noDefaultValue()
                     .withDescription("A group of sources to align watermarks.");
-
+    //todo
     public static final ConfigOption<Duration> SCAN_WATERMARK_IDLE_TIMEOUT =
             key("scan.watermark.idle-timeout")
                     .durationType()

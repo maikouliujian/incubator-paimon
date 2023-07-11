@@ -26,6 +26,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 /** Manager to submit compaction task. */
+//todo CompactManager
 public interface CompactManager extends Closeable {
 
     /** Should wait compaction finish. */

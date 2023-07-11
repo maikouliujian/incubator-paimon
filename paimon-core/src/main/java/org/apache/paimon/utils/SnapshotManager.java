@@ -37,6 +37,7 @@ import java.util.function.Predicate;
 import static org.apache.paimon.utils.FileUtils.listVersionedFiles;
 
 /** Manager for {@link Snapshot}, providing utility methods related to paths and snapshot hints. */
+//todo SnapshotManager
 public class SnapshotManager implements Serializable {
 
     private static final long serialVersionUID = 1L;

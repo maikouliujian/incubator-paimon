@@ -33,6 +33,7 @@ public class ManifestCommittable {
 
     private final long identifier;
     @Nullable private final Long watermark;
+    //todo <bucket,offset>
     private final Map<Integer, Long> logOffsets;
     private final List<CommitMessage> commitMessages;
 

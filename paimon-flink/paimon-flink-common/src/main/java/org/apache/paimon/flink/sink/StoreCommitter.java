@@ -49,7 +49,7 @@ public class StoreCommitter implements Committer {
                 .filter(m -> identifiers.contains(m.identifier()))
                 .collect(Collectors.toList());
     }
-
+    //todo 合并commit
     @Override
     public ManifestCommittable combine(
             long checkpointId, long watermark, List<Committable> committables) {

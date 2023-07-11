@@ -112,14 +112,16 @@ public interface Action {
 
     /** Factory to create {@link Action}. */
     class Factory {
-
+        //todo paimon支持的action
         // supported actions
         private static final String COMPACT = "compact";
         private static final String DROP_PARTITION = "drop-partition";
         private static final String DELETE = "delete";
         private static final String MERGE_INTO = "merge-into";
         // cdc actions
+        //todo cdc 单表同步
         private static final String MYSQL_SYNC_TABLE = "mysql-sync-table";
+        //todo cdc 整库同步
         private static final String MYSQL_SYNC_DATABASE = "mysql-sync-database";
 
         public static Optional<Action> create(String[] args) {

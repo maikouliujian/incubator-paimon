@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /** {@link VersionedSerializer} for {@link ManifestCommittable}. */
+//todo 序列化Manifest files
 public class ManifestCommittableSerializer implements VersionedSerializer<ManifestCommittable> {
 
     private static final int CURRENT_VERSION = 2;

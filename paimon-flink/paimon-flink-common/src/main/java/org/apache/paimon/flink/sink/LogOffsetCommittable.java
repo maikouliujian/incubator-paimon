@@ -23,7 +23,7 @@ import java.util.Objects;
 
 /** Log offset committable for a bucket. */
 public class LogOffsetCommittable {
-
+    //todo bucket
     private final int bucket;
 
     private final long offset;

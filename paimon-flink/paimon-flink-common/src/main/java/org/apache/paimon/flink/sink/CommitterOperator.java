@@ -41,6 +41,7 @@ import java.util.TreeMap;
 import static org.apache.paimon.utils.Preconditions.checkNotNull;
 
 /** Operator to commit {@link Committable}s for each snapshot. */
+//todo CommitterOperator
 public class CommitterOperator extends AbstractStreamOperator<Committable>
         implements OneInputStreamOperator<Committable, Committable>, BoundedOneInput {
 
@@ -75,6 +76,7 @@ public class CommitterOperator extends AbstractStreamOperator<Committable>
      * Aggregate committables to global committables and commit the global committables to the
      * external system.
      */
+    //todo Committer
     protected Committer committer;
 
     private transient long currentWatermark;
@@ -123,6 +125,7 @@ public class CommitterOperator extends AbstractStreamOperator<Committable>
 
     private ManifestCommittable toCommittables(long checkpoint, List<Committable> inputs)
             throws Exception {
+        //todo
         return committer.combine(checkpoint, currentWatermark, inputs);
     }
 
@@ -130,6 +133,7 @@ public class CommitterOperator extends AbstractStreamOperator<Committable>
     public void snapshotState(StateSnapshotContext context) throws Exception {
         super.snapshotState(context);
         pollInputs();
+        //todo 触发ckp
         committableStateManager.snapshotState(context, committables(committablesPerCheckpoint));
     }
 

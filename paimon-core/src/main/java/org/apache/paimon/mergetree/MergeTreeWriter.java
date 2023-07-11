@@ -184,6 +184,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
     private void flushWriteBuffer(boolean waitForLatestCompaction, boolean forcedFullCompaction)
             throws Exception {
         if (writeBuffer.size() > 0) {
+            //todo 是否需要触发合并
             if (compactManager.shouldWaitCompaction()) {
                 waitForLatestCompaction = true;
             }

@@ -72,11 +72,13 @@ public class MergeTreeCompactManager extends CompactFutureManager {
 
     @Override
     public boolean shouldWaitCompaction() {
+        //todo 判断是否触发Compaction
         return levels.numberOfSortedRuns() > numSortedRunStopTrigger;
     }
 
     @Override
     public void addNewFile(DataFileMeta file) {
+        //todo 新数据添加到level0
         levels.addLevel0File(file);
     }
 

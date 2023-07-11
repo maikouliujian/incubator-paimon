@@ -46,6 +46,7 @@ import static org.apache.paimon.flink.FlinkConnectorOptions.CHANGELOG_PRODUCER_F
 import static org.apache.paimon.flink.FlinkConnectorOptions.CHANGELOG_PRODUCER_LOOKUP_WAIT;
 
 /** Abstract sink of paimon. */
+//todo paimon sink
 public abstract class FlinkSink<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;

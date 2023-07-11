@@ -172,7 +172,7 @@ public class SinkSavepointITCase extends AbstractTestBase {
                         "  'fields.a.start' = '0',",
                         "  'fields.a.end' = '99999'",
                         ")"));
-
+        //todo test
         String createSinkSql =
                 String.join(
                         "\n",

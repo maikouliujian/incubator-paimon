@@ -67,7 +67,7 @@ import static org.apache.paimon.catalog.Catalog.SYSTEM_TABLE_SPLITTER;
 public class AuditLogTable implements DataTable, ReadonlyTable {
 
     public static final String AUDIT_LOG = "audit_log";
-
+    //todo audit_log中增加了rowkind列
     public static final String ROW_KIND = "rowkind";
 
     public static final PredicateReplaceVisitor PREDICATE_CONVERTER =

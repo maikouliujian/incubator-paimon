@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
  * A {@link SortedRun} is a list of files sorted by their keys. The key intervals [minKey, maxKey]
  * of these files do not overlap.
  */
+
 public class SortedRun {
 
     private final List<DataFileMeta> files;

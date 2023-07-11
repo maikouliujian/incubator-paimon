@@ -215,13 +215,14 @@ public class MySqlSyncDatabaseAction implements Action {
 
         mySqlConfig.set(
                 MySqlSourceOptions.TABLE_NAME, "(" + String.join("|", monitoredTables) + ")");
+        //todo cdc source
         MySqlSource<String> source = MySqlActionUtils.buildMySqlSource(mySqlConfig);
 
         String serverTimeZone = mySqlConfig.get(MySqlSourceOptions.SERVER_TIME_ZONE);
         ZoneId zoneId = serverTimeZone == null ? ZoneId.systemDefault() : ZoneId.of(serverTimeZone);
         EventParser.Factory<String> parserFactory =
                 () -> new MySqlDebeziumJsonEventParser(zoneId, caseSensitive, tableNameConverter);
-
+        //todo cdc sink
         FlinkCdcSyncDatabaseSinkBuilder<String> sinkBuilder =
                 new FlinkCdcSyncDatabaseSinkBuilder<String>()
                         .withInput(

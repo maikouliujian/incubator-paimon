@@ -172,7 +172,7 @@ public class CoreOptions implements Serializable {
                     .durationType()
                     .defaultValue(Duration.ofSeconds(10))
                     .withDescription("The discovery interval of continuous reading.");
-
+    //todo merge-engine
     @Immutable
     public static final ConfigOption<MergeEngine> MERGE_ENGINE =
             key("merge-engine")
@@ -265,7 +265,7 @@ public class CoreOptions implements Serializable {
                     .withDescription(
                             "The sorted run number to trigger compaction. Includes level0 files (one file one sorted run) and "
                                     + "high-level runs (one level one sorted run).");
-
+    //todo num-sorted-run.stop-trigger
     public static final ConfigOption<Integer> NUM_SORTED_RUNS_STOP_TRIGGER =
             key("num-sorted-run.stop-trigger")
                     .intType()
@@ -332,7 +332,7 @@ public class CoreOptions implements Serializable {
                             "The maximum sorted run number to pick for compaction. "
                                     + "This value avoids merging too much sorted runs at the same time during compaction, "
                                     + "which may lead to OutOfMemoryError.");
-
+    //todo changelog-producer
     public static final ConfigOption<ChangelogProducer> CHANGELOG_PRODUCER =
             key("changelog-producer")
                     .enumType(ChangelogProducer.class)
@@ -341,7 +341,7 @@ public class CoreOptions implements Serializable {
                             "Whether to double write to a changelog file. "
                                     + "This changelog file keeps the details of data changes, "
                                     + "it can be read directly during stream reads.");
-
+    //todo sequence.field
     @Immutable
     public static final ConfigOption<String> SEQUENCE_FIELD =
             key("sequence.field")
@@ -557,7 +557,7 @@ public class CoreOptions implements Serializable {
                     .intType()
                     .defaultValue(1024)
                     .withDescription("Read batch size for orc and parquet.");
-
+    //todo consumer-id
     public static final ConfigOption<String> CONSUMER_ID =
             key("consumer-id")
                     .stringType()
