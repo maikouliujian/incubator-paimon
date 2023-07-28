@@ -54,6 +54,7 @@ public class MergeTreeCompactTask extends CompactTask {
         this.minFileSize = minFileSize;
         this.rewriter = rewriter;
         this.outputLevel = unit.outputLevel();
+        //todo .partition()
         this.partitioned = new IntervalPartition(unit.files(), keyComparator).partition();
         this.dropDelete = dropDelete;
 
@@ -78,6 +79,7 @@ public class MergeTreeCompactTask extends CompactTask {
                 // rewriting it
                 // But for small files, we will try to compact it
                 for (DataFileMeta file : run.files()) {
+                    //todo 小文件
                     if (file.fileSize() < minFileSize) {
                         // Smaller files are rewritten along with the previous files
                         candidate.add(singletonList(SortedRun.fromSingle(file)));
@@ -102,6 +104,7 @@ public class MergeTreeCompactTask extends CompactTask {
     }
 
     private void upgrade(DataFileMeta file, CompactResult toUpdate) throws Exception {
+        //todo file为上层文件
         if (file.level() != outputLevel) {
             CompactResult upgradeResult = rewriter.upgrade(outputLevel, file);
             toUpdate.merge(upgradeResult);

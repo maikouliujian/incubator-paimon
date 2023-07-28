@@ -89,12 +89,13 @@ public class IntervalPartition {
 
         return result;
     }
-
+    //todo 一个sortedrun中的数据文件中的key都是有序的，默认从小到大
     private List<SortedRun> partition(List<DataFileMeta> metas) {
         PriorityQueue<List<DataFileMeta>> queue =
                 new PriorityQueue<>(
                         (o1, o2) ->
                                 // sort by max key of the last data file
+                                //todo 按照最大key排序
                                 keyComparator.compare(
                                         o1.get(o1.size() - 1).maxKey(),
                                         o2.get(o2.size() - 1).maxKey()));
@@ -108,6 +109,7 @@ public class IntervalPartition {
             // any file list whose max key < meta.minKey() is sufficient,
             // for convenience we pick the smallest
             List<DataFileMeta> top = queue.poll();
+            //todo 如果meta最小key比top的最大key还大，则meta加入top！！！
             if (keyComparator.compare(meta.minKey(), top.get(top.size() - 1).maxKey()) > 0) {
                 // append current file to an existing partition
                 top.add(meta);

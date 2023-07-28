@@ -23,7 +23,7 @@ import org.apache.paimon.table.source.DataFilePlan;
 import org.apache.paimon.table.source.StreamTableScan;
 import org.apache.paimon.table.source.TableScan;
 
-/** Helper class for the follow-up planning of {@link StreamTableScan}. */
+/** Helper class for the follow-up【后续行动】 planning of {@link StreamTableScan}. */
 public interface FollowUpScanner {
 
     boolean shouldScanSnapshot(Snapshot snapshot);

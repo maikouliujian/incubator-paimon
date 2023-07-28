@@ -35,12 +35,13 @@ import static java.util.Collections.emptyList;
 import static org.apache.paimon.utils.Preconditions.checkArgument;
 
 /** A class which stores all level files of merge tree. */
+//todo Levels
 public class Levels {
 
     private final Comparator<InternalRow> keyComparator;
-
+    //todo 第0层
     private final TreeSet<DataFileMeta> level0;
-
+    //todo 第1～n层,每一层一个SortedRun，一个SortedRun中有多个数据文件DataFileMeta
     private final List<SortedRun> levels;
 
     private final List<DropFileCallback> dropFileCallbacks = new ArrayList<>();
@@ -150,6 +151,7 @@ public class Levels {
         Map<Integer, List<DataFileMeta>> groupedBefore = groupByLevel(before);
         Map<Integer, List<DataFileMeta>> groupedAfter = groupByLevel(after);
         for (int i = 0; i < numberOfLevels(); i++) {
+            //todo 更新
             updateLevel(
                     i,
                     groupedBefore.getOrDefault(i, emptyList()),
@@ -157,6 +159,7 @@ public class Levels {
         }
 
         if (dropFileCallbacks.size() > 0) {
+            //todo 删除before里有，after里没有的文件！！！！！！
             Set<String> droppedFiles =
                     before.stream().map(DataFileMeta::fileName).collect(Collectors.toSet());
             // exclude upgrade files
@@ -166,7 +169,7 @@ public class Levels {
             }
         }
     }
-
+    //todo 更新level
     private void updateLevel(int level, List<DataFileMeta> before, List<DataFileMeta> after) {
         if (before.isEmpty() && after.isEmpty()) {
             return;
@@ -179,6 +182,7 @@ public class Levels {
             List<DataFileMeta> files = new ArrayList<>(runOfLevel(level).files());
             files.removeAll(before);
             files.addAll(after);
+            //todo 更新levels
             levels.set(level - 1, SortedRun.fromUnsorted(files, keyComparator));
         }
     }

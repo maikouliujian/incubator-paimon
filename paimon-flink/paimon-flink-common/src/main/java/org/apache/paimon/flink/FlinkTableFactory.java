@@ -38,6 +38,7 @@ import static org.apache.paimon.CoreOptions.AUTO_CREATE;
 import static org.apache.paimon.flink.FlinkCatalogFactory.IDENTIFIER;
 
 /** A paimon {@link DynamicTableFactory} to create source and sink. */
+//todo paimon source和sink入口
 public class FlinkTableFactory extends AbstractFlinkTableFactory {
 
     @Nullable private final CatalogLock.Factory lockFactory;
@@ -54,9 +55,10 @@ public class FlinkTableFactory extends AbstractFlinkTableFactory {
     public String factoryIdentifier() {
         return IDENTIFIER;
     }
-
+    //todo source
     @Override
     public DynamicTableSource createDynamicTableSource(Context context) {
+        //todo flink表（非paimon表）
         if (isFlinkTable(context)) {
             // only Flink 1.14 temporary table will come here
             return FactoryUtil.createTableSource(
@@ -68,9 +70,10 @@ public class FlinkTableFactory extends AbstractFlinkTableFactory {
                     context.isTemporary());
         }
         createTableIfNeeded(context);
+        //todo paimon表
         return super.createDynamicTableSource(context);
     }
-
+    //todo sink
     @Override
     public DynamicTableSink createDynamicTableSink(Context context) {
         if (isFlinkTable(context)) {
@@ -84,6 +87,7 @@ public class FlinkTableFactory extends AbstractFlinkTableFactory {
                     context.isTemporary());
         }
         createTableIfNeeded(context);
+        //todo sink
         FlinkTableSink sink = (FlinkTableSink) super.createDynamicTableSink(context);
         sink.setLockFactory(lockFactory);
         return sink;

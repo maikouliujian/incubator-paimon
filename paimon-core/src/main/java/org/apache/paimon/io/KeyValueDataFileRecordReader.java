@@ -59,6 +59,7 @@ public class KeyValueDataFileRecordReader implements RecordReader<KeyValue> {
         this.castMapping = castMapping;
     }
 
+    //todo
     @Nullable
     @Override
     public RecordIterator<KeyValue> readBatch() throws IOException {

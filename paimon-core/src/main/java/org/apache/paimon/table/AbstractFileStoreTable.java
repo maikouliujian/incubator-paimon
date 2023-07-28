@@ -88,11 +88,13 @@ public abstract class AbstractFileStoreTable implements FileStoreTable {
     public InnerTableScan newScan() {
         return new InnerTableScanImpl(coreOptions(), newSnapshotSplitReader(), snapshotManager());
     }
-
+    //todo
     @Override
     public InnerStreamTableScan newStreamScan() {
+        //todo
         return new InnerStreamTableScanImpl(
                 coreOptions(),
+                //todo 创建SnapshotSplitReader
                 newSnapshotSplitReader(),
                 snapshotManager(),
                 supportStreamingReadOverwrite());

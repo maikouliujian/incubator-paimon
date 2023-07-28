@@ -52,7 +52,7 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
     protected abstract boolean upgradeChangelog(int outputLevel, DataFileMeta file);
 
     protected abstract MergeFunctionWrapper<ChangelogResult> createMergeWrapper(int outputLevel);
-
+    //todo
     @Override
     public CompactResult rewrite(
             int outputLevel, boolean dropDelete, List<List<SortedRun>> sections) throws Exception {
@@ -69,6 +69,7 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
         for (List<SortedRun> section : sections) {
             sectionReaders.add(
                     () -> {
+                        //todo 给每个SortedRun中每个file创建RecordReader
                         List<RecordReader<KeyValue>> runReaders =
                                 MergeTreeReaders.readerForSection(section, readerFactory);
                         return new SortMergeReader<>(
@@ -82,15 +83,19 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
 
         try {
             iterator = new RecordReaderIterator<>(ConcatRecordReader.create(sectionReaders));
+            //todo 创建新的data文件
             compactFileWriter = writerFactory.createRollingMergeTreeFileWriter(outputLevel);
+            //todo 创建新的changelog文件
             changelogFileWriter = writerFactory.createRollingChangelogFileWriter(outputLevel);
 
             while (iterator.hasNext()) {
                 ChangelogResult result = iterator.next();
                 if (result.result() != null) {
+                    //todo 写data
                     compactFileWriter.write(result.result());
                 }
                 for (KeyValue kv : result.changelogs()) {
+                    //todo 写changelog
                     changelogFileWriter.write(kv);
                 }
             }
@@ -115,6 +120,7 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
     @Override
     public CompactResult upgrade(int outputLevel, DataFileMeta file) throws Exception {
         if (upgradeChangelog(outputLevel, file)) {
+            //todo
             return rewriteChangelogCompaction(
                     outputLevel,
                     Collections.singletonList(

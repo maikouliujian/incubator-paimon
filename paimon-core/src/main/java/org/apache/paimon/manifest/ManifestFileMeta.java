@@ -32,6 +32,35 @@ import java.util.Map;
 import java.util.Objects;
 
 /** Metadata of a manifest file. */
+
+/***
+ * {
+ * 	"org.apache.paimon.avro.generated.record": {
+ * 		"_VERSION": 2,
+ * 		"_FILE_NAME": "manifest-f5282e2b-dd0e-415f-a2d5-e51140a1db73-5",
+ * 		"_FILE_SIZE": 2204,
+ * 		"_NUM_ADDED_FILES": 2,
+ * 		"_NUM_DELETED_FILES": 0,
+ * 		"_PARTITION_STATS": {
+ * 			"org.apache.paimon.avro.generated.record__PARTITION_STATS": {
+ * 				"_MIN_VALUES": "\u0000\u0000\u0000\u0004\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\n\u0000\u0000\u0000(\u0000\u0000\u000000\u0000\u0000\u0000\u0000\u0000kr\u0000\u0000\u0000\u0000\u0000appsdk\u00002023-07-11\u0000\u0000\u0000\u0000\u0000\u0000",
+ * 				"_MAX_VALUES": "\u0000\u0000\u0000\u0004\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\n\u0000\u0000\u0000(\u0000\u0000\u000000\u0000\u0000\u0000\u0000\u0000kr\u0000\u0000\u0000\u0000\u0000appsdk\u00002023-07-11\u0000\u0000\u0000\u0000\u0000\u0000",
+ * 				"_NULL_COUNTS": {
+ * 					"array": [{
+ * 						"long": 0
+ *                                        }, {
+ * 						"long": 0
+ *                    }, {
+ * 						"long": 0
+ *                    }, {
+ * 						"long": 0
+ *                    }]*            }
+ *        }
+ * 		},
+ * 		"_SCHEMA_ID     0
+ * 	}
+ * }
+ */
 public class ManifestFileMeta {
 
     private final String fileName;

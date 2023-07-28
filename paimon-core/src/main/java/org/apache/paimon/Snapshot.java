@@ -59,6 +59,27 @@ import java.util.Map;
  *       so there is no compatibility issue.
  * </ul>
  */
+//todo Snapshot
+
+/****
+ * {
+ *   "version" : 3,
+ *   "id" : 9,
+ *   "schemaId" : 0,
+ *   "baseManifestList" : "manifest-list-f4a6c479-57af-40d0-94a5-b4198994740f-20",
+ *   "deltaManifestList" : "manifest-list-f4a6c479-57af-40d0-94a5-b4198994740f-21",
+ *   "changelogManifestList" : null,
+ *   "commitUser" : "16878733-332b-4a79-a583-84b1653aee73",
+ *   "commitIdentifier" : 5,
+ *   "commitKind" : "APPEND",
+ *   "timeMillis" : 1689008596942,
+ *   "logOffsets" : { },
+ *   "totalRecordCount" : 224,
+ *   "deltaRecordCount" : 9,
+ *   "changelogRecordCount" : 0,
+ *   "watermark" : -9223372036854775808
+ * }
+ */
 public class Snapshot {
 
     public static final long FIRST_SNAPSHOT_ID = 1;
@@ -75,6 +96,7 @@ public class Snapshot {
     private static final String FIELD_COMMIT_USER = "commitUser";
     private static final String FIELD_COMMIT_IDENTIFIER = "commitIdentifier";
     private static final String FIELD_COMMIT_KIND = "commitKind";
+    //todo commitTime
     private static final String FIELD_TIME_MILLIS = "timeMillis";
     private static final String FIELD_LOG_OFFSETS = "logOffsets";
     private static final String FIELD_TOTAL_RECORD_COUNT = "totalRecordCount";

@@ -62,6 +62,7 @@ import java.util.TreeMap;
  * <p>The splits to be read are forwarded to the downstream {@link ReadOperator} which can have
  * parallelism greater than one.
  */
+//todo 流读使用
 public class MonitorFunction extends RichSourceFunction<Split>
         implements CheckpointedFunction, CheckpointListener {
 
@@ -88,6 +89,7 @@ public class MonitorFunction extends RichSourceFunction<Split>
 
     @Override
     public void initializeState(FunctionInitializationContext context) throws Exception {
+        //todo 初始化newStreamScan
         this.scan = readBuilder.newStreamScan();
 
         this.checkpointState =
@@ -167,6 +169,7 @@ public class MonitorFunction extends RichSourceFunction<Split>
                     return;
                 }
                 try {
+                    //todo source
                     List<Split> splits = scan.plan().splits();
                     isEmpty = splits.isEmpty();
                     splits.forEach(ctx::collect);
@@ -213,6 +216,7 @@ public class MonitorFunction extends RichSourceFunction<Split>
                         new MonitorFunction(readBuilder, monitorInterval),
                         name + "-Monitor",
                         new JavaTypeInfo<>(Split.class))
+                //todo 并行度为1
                 .forceNonParallel()
                 .partitionCustom(
                         (key, numPartitions) -> key % numPartitions,

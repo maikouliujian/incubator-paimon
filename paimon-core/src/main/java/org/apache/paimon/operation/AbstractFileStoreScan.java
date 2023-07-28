@@ -192,7 +192,7 @@ public abstract class AbstractFileStoreScan implements FileStoreScan {
         this.manifestCacheFilter = manifestFilter;
         return this;
     }
-
+    //todo 获取包含ManifestEntry list和 SnapshotId 的Plan
     @Override
     public Plan plan() {
         List<ManifestFileMeta> manifests = specifiedManifests;
@@ -214,6 +214,7 @@ public abstract class AbstractFileStoreScan implements FileStoreScan {
 
         List<ManifestEntry> entries;
         try {
+            //todo 异步获取ManifestEntry
             entries =
                     FileUtils.COMMON_IO_FORK_JOIN_POOL
                             .submit(
@@ -271,7 +272,7 @@ public abstract class AbstractFileStoreScan implements FileStoreScan {
             }
         };
     }
-
+    //todo 根据不同的scan类型，读取不同的Manifests
     private List<ManifestFileMeta> readManifests(Snapshot snapshot) {
         switch (scanKind) {
             case ALL:

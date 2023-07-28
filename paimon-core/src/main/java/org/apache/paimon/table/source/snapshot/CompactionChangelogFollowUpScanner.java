@@ -51,6 +51,7 @@ public class CompactionChangelogFollowUpScanner implements FollowUpScanner {
 
     @Override
     public TableScan.Plan scan(long snapshotId, SnapshotSplitReader snapshotSplitReader) {
+        //todo 通过设置snapshotId来实现每次扫不同snapshotId的数据
         return new DataFilePlan(
                 snapshotSplitReader.withKind(ScanKind.CHANGELOG).withSnapshot(snapshotId).splits());
     }

@@ -44,6 +44,7 @@ public class RollingFileWriter<T, R> implements FileWriter<T, List<R>> {
 
     private final Supplier<? extends SingleFileWriter<T, R>> writerFactory;
     private final long targetFileSize;
+    //todo 记录打开了多少个writer，有多少writer就会写多少个文件
     private final List<SingleFileWriter<T, R>> openedWriters;
     private final List<R> results;
 
@@ -71,7 +72,7 @@ public class RollingFileWriter<T, R> implements FileWriter<T, List<R>> {
         return recordCount % CHECK_ROLLING_RECORD_CNT == 0
                 && currentWriter.length() >= targetFileSize;
     }
-
+    //todo 写数据
     @Override
     public void write(T row) throws IOException {
         try {
@@ -82,7 +83,7 @@ public class RollingFileWriter<T, R> implements FileWriter<T, List<R>> {
 
             currentWriter.write(row);
             recordCount += 1;
-
+            //todo 达到了targetFileSize，则写新的文件！！！！！！
             if (rollingFile()) {
                 closeCurrentWriter();
             }
@@ -98,6 +99,7 @@ public class RollingFileWriter<T, R> implements FileWriter<T, List<R>> {
     }
 
     private void openCurrentWriter() {
+        //todo 获取一个新writer，写新目录
         currentWriter = writerFactory.get();
         openedWriters.add(currentWriter);
     }

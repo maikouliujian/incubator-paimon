@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 /** Compact manager for {@link AppendOnlyFileStore}. */
+//todo for appendonly table
 public class AppendOnlyCompactManager extends CompactFutureManager {
 
     private static final int FULL_COMPACT_MIN_FILE = 3;
@@ -67,7 +68,7 @@ public class AppendOnlyCompactManager extends CompactFutureManager {
         this.targetFileSize = targetFileSize;
         this.rewriter = rewriter;
     }
-
+    //todo 触发compaction
     @Override
     public void triggerCompaction(boolean fullCompaction) {
         if (fullCompaction) {
@@ -126,6 +127,7 @@ public class AppendOnlyCompactManager extends CompactFutureManager {
     @Override
     public Optional<CompactResult> getCompactionResult(boolean blocking)
             throws ExecutionException, InterruptedException {
+        //todo 获取compact结果
         Optional<CompactResult> result = innerGetCompactionResult(blocking);
         if (result.isPresent()) {
             CompactResult compactResult = result.get();
@@ -222,6 +224,7 @@ public class AppendOnlyCompactManager extends CompactFutureManager {
             List<DataFileMeta> compactAfter = new ArrayList<>();
             if (small > big && inputs.size() >= FULL_COMPACT_MIN_FILE) {
                 compactBefore = new ArrayList<>(inputs);
+                //todo compaction
                 compactAfter = rewriter.rewrite(inputs);
             }
             return result(new ArrayList<>(compactBefore), compactAfter);

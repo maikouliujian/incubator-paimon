@@ -136,12 +136,14 @@ public class SnapshotManager implements Serializable {
      * if all snapshots are later than the timestamp mills.
      */
     public @Nullable Long earlierThanTimeMills(long timestampMills) {
+        //todo earliestSnapshotId
         Long earliest = earliestSnapshotId();
+        //todo latestSnapshotId
         Long latest = latestSnapshotId();
         if (earliest == null || latest == null) {
             return null;
         }
-
+        //todo 倒叙遍历寻找commitTime < timestampMills的SnapshotId
         for (long i = latest; i >= earliest; i--) {
             long commitTime = snapshot(i).timeMillis();
             if (commitTime < timestampMills) {
@@ -226,7 +228,7 @@ public class SnapshotManager implements Serializable {
         if (!fileIO.exists(snapshotDir)) {
             return null;
         }
-
+        //todo 获取EARLIEST snapshotId
         Long snapshotId = readHint(EARLIEST);
         // null and it is the earliest only it exists
         if (snapshotId != null && snapshotExists(snapshotId)) {

@@ -27,6 +27,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /** Factory which produces new {@link Path}s for data files. */
+//todo for 数据文件
 @ThreadSafe
 public class DataFilePathFactory {
 
@@ -38,6 +39,7 @@ public class DataFilePathFactory {
     private final String uuid;
 
     private final AtomicInteger pathCount;
+    //todo 文件格式
     private final String formatIdentifier;
 
     public DataFilePathFactory(Path root, String partition, int bucket, String formatIdentifier) {
@@ -55,7 +57,7 @@ public class DataFilePathFactory {
     public Path newChangelogPath() {
         return newPath(CHANGELOG_FILE_PREFIX);
     }
-
+    //todo data-71dddb79-0fc3-4bdf-bfae-285ab89dd8a9-0.orc
     private Path newPath(String prefix) {
         String name = prefix + uuid + "-" + pathCount.getAndIncrement() + "." + formatIdentifier;
         return new Path(bucketDir, name);

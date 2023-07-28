@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 
 public class SortedRun {
-
+    //todo 一个SortedRun中包含一个或者多个数据文件！！！
     private final List<DataFileMeta> files;
 
     private final long totalSize;
@@ -63,6 +63,7 @@ public class SortedRun {
 
     public static SortedRun fromUnsorted(
             List<DataFileMeta> unsortedFiles, Comparator<InternalRow> keyComparator) {
+        //todo 按照minKey 升序排序
         unsortedFiles.sort((o1, o2) -> keyComparator.compare(o1.minKey(), o2.minKey()));
         SortedRun run = new SortedRun(unsortedFiles);
         run.validate(keyComparator);

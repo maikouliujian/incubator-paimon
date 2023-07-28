@@ -60,6 +60,7 @@ public class RecordReaderIterator<T> implements CloseableIterator<T> {
             return null;
         }
         advanced = false;
+        //todo 返回读取的数据
         return currentResult;
     }
 

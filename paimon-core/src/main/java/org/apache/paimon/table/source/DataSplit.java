@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Objects;
 
 /** Input splits. Needed by most batch computation engines. */
+//todo DataSplit
 public class DataSplit implements Split {
 
     private static final long serialVersionUID = 2L;
@@ -42,6 +43,7 @@ public class DataSplit implements Split {
     private long snapshotId;
     private BinaryRow partition;
     private int bucket;
+    //todo 数据文件list集和
     private List<DataFileMeta> files;
     private boolean isIncremental;
 

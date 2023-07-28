@@ -131,8 +131,10 @@ public class FlinkTableSink implements DynamicTableSink, SupportsOverwrite, Supp
                 overwrite ? null : (logSinkProvider == null ? null : logSinkProvider.createSink());
         return new PaimonDataStreamSinkProvider(
                 (dataStream) ->
+                        //todo sink
                         new FlinkSinkBuilder((FileStoreTable) table)
                                 .withInput(
+                                        //todo source
                                         new DataStream<>(
                                                 dataStream.getExecutionEnvironment(),
                                                 dataStream.getTransformation()))

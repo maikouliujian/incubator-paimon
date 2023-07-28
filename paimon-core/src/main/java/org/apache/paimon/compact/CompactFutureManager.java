@@ -48,6 +48,7 @@ public abstract class CompactFutureManager implements CompactManager {
             if (blocking || taskFuture.isDone()) {
                 CompactResult result;
                 try {
+                    //todo 阻塞
                     result = taskFuture.get();
                 } catch (CancellationException e) {
                     LOG.info("Compaction future is cancelled", e);

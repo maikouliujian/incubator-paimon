@@ -141,6 +141,7 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
                         options.fileCompressionPerLevel(),
                         options.fileCompression());
         Comparator<InternalRow> keyComparator = keyComparatorSupplier.get();
+        //todo lsm树层级计算逻辑
         Levels levels = new Levels(keyComparator, restoreFiles, options.numLevels());
         UniversalCompaction universalCompaction =
                 new UniversalCompaction(
@@ -182,6 +183,7 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
             return new NoopCompactManager();
         } else {
             Comparator<InternalRow> keyComparator = keyComparatorSupplier.get();
+            //todo
             CompactRewriter rewriter = createRewriter(partition, bucket, keyComparator, levels);
             return new MergeTreeCompactManager(
                     compactExecutor,
@@ -205,6 +207,7 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
                         options.fileCompression());
         switch (options.changelogProducer()) {
             case FULL_COMPACTION:
+                //todo FULL_COMPACTION
                 return new FullChangelogMergeTreeCompactRewriter(
                         options.numLevels() - 1,
                         readerFactory,
@@ -212,6 +215,7 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
                         keyComparator,
                         mfFactory);
             case LOOKUP:
+                //todo LOOKUP
                 LookupLevels lookupLevels = createLookupLevels(levels, readerFactory);
                 return new LookupMergeTreeCompactRewriter(
                         lookupLevels, readerFactory, writerFactory, keyComparator, mfFactory);

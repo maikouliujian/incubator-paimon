@@ -131,6 +131,7 @@ public class AppendOnlyFileStoreWrite extends AbstractFileStoreWrite<InternalRow
 
     private AppendOnlyCompactManager.CompactRewriter compactRewriter(
             BinaryRow partition, int bucket) {
+        //todo toCompact--->要合并的文件list
         return toCompact -> {
             if (toCompact.isEmpty()) {
                 return Collections.emptyList();
@@ -147,6 +148,7 @@ public class AppendOnlyFileStoreWrite extends AbstractFileStoreWrite<InternalRow
                             fileCompression);
             rewriter.write(
                     new RecordReaderIterator<>(
+                            //todo 返回split中每一个file的reader,ConcatRecordReader中会有多个reader！！！！！！
                             read.createReader(
                                     new DataSplit(
                                             0L /* unused */,

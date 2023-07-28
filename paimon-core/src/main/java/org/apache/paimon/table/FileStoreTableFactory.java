@@ -87,6 +87,7 @@ public class FileStoreTableFactory {
             if (tableSchema.primaryKeys().isEmpty()) {
                 table = new ChangelogValueCountFileStoreTable(fileIO, tablePath, tableSchema);
             } else {
+                //todo
                 table = new ChangelogWithKeyFileStoreTable(fileIO, tablePath, tableSchema);
             }
         }

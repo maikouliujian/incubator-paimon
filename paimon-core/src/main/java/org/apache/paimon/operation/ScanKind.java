@@ -21,9 +21,9 @@ package org.apache.paimon.operation;
 /** Scan which part of the snapshot. */
 public enum ScanKind {
     /** Scan complete data files of a snapshot. */
-    ALL,
+    ALL,//todo 快照读
     /** Only scan newly changed files of a snapshot. */
-    DELTA,
+    DELTA,//todo 增量读
     /** Only scan changelog files of a snapshot. */
-    CHANGELOG
+    CHANGELOG//todo 增量读
 }

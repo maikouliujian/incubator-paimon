@@ -33,10 +33,11 @@ import java.util.Queue;
  * input list is already sorted by key and sequence number, and the key intervals do not overlap
  * each other.
  */
+//todo 多个reader
 public class ConcatRecordReader<T> implements RecordReader<T> {
-
+    //todo 一个reader队列
     private final Queue<ReaderSupplier<T>> queue;
-
+    //todo 当前reader
     private RecordReader<T> current;
 
     protected ConcatRecordReader(List<ReaderSupplier<T>> readerFactories) {
@@ -55,6 +56,7 @@ public class ConcatRecordReader<T> implements RecordReader<T> {
     public RecordIterator<T> readBatch() throws IOException {
         while (true) {
             if (current != null) {
+                //todo 一次读取一batch数据
                 RecordIterator<T> iterator = current.readBatch();
                 if (iterator != null) {
                     return iterator;

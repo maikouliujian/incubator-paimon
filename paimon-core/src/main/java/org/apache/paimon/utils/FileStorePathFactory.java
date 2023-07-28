@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 import static org.apache.paimon.options.ConfigOptions.key;
 
 /** Factory which produces {@link Path}s for manifest files. */
+//todo for manifest文件
 @ThreadSafe
 public class FileStorePathFactory {
 

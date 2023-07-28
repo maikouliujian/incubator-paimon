@@ -38,7 +38,7 @@ public class ContinuousFromTimestampStartingScanner implements StartingScanner {
     public ContinuousFromTimestampStartingScanner(long startupMillis) {
         this.startupMillis = startupMillis;
     }
-
+    //todo 扫描数据！！！
     @Override
     public Result scan(SnapshotManager snapshotManager, SnapshotSplitReader snapshotSplitReader) {
         Long startingSnapshotId = snapshotManager.earlierThanTimeMills(startupMillis);

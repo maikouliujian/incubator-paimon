@@ -84,6 +84,7 @@ public class SnapshotSplitReaderImpl implements SnapshotSplitReader {
 
     @Override
     public SnapshotSplitReader withSnapshot(long snapshotId) {
+        //todo 通过设置snapshotId来实现每次扫不同snapshotId的数据
         scan.withSnapshot(snapshotId);
         return this;
     }
@@ -139,9 +140,10 @@ public class SnapshotSplitReaderImpl implements SnapshotSplitReader {
     /** Get splits from {@link FileKind#ADD} files. */
     @Override
     public List<DataSplit> splits() {
+        //todo 获取snapshotId 对应包含 ManifestEntry 的Plan
         FileStoreScan.Plan plan = scan.plan();
         Long snapshotId = plan.snapshotId();
-
+        //todo <partition,<bucket,List<DataFileMeta>>>
         Map<BinaryRow, Map<Integer, List<DataFileMeta>>> files =
                 FileStoreScan.Plan.groupByPartFiles(plan.files(FileKind.ADD));
         if (options.scanPlanSortPartition()) {
@@ -218,7 +220,9 @@ public class SnapshotSplitReaderImpl implements SnapshotSplitReader {
             BinaryRow partition = entry.getKey();
             Map<Integer, List<DataFileMeta>> buckets = entry.getValue();
             for (Map.Entry<Integer, List<DataFileMeta>> bucketEntry : buckets.entrySet()) {
+                //todo bucketid
                 int bucket = bucketEntry.getKey();
+                //todo 增量读取
                 if (isIncremental) {
                     // Don't split when incremental
                     splits.add(

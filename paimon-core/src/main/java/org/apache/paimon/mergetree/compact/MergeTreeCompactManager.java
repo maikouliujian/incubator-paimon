@@ -41,6 +41,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 /** Compact manager for {@link KeyValueFileStore}. */
+//todo for mor表/lsm
 public class MergeTreeCompactManager extends CompactFutureManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(MergeTreeCompactManager.class);
@@ -101,6 +102,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                         "Trigger forced full compaciton. Picking from the following runs\n{}",
                         runs);
             }
+            //todo fullCompaction，返回(最大层级，所有的文件)
             optionalUnit = CompactStrategy.pickFullCompaction(levels.numberOfLevels(), runs);
         } else {
             if (taskFuture != null) {
@@ -146,6 +148,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                                                                         file.fileSize()))
                                                 .collect(Collectors.joining(", ")));
                     }
+                    //todo 提交compaction
                     submitCompaction(unit, dropDelete);
                 });
     }
@@ -156,6 +159,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
     }
 
     private void submitCompaction(CompactUnit unit, boolean dropDelete) {
+        //todo MergeTreeCompactTask
         MergeTreeCompactTask task =
                 new MergeTreeCompactTask(keyComparator, minFileSize, rewriter, unit, dropDelete);
         if (LOG.isDebugEnabled()) {
@@ -185,6 +189,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                                 r.before(),
                                 r.after());
                     }
+                    //todo 更新levels
                     levels.update(r.before(), r.after());
                     if (LOG.isDebugEnabled()) {
                         LOG.debug(

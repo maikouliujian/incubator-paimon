@@ -42,6 +42,7 @@ public class RowDataRollingFileWriter extends RollingFileWriter<InternalRow, Dat
                         new RowDataFileWriter(
                                 fileIO,
                                 fileFormat.createWriterFactory(writeSchema),
+                                //todo 每次写一个新文件！！！
                                 pathFactory.newPath(),
                                 writeSchema,
                                 fileFormat.createStatsExtractor(writeSchema).orElse(null),

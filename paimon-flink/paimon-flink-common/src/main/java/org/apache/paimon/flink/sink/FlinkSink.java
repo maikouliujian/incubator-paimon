@@ -119,6 +119,7 @@ public abstract class FlinkSink<T> implements Serializable {
 
     public DataStreamSink<?> sinkFrom(
             DataStream<T> input, String commitUser, StoreSinkWrite.Provider sinkProvider) {
+        //todo input为数据源
         StreamExecutionEnvironment env = input.getExecutionEnvironment();
         ReadableConfig conf = StreamExecutionEnvironmentUtils.getConfiguration(env);
         CheckpointConfig checkpointConfig = env.getCheckpointConfig();
@@ -128,6 +129,7 @@ public abstract class FlinkSink<T> implements Serializable {
         boolean streamingCheckpointEnabled =
                 isStreaming && checkpointConfig.isCheckpointingEnabled();
         if (streamingCheckpointEnabled) {
+            //todo 校验ckp配置
             assertCheckpointConfiguration(env);
         }
 
@@ -150,16 +152,19 @@ public abstract class FlinkSink<T> implements Serializable {
                                         createCommittableStateManager()))
                         .setParallelism(1)
                         .setMaxParallelism(1);
+        //todo 空实现
         return committed.addSink(new DiscardingSink<>()).name("end").setParallelism(1);
     }
 
     private void assertCheckpointConfiguration(StreamExecutionEnvironment env) {
         Preconditions.checkArgument(
                 !env.getCheckpointConfig().isUnalignedCheckpointsEnabled(),
+                //todo 暂不支持非对齐ckp
                 "Paimon sink currently does not support unaligned checkpoints. Please set "
                         + ExecutionCheckpointingOptions.ENABLE_UNALIGNED.key()
                         + " to false.");
         Preconditions.checkArgument(
+                //todo 只支持EXACTLY_ONCE
                 env.getCheckpointConfig().getCheckpointingMode() == CheckpointingMode.EXACTLY_ONCE,
                 "Paimon sink currently only supports EXACTLY_ONCE checkpoint mode. Please set "
                         + ExecutionCheckpointingOptions.CHECKPOINTING_MODE.key()

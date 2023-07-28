@@ -350,7 +350,7 @@ public class CoreOptions implements Serializable {
                     .withDescription(
                             "The field that generates the sequence number for primary key table,"
                                     + " the sequence number determines which data is the most recent.");
-
+    //todo scan.mode 读取数据的方式
     public static final ConfigOption<StartupMode> SCAN_MODE =
             key("scan.mode")
                     .enumType(StartupMode.class)
@@ -491,7 +491,7 @@ public class CoreOptions implements Serializable {
                                                     "If the timestamp is in fields dt and hour, you can use '$dt "
                                                             + "$hour:00:00'."))
                                     .build());
-
+    //todo
     public static final ConfigOption<Boolean> SCAN_PLAN_SORT_PARTITION =
             key("scan.plan-sort-partition")
                     .booleanType()
@@ -756,7 +756,7 @@ public class CoreOptions implements Serializable {
         }
         return Math.max(numSortedRunCompactionTrigger(), stopTrigger);
     }
-
+    //todo lsm树层级计算逻辑
     public int numLevels() {
         // By default, this ensures that the compaction does not fall to level 0, but at least to
         // level 1
@@ -917,7 +917,7 @@ public class CoreOptions implements Serializable {
                         + "If \"scan.timestamp-millis\" is set the actual startup mode will be \"from-timestamp\", "
                         + "and if \"scan.snapshot-id\" is set the actual startup mode will be \"from-snapshot\". "
                         + "Otherwise the actual startup mode will be \"latest-full\"."),
-
+        //todo
         LATEST_FULL(
                 "latest-full",
                 "For streaming sources, produces the latest snapshot on the table upon first startup, "
@@ -1116,6 +1116,7 @@ public class CoreOptions implements Serializable {
 
     /** Specifies the type for streaming read. */
     public enum StreamingReadMode implements DescribedEnum {
+        //todo
         LOG("log", "Reads from the log store."),
         FILE("file", "Reads from the file store.");
 

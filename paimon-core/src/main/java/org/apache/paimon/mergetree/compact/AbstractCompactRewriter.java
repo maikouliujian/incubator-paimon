@@ -32,6 +32,7 @@ public abstract class AbstractCompactRewriter implements CompactRewriter {
 
     @Override
     public CompactResult upgrade(int outputLevel, DataFileMeta file) throws Exception {
+        //todo 更新level
         return new CompactResult(file, file.upgrade(outputLevel));
     }
 

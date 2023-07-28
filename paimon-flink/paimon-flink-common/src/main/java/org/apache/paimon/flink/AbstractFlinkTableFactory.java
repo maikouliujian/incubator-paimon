@@ -74,10 +74,13 @@ public abstract class AbstractFlinkTableFactory
                 context.getConfiguration().get(ExecutionOptions.RUNTIME_MODE)
                         == RuntimeExecutionMode.STREAMING;
         if (origin instanceof SystemCatalogTable) {
+            //todo 系统表
             return new SystemTableSource(((SystemCatalogTable) origin).table(), isStreamingMode);
         } else {
+            //todo 普通表
             return new DataTableSource(
                     context.getObjectIdentifier(),
+                    //todo
                     buildPaimonTable(context),
                     isStreamingMode,
                     context,
@@ -162,6 +165,7 @@ public abstract class AbstractFlinkTableFactory
         if (origin instanceof DataCatalogTable) {
             table = ((DataCatalogTable) origin).table().copy(origin.getOptions());
         } else {
+            //todo 构建paimon表
             table = FileStoreTableFactory.create(createCatalogContext(context));
         }
 

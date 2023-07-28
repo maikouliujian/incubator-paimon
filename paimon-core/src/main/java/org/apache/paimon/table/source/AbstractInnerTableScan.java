@@ -98,6 +98,7 @@ public abstract class AbstractInnerTableScan implements InnerTableScan {
                 } else {
                     return new CompactedStartingScanner();
                 }
+                //todo 依据时间戳读取数据！！！
             case FROM_TIMESTAMP:
                 Long startupMillis = options.scanTimestampMills();
                 Preconditions.checkNotNull(

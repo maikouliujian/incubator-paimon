@@ -95,6 +95,7 @@ public class ConsumerManager implements Serializable {
     }
 
     private Path consumerPath(String consumerId) {
+        //todo
         return new Path(tablePath + "/consumer/" + CONSUMER_PREFIX + consumerId);
     }
 }

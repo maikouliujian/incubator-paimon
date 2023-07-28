@@ -84,6 +84,7 @@ public class KeyValueFileReaderFactory {
                             return bulkFormatMappingBuilder.build(
                                     formatIdentifier, tableSchema, dataSchema);
                         });
+        //todo KeyValueDataFileRecordReader
         return new KeyValueDataFileRecordReader(
                 fileIO,
                 bulkFormatMapping.getReaderFactory(),

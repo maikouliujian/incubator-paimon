@@ -51,6 +51,7 @@ import static org.apache.paimon.utils.Preconditions.checkNotNull;
 import static org.apache.paimon.utils.Preconditions.checkState;
 
 /** Utils for schema evolution. */
+//todo schema evolution
 public class SchemaEvolutionUtil {
 
     private static final int NULL_FIELD_INDEX = -1;

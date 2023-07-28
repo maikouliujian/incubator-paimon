@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 
 /** {@link StreamTableScan} implementation for streaming planning. */
+//todo 流读表
 public class InnerStreamTableScanImpl extends AbstractInnerTableScan
         implements InnerStreamTableScan {
 
@@ -71,7 +72,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
         snapshotSplitReader.withFilter(predicate);
         return this;
     }
-
+    //todo 重点方法【流读时，会被循环执行】
     @Override
     public Plan plan() {
         if (startingScanner == null) {
@@ -83,7 +84,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
         if (boundedChecker == null) {
             boundedChecker = createBoundedChecker();
         }
-
+        //todo 第一次执行
         if (nextSnapshotId == null) {
             return tryFirstPlan();
         } else {
@@ -99,6 +100,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
             isFullPhaseEnd =
                     boundedChecker.shouldEndInput(snapshotManager.snapshot(currentSnapshotId));
         } else if (result instanceof StartingScanner.NextSnapshot) {
+            //todo
             nextSnapshotId = ((StartingScanner.NextSnapshot) result).nextSnapshotId();
             isFullPhaseEnd =
                     snapshotManager.snapshotExists(nextSnapshotId - 1)
@@ -138,6 +140,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
                 return overwritePlan;
             } else if (followUpScanner.shouldScanSnapshot(snapshot)) {
                 LOG.debug("Find snapshot id {}.", nextSnapshotId);
+                //todo 获取nextSnapshotId对应的数据文件
                 Plan plan = followUpScanner.scan(nextSnapshotId, snapshotSplitReader);
                 nextSnapshotId++;
                 return plan;
@@ -206,6 +209,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
         if (consumerId != null) {
             snapshotSplitReader
                     .consumerManager()
+                    //todo 记录consumerId信息
                     .recordConsumer(consumerId, new Consumer(nextSnapshot));
         }
     }

@@ -174,6 +174,7 @@ public class DataTableSource extends FlinkTableSource
             if (emitStrategy == WatermarkEmitStrategy.ON_EVENT) {
                 watermarkStrategy = new OnEventWatermarkStrategy(watermarkStrategy);
             }
+            //todo scan.watermark.idle-timeout
             Duration idleTimeout = options.get(SCAN_WATERMARK_IDLE_TIMEOUT);
             if (idleTimeout != null) {
                 watermarkStrategy = watermarkStrategy.withIdleness(idleTimeout);
@@ -205,9 +206,10 @@ public class DataTableSource extends FlinkTableSource
                         .withWatermarkStrategy(watermarkStrategy);
 
         return new PaimonDataStreamScanProvider(
+                //todo 返回source
                 !streaming, env -> configureSource(sourceBuilder, env));
     }
-
+    //todo 构建source数据源
     private DataStream<RowData> configureSource(
             FlinkSourceBuilder sourceBuilder, StreamExecutionEnvironment env) {
         Options options = Options.fromMap(this.table.options());
@@ -216,6 +218,7 @@ public class DataTableSource extends FlinkTableSource
         if (options.get(FlinkConnectorOptions.INFER_SCAN_PARALLELISM)) {
             // for streaming mode, set the default parallelism to the bucket number.
             if (streaming) {
+                //todo streaming模式，bucket == parallelism
                 parallelism = options.get(CoreOptions.BUCKET);
             } else {
                 splits = table.newReadBuilder().withFilter(predicate).newScan().plan().splits();
@@ -231,7 +234,7 @@ public class DataTableSource extends FlinkTableSource
                 parallelism = null == parallelism ? 1 : Math.max(1, parallelism);
             }
         }
-
+        //todo
         return sourceBuilder.withParallelism(parallelism).withSplits(splits).withEnv(env).build();
     }
 

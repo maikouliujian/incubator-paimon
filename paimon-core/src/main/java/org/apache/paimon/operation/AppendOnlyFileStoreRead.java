@@ -92,7 +92,7 @@ public class AppendOnlyFileStoreRead implements FileStoreRead<InternalRow> {
         this.filters = splitAnd(predicate);
         return this;
     }
-
+    //todo 返回split中每一个file的reader
     @Override
     public RecordReader<InternalRow> createReader(DataSplit split) throws IOException {
         DataFilePathFactory dataFilePathFactory =
@@ -104,7 +104,9 @@ public class AppendOnlyFileStoreRead implements FileStoreRead<InternalRow> {
                     bulkFormatMappings.computeIfAbsent(
                             new FormatKey(file.schemaId(), formatIdentifier),
                             key -> {
+                                //todo 表的Schema
                                 TableSchema tableSchema = schemaManager.schema(this.schemaId);
+                                //todo 数据的Schema
                                 TableSchema dataSchema = schemaManager.schema(key.schemaId);
                                 int[][] dataProjection =
                                         SchemaEvolutionUtil.createDataProjection(

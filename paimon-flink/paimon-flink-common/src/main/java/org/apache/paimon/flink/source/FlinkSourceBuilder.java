@@ -184,6 +184,7 @@ public class FlinkSourceBuilder {
 
             if (logSourceProvider != null && streamingReadMode != FILE) {
                 if (startupMode != StartupMode.LATEST_FULL) {
+                    //todo 读取kafka
                     return toDataStream(logSourceProvider.createSource(null));
                 } else {
                     return toDataStream(
@@ -196,7 +197,9 @@ public class FlinkSourceBuilder {
                                     .build());
                 }
             } else {
+                //todo CONSUMER_ID
                 if (conf.contains(CoreOptions.CONSUMER_ID)) {
+                    //todo 流读
                     return buildContinuousStreamOperator();
                 } else {
                     return buildContinuousFileSource();
@@ -213,6 +216,7 @@ public class FlinkSourceBuilder {
             throw new IllegalArgumentException(
                     "Cannot limit streaming source, please use batch execution mode.");
         }
+        //todo
         dataStream =
                 MonitorFunction.buildSource(
                         env,

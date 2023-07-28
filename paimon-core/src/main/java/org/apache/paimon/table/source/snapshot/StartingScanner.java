@@ -39,7 +39,7 @@ public interface StartingScanner {
     class ScannedResult implements Result {
         private final long currentSnapshotId;
         private final List<DataSplit> splits;
-
+        //todo Result
         public ScannedResult(long currentSnapshotId, List<DataSplit> splits) {
             this.currentSnapshotId = currentSnapshotId;
             this.splits = splits;

@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 /** Scanning plan containing snapshot ID and input splits. */
+//todo
 public class DataFilePlan implements TableScan.Plan {
 
     private final List<DataSplit> splits;

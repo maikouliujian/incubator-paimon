@@ -36,7 +36,7 @@ import java.util.Map;
 public class FlinkSinkBuilder {
 
     private final FileStoreTable table;
-
+    //todo input
     private DataStream<RowData> input;
     private Lock.Factory lockFactory = Lock.emptyFactory();
     @Nullable private Map<String, String> overwritePartition;

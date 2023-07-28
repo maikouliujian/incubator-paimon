@@ -13,5 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+####todo 入口
 org.apache.paimon.flink.FlinkTableFactory
 org.apache.paimon.flink.FlinkCatalogFactory

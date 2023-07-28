@@ -54,7 +54,7 @@ public class SortMergeReader<T> implements RecordReader<T> {
         this.nextBatchReaders = new ArrayList<>(readers);
         this.userKeyComparator = userKeyComparator;
         this.mergeFunctionWrapper = mergeFunctionWrapper;
-
+        //todo 构建小顶堆
         this.minHeap =
                 new PriorityQueue<>(
                         (e1, e2) -> {
@@ -121,6 +121,7 @@ public class SortMergeReader<T> implements RecordReader<T> {
                 if (!hasMore) {
                     return null;
                 }
+                //todo
                 T result = mergeFunctionWrapper.getResult();
                 if (result != null) {
                     return result;

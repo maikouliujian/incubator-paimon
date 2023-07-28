@@ -39,7 +39,7 @@ public abstract class CompactTask implements Callable<CompactResult> {
         if (LOG.isDebugEnabled()) {
             logMetric(startMillis, result.before(), result.after());
         }
-
+˙
         return result;
     }
 
