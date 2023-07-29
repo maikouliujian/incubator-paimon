@@ -60,6 +60,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
     private final RowType valueType;
     private final CompactManager compactManager;
     private final Comparator<InternalRow> keyComparator;
+    //todo 数据合并的方式！！！
     private final MergeFunction<KeyValue> mergeFunction;
     private final KeyValueFileWriterFactory writerFactory;
     private final boolean commitForceCompact;
@@ -127,6 +128,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
 
     @Override
     public void setMemoryPool(MemorySegmentPool memoryPool) {
+        //todo 内存池
         this.writeBuffer =
                 new SortBufferWriteBuffer(
                         keyType,
@@ -136,16 +138,19 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
                         sortMaxFan,
                         ioManager);
     }
-
+    //todo 写入数据
     @Override
     public void write(KeyValue kv) throws Exception {
         long sequenceNumber =
                 kv.sequenceNumber() == KeyValue.UNKNOWN_SEQUENCE
                         ? newSequenceNumber()
                         : kv.sequenceNumber();
+        //todo 内存不够，写入失败，返回false
         boolean success = writeBuffer.put(sequenceNumber, kv.valueKind(), kv.key(), kv.value());
         if (!success) {
+            //todo 先刷写磁盘！！！！！！
             flushWriteBuffer(false, false);
+            //todo 再写入内存
             success = writeBuffer.put(sequenceNumber, kv.valueKind(), kv.key(), kv.value());
             if (!success) {
                 throw new RuntimeException("Mem table is too small to hold a single element.");
@@ -180,7 +185,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
             flushWriteBuffer(false, false);
         }
     }
-
+    //todo 内存刷写磁盘！！！！！！
     private void flushWriteBuffer(boolean waitForLatestCompaction, boolean forcedFullCompaction)
             throws Exception {
         if (writeBuffer.size() > 0) {
@@ -188,7 +193,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
             if (compactManager.shouldWaitCompaction()) {
                 waitForLatestCompaction = true;
             }
-
+            //todo ChangelogProducer.INPUT,changelog直接产生
             final RollingFileWriter<KeyValue, DataFileMeta> changelogWriter =
                     changelogProducer == ChangelogProducer.INPUT
                             ? writerFactory.createRollingChangelogFileWriter(0)
@@ -197,6 +202,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
                     writerFactory.createRollingMergeTreeFileWriter(0);
 
             try {
+                //todo 写数据逻辑的定义！！！
                 writeBuffer.forEach(
                         keyComparator,
                         mergeFunction,

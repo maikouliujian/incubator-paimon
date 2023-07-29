@@ -102,7 +102,7 @@ public class ParquetReaderFactory implements FormatReaderFactory {
         reader.setRequestedSchema(requestedSchema);
 
         checkSchema(fileSchema, requestedSchema);
-
+        //todo 创建池子
         Pool<ParquetReaderBatch> poolOfBatches = createPoolOfBatches(requestedSchema);
 
         return new ParquetReader(reader, requestedSchema, reader.getRecordCount(), poolOfBatches);
@@ -276,7 +276,7 @@ public class ParquetReaderFactory implements FormatReaderFactory {
         @Override
         public RecordIterator<InternalRow> readBatch() throws IOException {
             final ParquetReaderBatch batch = getCachedEntry();
-
+            //todo
             if (!nextBatch(batch)) {
                 batch.recycle();
                 return null;

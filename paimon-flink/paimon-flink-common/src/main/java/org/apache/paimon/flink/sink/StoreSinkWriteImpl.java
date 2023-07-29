@@ -75,6 +75,7 @@ public class StoreSinkWriteImpl implements StoreSinkWrite {
 
     @Override
     public SinkRecord write(InternalRow rowData) throws Exception {
+        //todo 写数据
         return write.writeAndReturn(rowData);
     }
 

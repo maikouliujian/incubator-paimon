@@ -133,6 +133,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
                 new MergeIterator(
                         rawConsumer, buffer.sortedIterator(), keyComparator, mergeFunction);
         while (mergeIterator.hasNext()) {
+            //todo 写数据文件
             mergedConsumer.accept(mergeIterator.next());
         }
     }

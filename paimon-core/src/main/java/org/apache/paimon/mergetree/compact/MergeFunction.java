@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
  *
  * @param <T> result type
  */
+//todo 数据的Merge Engine对应的类
 public interface MergeFunction<T> {
 
     /** Reset the merge function to its default state. */

@@ -105,7 +105,7 @@ public class FileStoreExpireImpl implements FileStoreExpire {
         this.lock = lock;
         return this;
     }
-
+    //todo 处理过期文件的逻辑！！！！！！
     @Override
     public void expire() {
         Long latestSnapshotId = snapshotManager.latestSnapshotId();
@@ -130,6 +130,7 @@ public class FileStoreExpireImpl implements FileStoreExpire {
                             <= millisRetained) {
                 // within time threshold, can assume that all snapshots after it are also within
                 // the threshold
+                //todo 按照snapshot id删除文件！！！
                 expireUntil(earliest, id);
                 return;
             }
@@ -203,6 +204,7 @@ public class FileStoreExpireImpl implements FileStoreExpire {
 
         // data files and changelog files in bucket directories has been deleted
         // then delete changed bucket directories if they are empty
+        //todo 删除文件
         tryDeleteDirectories(changedBuckets);
 
         // delete manifests

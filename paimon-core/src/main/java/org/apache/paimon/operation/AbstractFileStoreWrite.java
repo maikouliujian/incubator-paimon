@@ -86,7 +86,7 @@ public abstract class AbstractFileStoreWrite<T>
     public void withOverwrite(boolean overwrite) {
         this.overwrite = overwrite;
     }
-
+    //todo 写入数据
     @Override
     public void write(BinaryRow partition, int bucket, T data) throws Exception {
         RecordWriter<T> writer = getWriterWrapper(partition, bucket).writer;

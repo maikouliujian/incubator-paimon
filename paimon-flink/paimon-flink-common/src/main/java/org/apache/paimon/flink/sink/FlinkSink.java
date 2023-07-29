@@ -138,6 +138,7 @@ public abstract class FlinkSink<T> implements Serializable {
                 input.transform(
                                 WRITER_NAME + " -> " + table.name(),
                                 typeInfo,
+                                //todo 写入数据的算子
                                 createWriteOperator(sinkProvider, isStreaming, commitUser))
                         .setParallelism(input.getParallelism());
 
@@ -145,6 +146,7 @@ public abstract class FlinkSink<T> implements Serializable {
                 written.transform(
                                 GLOBAL_COMMITTER_NAME + " -> " + table.name(),
                                 typeInfo,
+                                //todo commiter算子
                                 new CommitterOperator(
                                         streamingCheckpointEnabled,
                                         commitUser,

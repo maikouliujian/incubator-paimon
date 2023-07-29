@@ -39,6 +39,7 @@ public class IntervalPartition {
         this.files = new ArrayList<>(inputFiles);
         this.files.sort(
                 (o1, o2) -> {
+                    //todo 先按照minkey排序，后按照maxKey排序
                     int leftResult = keyComparator.compare(o1.minKey(), o2.minKey());
                     return leftResult == 0
                             ? keyComparator.compare(o1.maxKey(), o2.maxKey())

@@ -135,6 +135,7 @@ public class Levels {
         return files;
     }
 
+    //todo LevelSortedRun 【level,sortruns】
     public List<LevelSortedRun> levelSortedRuns() {
         List<LevelSortedRun> runs = new ArrayList<>();
         level0.forEach(file -> runs.add(new LevelSortedRun(0, SortedRun.fromSingle(file))));
@@ -169,7 +170,7 @@ public class Levels {
             }
         }
     }
-    //todo 更新level
+    //todo 更新lsm树的level
     private void updateLevel(int level, List<DataFileMeta> before, List<DataFileMeta> after) {
         if (before.isEmpty() && after.isEmpty()) {
             return;

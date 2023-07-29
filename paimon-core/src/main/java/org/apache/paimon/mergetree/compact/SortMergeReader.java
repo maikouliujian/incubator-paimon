@@ -72,12 +72,14 @@ public class SortMergeReader<T> implements RecordReader<T> {
     public RecordIterator<T> readBatch() throws IOException {
         for (RecordReader<KeyValue> reader : nextBatchReaders) {
             while (true) {
+                //todo 获取迭代器
                 RecordIterator<KeyValue> iterator = reader.readBatch();
                 if (iterator == null) {
                     // no more batches, permanently remove this reader
                     reader.close();
                     break;
                 }
+                //todo 读取数据
                 KeyValue kv = iterator.next();
                 if (kv == null) {
                     // empty iterator, clean up and try next batch

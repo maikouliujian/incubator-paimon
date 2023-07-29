@@ -82,9 +82,11 @@ public class MergeTreeCompactTask extends CompactTask {
                     //todo 小文件
                     if (file.fileSize() < minFileSize) {
                         // Smaller files are rewritten along with the previous files
+                        //todo 小文件直接加入candidate
                         candidate.add(singletonList(SortedRun.fromSingle(file)));
                     } else {
                         // Large file appear, rewrite previous and upgrade it
+                        //todo 大文件进行rewrite
                         rewrite(candidate, result);
                         upgrade(file, result);
                     }
@@ -128,6 +130,7 @@ public class MergeTreeCompactTask extends CompactTask {
                 return;
             }
         }
+        //todo full-compaction时，outputLevel为最大层级
         CompactResult rewriteResult = rewriter.rewrite(outputLevel, dropDelete, candidate);
         toUpdate.merge(rewriteResult);
         candidate.clear();

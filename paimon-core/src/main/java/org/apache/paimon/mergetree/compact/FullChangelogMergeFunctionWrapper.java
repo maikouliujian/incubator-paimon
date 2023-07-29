@@ -73,7 +73,7 @@ public class FullChangelogMergeFunctionWrapper implements MergeFunctionWrapper<C
                     topLevelKv == null, "Top level key-value already exists! This is unexpected.");
             topLevelKv = kv;
         }
-
+        //todo 第一次add
         if (initialKv == null) {
             initialKv = kv;
         } else {
@@ -110,6 +110,7 @@ public class FullChangelogMergeFunctionWrapper implements MergeFunctionWrapper<C
             }
             return reusedResult.setResultIfNotRetract(merged);
         } else {
+            //todo
             if (topLevelKv == null && isAdd(initialKv)) {
                 reusedResult.addChangelog(replace(reusedAfter, RowKind.INSERT, initialKv));
             }

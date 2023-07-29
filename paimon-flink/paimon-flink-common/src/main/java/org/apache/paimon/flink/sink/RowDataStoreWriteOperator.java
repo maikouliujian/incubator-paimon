@@ -146,6 +146,7 @@ public class RowDataStoreWriteOperator extends PrepareCommitOperator<RowData> {
 
         SinkRecord record;
         try {
+            //todo 写数据
             record = write.write(new FlinkRowWrapper(element.getValue()));
         } catch (Exception e) {
             throw new IOException(e);

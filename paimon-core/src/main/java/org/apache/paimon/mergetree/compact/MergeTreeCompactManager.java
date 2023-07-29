@@ -102,7 +102,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                         "Trigger forced full compaciton. Picking from the following runs\n{}",
                         runs);
             }
-            //todo fullCompaction，返回(最大层级，所有的文件)
+            //todo fullCompaction，返回<最大层级，所有的文件>
             optionalUnit = CompactStrategy.pickFullCompaction(levels.numberOfLevels(), runs);
         } else {
             if (taskFuture != null) {
@@ -177,6 +177,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
     }
 
     /** Finish current task, and update result files to {@link Levels}. */
+    //todo 处理compaction后的文件！！！！！！
     @Override
     public Optional<CompactResult> getCompactionResult(boolean blocking)
             throws ExecutionException, InterruptedException {

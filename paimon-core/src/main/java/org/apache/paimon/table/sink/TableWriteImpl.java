@@ -91,6 +91,7 @@ public class TableWriteImpl<T>
                         keyAndBucketExtractor.bucket(),
                         keyAndBucketExtractor.trimmedPrimaryKey(),
                         row);
+        //todo 写数据
         write.write(record.partition(), record.bucket(), recordExtractor.extract(record));
         return record;
     }

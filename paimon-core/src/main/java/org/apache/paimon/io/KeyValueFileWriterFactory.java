@@ -105,7 +105,7 @@ public class KeyValueFileWriterFactory {
                                 pathFactory.newChangelogPath(), level, getCompression(level)),
                 suggestedFileSize);
     }
-
+    //todo 创建kv file writer
     private KeyValueDataFileWriter createDataFileWriter(Path path, int level, String compression) {
         KeyValueSerializer kvSerializer = new KeyValueSerializer(keyType, valueType);
         return new KeyValueDataFileWriter(

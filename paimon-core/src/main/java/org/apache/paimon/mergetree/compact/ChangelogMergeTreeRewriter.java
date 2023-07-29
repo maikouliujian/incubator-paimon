@@ -62,7 +62,7 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
             return rewriteCompaction(outputLevel, dropDelete, sections);
         }
     }
-
+    //todo 核心方法
     private CompactResult rewriteChangelogCompaction(
             int outputLevel, List<List<SortedRun>> sections) throws Exception {
         List<ConcatRecordReader.ReaderSupplier<ChangelogResult>> sectionReaders = new ArrayList<>();
