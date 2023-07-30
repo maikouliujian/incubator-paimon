@@ -64,11 +64,15 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
     private final KeyValueFileWriterFactory writerFactory;
     private final boolean commitForceCompact;
     private final ChangelogProducer changelogProducer;
-
+    //todo 本次ckp产生的新data文件
     private final LinkedHashSet<DataFileMeta> newFiles;
+    //todo 本次ckp产生的新changelog文件
     private final LinkedHashSet<DataFileMeta> newFilesChangelog;
+    //todo 周期compaction产生的compactBefore data文件
     private final LinkedHashMap<String, DataFileMeta> compactBefore;
+    //todo 周期compaction产生的compactAfter data文件
     private final LinkedHashSet<DataFileMeta> compactAfter;
+    //todo 周期compaction产生的changelog文件
     private final LinkedHashSet<DataFileMeta> compactChangelog;
 
     private long newSequenceNumber;
@@ -104,6 +108,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
         this.compactBefore = new LinkedHashMap<>();
         this.compactAfter = new LinkedHashSet<>();
         this.compactChangelog = new LinkedHashSet<>();
+        //todo 第一次启动increment == null；如果从checkpoint/savepoint恢复，increment != null
         if (increment != null) {
             newFiles.addAll(increment.newFilesIncrement().newFiles());
             newFilesChangelog.addAll(increment.newFilesIncrement().changelogFiles());
@@ -136,16 +141,19 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
                         sortMaxFan,
                         ioManager);
     }
-
+    //todo 写入数据！！！！！！
     @Override
     public void write(KeyValue kv) throws Exception {
         long sequenceNumber =
                 kv.sequenceNumber() == KeyValue.UNKNOWN_SEQUENCE
                         ? newSequenceNumber()
                         : kv.sequenceNumber();
+        //todo 内存不够，写入失败，返回false
         boolean success = writeBuffer.put(sequenceNumber, kv.valueKind(), kv.key(), kv.value());
         if (!success) {
+            //todo 先刷写磁盘！！！！！！
             flushWriteBuffer(false, false);
+            //todo 再写入内存
             success = writeBuffer.put(sequenceNumber, kv.valueKind(), kv.key(), kv.value());
             if (!success) {
                 throw new RuntimeException("Mem table is too small to hold a single element.");
@@ -180,10 +188,11 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
             flushWriteBuffer(false, false);
         }
     }
-
+    //todo 内存刷写磁盘！！！！！！
     private void flushWriteBuffer(boolean waitForLatestCompaction, boolean forcedFullCompaction)
             throws Exception {
         if (writeBuffer.size() > 0) {
+            //todo 是否需要触发合并
             if (compactManager.shouldWaitForLatestCompaction()) {
                 waitForLatestCompaction = true;
             }
@@ -196,6 +205,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
                     writerFactory.createRollingMergeTreeFileWriter(0);
 
             try {
+                //todo 写数据逻辑的定义！！！
                 writeBuffer.forEach(
                         keyComparator,
                         mergeFunction,
@@ -209,17 +219,20 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
             }
 
             if (changelogWriter != null) {
+                //todo 更新Changelog manifest
                 newFilesChangelog.addAll(changelogWriter.result());
             }
 
             for (DataFileMeta fileMeta : dataWriter.result()) {
+                //todo 更新data manifest
                 newFiles.add(fileMeta);
+                //todo 将data manifest更新到lsm树的0层
                 compactManager.addNewFile(fileMeta);
             }
 
             writeBuffer.clear();
         }
-
+        //todo 更新compaction结果
         trySyncLatestCompaction(waitForLatestCompaction);
         compactManager.triggerCompaction(forcedFullCompaction);
     }
@@ -227,10 +240,12 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
     @Override
     public CommitIncrement prepareCommit(boolean waitCompaction) throws Exception {
         flushWriteBuffer(waitCompaction, false);
+        //todo 更新compaction结果
         trySyncLatestCompaction(
                 waitCompaction
                         || commitForceCompact
                         || compactManager.shouldWaitForPreparingCheckpoint());
+        //todo 处理各类文件
         return drainIncrement();
     }
 
@@ -258,6 +273,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
         return new CommitIncrement(newFilesIncrement, compactIncrement);
     }
 
+    //todo compaction结束后，会更新CompactResult
     private void updateCompactResult(CompactResult result) {
         Set<String> afterFiles =
                 result.after().stream().map(DataFileMeta::fileName).collect(Collectors.toSet());
@@ -281,6 +297,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
     }
 
     private void trySyncLatestCompaction(boolean blocking) throws Exception {
+        //todo 获取compation的结果！！！
         Optional<CompactResult> result = compactManager.getCompactionResult(blocking);
         result.ifPresent(this::updateCompactResult);
     }

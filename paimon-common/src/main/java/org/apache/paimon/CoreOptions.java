@@ -779,14 +779,14 @@ public class CoreOptions implements Serializable {
                                     + "For example, if you want to list all partitions of a Paimon table in Hive, "
                                     + "you need to create this table as a partitioned table in Hive metastore.\n"
                                     + "This config option does not affect the default filesystem metastore.");
-
+    //todo 自动创建tag
     public static final ConfigOption<TagCreationMode> TAG_AUTOMATIC_CREATION =
             key("tag.automatic-creation")
                     .enumType(TagCreationMode.class)
                     .defaultValue(TagCreationMode.NONE)
                     .withDescription(
                             "Whether to create tag automatically. And how to generate tags.");
-
+    //todo tag.creation-period
     public static final ConfigOption<TagCreationPeriod> TAG_CREATION_PERIOD =
             key("tag.creation-period")
                     .enumType(TagCreationPeriod.class)

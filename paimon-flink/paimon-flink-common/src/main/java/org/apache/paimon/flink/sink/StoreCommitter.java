@@ -62,6 +62,7 @@ public class StoreCommitter implements Committer<Committable, ManifestCommittabl
     @Override
     public void commit(List<ManifestCommittable> committables)
             throws IOException, InterruptedException {
+        //todo 提交
         commit.commitMultiple(committables);
     }
 

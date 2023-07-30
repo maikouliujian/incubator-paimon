@@ -47,6 +47,7 @@ import static org.apache.paimon.shade.guava30.com.google.common.base.MoreObjects
 import static org.apache.paimon.utils.Preconditions.checkArgument;
 
 /** A manager to create tags automatically. */
+//todo 自动创建tag
 public class TagAutoCreation {
 
     private static final DateTimeFormatter HOUR_FORMATTER =
@@ -312,6 +313,7 @@ public class TagAutoCreation {
         }
 
         TagPeriodHandler periodHandler;
+        //todo 创建tag的周期
         switch (options.tagCreationPeriod()) {
             case DAILY:
                 periodHandler = new DailyTagPeriodHandler();

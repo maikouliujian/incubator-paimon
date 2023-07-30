@@ -42,6 +42,63 @@ import static org.apache.paimon.utils.SerializationUtils.newBytesType;
 import static org.apache.paimon.utils.SerializationUtils.newStringType;
 
 /** Metadata of a data file. */
+//todo manifest中data文件的元数据
+
+/***
+ * {
+ *     "_FILE_NAME": "data-71dddb79-0fc3-4bdf-bfae-285ab89dd8a9-0.orc”,//数据文件名
+ *     "_FILE_SIZE": 2562,
+ *     "_ROW_COUNT": 4,
+ *     "_MIN_KEY": "\u0000\u0000\u0000\u0004\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000$\u0000\u0000\u0000(\u0000\u0000\u00006ÊS\u0005\u0000\u0000\u0000\u0000netStatL\r¿@\u0001\u0000\u00000502186a03e1ac987380677b7b64ccb99efd\u0000\u0000\u0000\u0000",
+ *     "_MAX_KEY": "\u0000\u0000\u0000\u0004\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000$\u0000\u0000\u0000(\u0000\u0000\u0000\\-Ö\u0005\u0000\u0000\u0000\u0000\u000B\u0000\u0000\u0000P\u0000\u0000\u0000o¿@\u0001\u0000\u00000702ddda315f4e5789b07c68eafe008c7e4a\u0000\u0000\u0000\u0000network_log\u0000\u0000\u0000\u0000\u0000",
+ *     "_KEY_STATS": {
+ *         "org.apache.paimon.avro.generated.record__FILE__KEY_STATS": {
+ *             "_MIN_VALUES": "\u0000\u0000\u0000\u0004\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000(\u0000\u0000\u0000þl\u0002\u0000\u0000\u0000\u0000netStatL\r¿@\u0001\u0000\u00000502186a03e1ac98",
+ *             "_MAX_VALUES": "\u0000\u0000\u0000\u0004\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000(\u0000\u0000\u0000\\-Ö\u0005\u0000\u0000\u0000\u0000\u000B\u0000\u0000\u00008\u0000\u0000\u0000(À@\u0001\u0000\u00000702ddda315f4e58network_log\u0000\u0000\u0000\u0000\u0000",
+ *             "_NULL_COUNTS": {
+ *                 "array": [{
+ *                     "long": 0
+ *                 }, {
+ *                     "long": 0
+ *                 }, {
+ *                     "long": 0
+ *                 }, {
+ *                     "long": 0
+ *                 }]
+ *             }
+ *         }
+ *     },
+ *     "_VALUE_STATS": {
+ *         "org.apache.paimon.avro.generated.record__FILE__VALUE_STATS": {
+ *             "_MIN_VALUES": "\u0000\u0000\u0000\n\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000þl\u0002\u0000\u0000\u0000\u0000netStattrack\u0000\u0000
+ *             L\ r¿ @\ u0001\ u0000\ u0000ÛE¿ @\ u0001\ u0000\ u0000\ u0010\ u0000\ u0000\ u0000X\ u0000\ u0000\ u0000\ n\ u0000\ u0000\ u0000h\ u0000\ u0000\ u000001\ u0000\ u0000\ u0000\ u0000\ u0000kr\ u0000\ u0000\ u0000\ u0000\ u0000appsdk\ u00000502186a03e1ac982023 - 07 - 11\ u0000\ u0000\ u0000\ u0000\ u0000\ u0000 ","
+ *             _MAX_VALUES ":"\
+ *             u0000\ u0000\ u0000\ n\ u0000\ u0000\ u0000\ u0000\ u0000\ u0000\ u0000\ u0000\\ - Ö\ u0005\ u0000\ u0000\ u0000\ u0000\ u000B\ u0000\ u0000\ u0000X\ u0000\ u0000\ u0000track\ u0000\ u0000(À @\ u0001\ u0000\ u0000· JÀ @\ u0001\ u0000\ u0000\ u0010\ u0000\ u0000\ u0000h\ u0000\ u0000\ u0000\ n\ u0000\ u0000\ u0000x\ u0000\ u0000\ u000001\ u0000\ u0000\ u0000\ u0000\ u0000kr\ u0000\ u0000\ u0000\ u0000\ u0000appsdk\ u0000network_log\ u0000\ u0000\ u0000\ u0000\ u00000702ddda315f4e582023 - 07 - 11\ u0000\ u0000\ u0000\ u0000\ u0000\ u0000 ","
+ *                 _NULL_COUNTS ":{"
+ *                 array ":[{"
+ *                 long ":0},{"
+ *                 long ":0},{"
+ *                 long ":0},{"
+ *                 long ":0},{"
+ *                 long ":0},{"
+ *                 long ":0},{"
+ *                 long ":0},{"
+ *                 long ":0},{"
+ *                 long ":0},{"
+ *                 long ":0}]}}},"
+ *   _MIN_SEQUENCE_NUMBER ":1689008424411,"
+ *   _MAX_SEQUENCE_NUMBER ":1689008491191,"
+ *   _SCHEMA_ID ":0,"
+ *   _LEVEL ":0,” //lsm层级
+ *   _EXTRA_FILES ":[],"
+ *   _CREATION_TIME ":{"
+ *             long ":1689008594769
+ *             }
+ *         }
+ *     }
+ * }
+ */
+//todo manifest中data文件的元数据
 public class DataFileMeta {
 
     // Append only data files don't have any key columns and meaningful level value. it will use

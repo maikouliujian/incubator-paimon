@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.List;
 
 /** A {@link PrepareCommitOperator} to write {@link RowData}. Record schema is fixed. */
+//todo 【写数据算子】
 public class RowDataStoreWriteOperator extends TableWriteOperator<RowData> {
 
     private static final long serialVersionUID = 3L;
@@ -119,6 +120,7 @@ public class RowDataStoreWriteOperator extends TableWriteOperator<RowData> {
 
         SinkRecord record;
         try {
+            //todo 写数据！！！！！！
             record = write.write(new FlinkRowWrapper(element.getValue()));
         } catch (Exception e) {
             throw new IOException(e);
@@ -180,6 +182,7 @@ public class RowDataStoreWriteOperator extends TableWriteOperator<RowData> {
     @Override
     protected List<Committable> prepareCommit(boolean doCompaction, long checkpointId)
             throws IOException {
+        //todo 将本次manifest元数据记录下来！！！
         List<Committable> committables = super.prepareCommit(doCompaction, checkpointId);
 
         if (logCallback != null) {

@@ -142,9 +142,11 @@ public class TableCommitImpl implements InnerTableCommit {
     public void commitMultiple(List<ManifestCommittable> committables) {
         if (overwritePartition == null) {
             for (ManifestCommittable committable : committables) {
+                //todo 提交元信息
                 commit.commit(committable, new HashMap<>());
             }
             if (!committables.isEmpty()) {
+                //todo
                 expire(committables.get(committables.size() - 1).identifier());
             }
         } else {
@@ -194,7 +196,7 @@ public class TableCommitImpl implements InnerTableCommit {
         }
         return retryCommittables.size();
     }
-
+    //todo ckp完成执行snapshot过期
     private void expire(long partitionExpireIdentifier) {
         // expire consumer first to avoid preventing snapshot expiration
         if (consumerExpireTime != null) {
@@ -210,6 +212,7 @@ public class TableCommitImpl implements InnerTableCommit {
         }
 
         if (tagAutoCreation != null) {
+            //todo 启动tag
             tagAutoCreation.run();
         }
     }

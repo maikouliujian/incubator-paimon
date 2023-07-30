@@ -148,12 +148,14 @@ public class CommitterOperator<CommitT, GlobalCommitT> extends AbstractStreamOpe
     @Override
     public void notifyCheckpointComplete(long checkpointId) throws Exception {
         super.notifyCheckpointComplete(checkpointId);
+        //todo ckp完成后执行commit
         commitUpToCheckpoint(endInput ? Long.MAX_VALUE : checkpointId);
     }
 
     private void commitUpToCheckpoint(long checkpointId) throws Exception {
         NavigableMap<Long, GlobalCommitT> headMap =
                 committablesPerCheckpoint.headMap(checkpointId, true);
+        //todo 提交
         committer.commit(committables(headMap));
         headMap.clear();
     }
@@ -161,6 +163,7 @@ public class CommitterOperator<CommitT, GlobalCommitT> extends AbstractStreamOpe
     @Override
     public void processElement(StreamRecord<CommitT> element) {
         output.collect(element);
+        //todo 在inputs中记录要提交的manifest信息
         this.inputs.add(element.getValue());
     }
 
@@ -186,7 +189,7 @@ public class CommitterOperator<CommitT, GlobalCommitT> extends AbstractStreamOpe
                                         + "and the subsequent files is %s",
                                 committablesPerCheckpoint.get(cp), committables));
             }
-
+            //todo 存入map中，ckp完成时进行提交
             committablesPerCheckpoint.put(cp, toCommittables(cp, committables));
         }
 

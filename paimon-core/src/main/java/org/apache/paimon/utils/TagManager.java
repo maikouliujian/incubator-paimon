@@ -66,9 +66,10 @@ public class TagManager {
                 !tagName.chars().allMatch(Character::isDigit),
                 "Tag name cannot be pure numeric string but is '%s'.",
                 tagName);
-
+        //todo 保存tag的目录
         Path newTagPath = tagPath(tagName);
         try {
+            //todo 将snapshot对应的信息写入newTagPath中
             fileIO.writeFileUtf8(newTagPath, snapshot.toJson());
         } catch (IOException e) {
             throw new RuntimeException(

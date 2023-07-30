@@ -35,10 +35,12 @@ public class FactoryUtil {
     @SuppressWarnings("unchecked")
     public static <T extends Factory> T discoverFactory(
             ClassLoader classLoader, Class<T> factoryClass, String identifier) {
+        //todo spi加载所有action
         final List<Factory> factories = discoverFactories(classLoader);
 
         final List<Factory> foundFactories =
                 factories.stream()
+                        //todo f是factoryClass的子类
                         .filter(f -> factoryClass.isAssignableFrom(f.getClass()))
                         .collect(Collectors.toList());
 
@@ -51,6 +53,7 @@ public class FactoryUtil {
 
         final List<Factory> matchingFactories =
                 foundFactories.stream()
+                        //todo 找到参数identifier对应的action factory
                         .filter(f -> f.identifier().equals(identifier))
                         .collect(Collectors.toList());
 

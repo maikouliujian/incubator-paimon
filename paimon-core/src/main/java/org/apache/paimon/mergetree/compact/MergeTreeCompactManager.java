@@ -105,6 +105,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                         "Trigger forced full compaction. Picking from the following runs\n{}",
                         runs);
             }
+            //todo fullCompaction
             optionalUnit = CompactStrategy.pickFullCompaction(levels.numberOfLevels(), runs);
         } else {
             if (taskFuture != null) {
@@ -150,6 +151,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                                                                         file.fileSize()))
                                                 .collect(Collectors.joining(", ")));
                     }
+                    //todo 提交compaction
                     submitCompaction(unit, dropDelete);
                 });
     }

@@ -185,7 +185,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             return commitIdentifiers;
         }
     }
-
+    //todo 提交元信息
     @Override
     public void commit(ManifestCommittable committable, Map<String, String> properties) {
         if (LOG.isDebugEnabled()) {
@@ -195,12 +195,17 @@ public class FileStoreCommitImpl implements FileStoreCommit {
         Snapshot latestSnapshot = null;
         Long safeLatestSnapshotId = null;
         List<ManifestEntry> baseEntries = new ArrayList<>();
-
+        //todo 本次ckp产生的新的数据文件 manfest
         List<ManifestEntry> appendTableFiles = new ArrayList<>();
+        //todo 本次ckp产生的新的changelog manfest
         List<ManifestEntry> appendChangelog = new ArrayList<>();
+        //todo 周期compaction产生的新的数据文件 manfest【包括before、after】
         List<ManifestEntry> compactTableFiles = new ArrayList<>();
+        //todo 周期compaction产生的新的changelog manfest
         List<ManifestEntry> compactChangelog = new ArrayList<>();
+        //todo 索引文件
         List<IndexManifestEntry> appendIndexFiles = new ArrayList<>();
+        //todo 赋值！！！
         collectChanges(
                 committable.fileCommittables(),
                 appendTableFiles,
@@ -223,6 +228,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             if (latestSnapshot != null) {
                 // it is possible that some partitions only have compact changes,
                 // so we need to contain all changes
+                //todo baseEntries中添加所有元数据
                 baseEntries.addAll(
                         readAllEntriesFromChangedPartitions(
                                 latestSnapshot, appendTableFiles, compactTableFiles));
@@ -566,7 +572,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             }
         }
     }
-
+    //提交元数据
     @VisibleForTesting
     public boolean tryCommitOnce(
             List<ManifestEntry> tableFiles,
@@ -578,6 +584,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             Snapshot.CommitKind commitKind,
             Snapshot latestSnapshot,
             Long safeLatestSnapshotId) {
+        //todo SnapshotId 加 1
         long newSnapshotId =
                 latestSnapshot == null ? Snapshot.FIRST_SNAPSHOT_ID : latestSnapshot.id() + 1;
         Path newSnapshotPath = snapshotManager.snapshotPath(newSnapshotId);
@@ -611,11 +618,13 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             long previousTotalRecordCount = 0L;
             Long currentWatermark = watermark;
             String previousIndexManifest = null;
+            //todo 读取上个snapshot的数据
             if (latestSnapshot != null) {
                 previousTotalRecordCount = latestSnapshot.totalRecordCount(scan);
                 List<ManifestFileMeta> previousManifests =
                         latestSnapshot.dataManifests(manifestList);
                 // read all previous manifest files
+                //todo read all previous manifest files
                 oldMetas.addAll(previousManifests);
                 // read the last snapshot to complete the bucket's offsets when logOffsets does not
                 // contain all buckets
@@ -630,6 +639,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
                 previousIndexManifest = latestSnapshot.indexManifest();
             }
             // merge manifest files with changes
+            //todo 新老数据合并！！！！！！
             newMetas.addAll(
                     ManifestFileMeta.merge(
                             oldMetas,
@@ -638,17 +648,23 @@ public class FileStoreCommitImpl implements FileStoreCommit {
                             manifestMergeMinCount,
                             manifestFullCompactionSize.getBytes(),
                             partitionType));
+            //todo 写出manifest list文件！！！！！！，返回文件名
             previousChangesListName = manifestList.write(newMetas);
 
             // write new changes into manifest files
             long deltaRecordCount = Snapshot.recordCount(tableFiles);
+            //todo 写出manifest文件！！！！！！，返回manifest list
             List<ManifestFileMeta> newChangesManifests = manifestFile.write(tableFiles);
+            //todo 加入到manifest list中
             newMetas.addAll(newChangesManifests);
+            //todo 写出manifest list
             newChangesListName = manifestList.write(newChangesManifests);
 
             // write changelog into manifest files
             if (!changelogFiles.isEmpty()) {
+                //todo 写出changlog manifest文件！！！！！！
                 changelogMetas.addAll(manifestFile.write(changelogFiles));
+                //todo 写出changelog manifest list
                 changelogListName = manifestList.write(changelogMetas);
             }
 
@@ -659,7 +675,8 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             }
 
             // prepare snapshot file
-            newSnapshot =
+            //todo 组成新的
+            newSnapshot =Snapshot
                     new Snapshot(
                             newSnapshotId,
                             schemaManager.latest().get().id(),
@@ -703,6 +720,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             Callable<Boolean> callable =
                     () -> {
                         boolean committed =
+                                //todo 写出新的snapshot文件
                                 fileIO.writeFileUtf8(newSnapshotPath, newSnapshot.toJson());
                         if (committed) {
                             snapshotManager.commitLatestHint(newSnapshotId);
@@ -760,6 +778,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
                                 + "with identifier %s and kind %s. "
                                 + "Clean up and try again.",
                         newSnapshotId, newSnapshotPath, commitUser, identifier, commitKind.name()));
+        //todo 删除无效数据
         cleanUpTmpManifests(
                 previousChangesListName,
                 newChangesListName,
@@ -774,6 +793,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
     @SafeVarargs
     private final List<ManifestEntry> readAllEntriesFromChangedPartitions(
             Snapshot snapshot, List<ManifestEntry>... changes) {
+        //todo 所有的分区
         List<BinaryRow> changedPartitions =
                 Arrays.stream(changes)
                         .flatMap(Collection::stream)

@@ -73,6 +73,7 @@ public class ParallellyExecuteUtils {
                             // reset index
                             index = 0;
                             try {
+                                //todo 异步读取
                                 activeList =
                                         CompletableFuture.supplyAsync(
                                                         () -> processor.apply(stack.poll()),

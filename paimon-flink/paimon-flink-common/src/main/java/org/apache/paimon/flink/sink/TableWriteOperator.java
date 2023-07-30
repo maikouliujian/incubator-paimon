@@ -101,6 +101,7 @@ public abstract class TableWriteOperator<IN> extends PrepareCommitOperator<IN, C
         super.snapshotState(context);
 
         write.snapshotState();
+        //todo 对元数据进行快照
         state.snapshotState();
     }
 

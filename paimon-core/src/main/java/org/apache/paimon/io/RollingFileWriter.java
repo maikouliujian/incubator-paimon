@@ -110,6 +110,7 @@ public class RollingFileWriter<T, R> implements FileWriter<T, List<R>> {
         // cannot store whole writer, it includes lots of memory for example column vectors to read
         // and write
         closedWriters.add(currentWriter.abortExecutor());
+        //todo 更新写的结果状态
         results.add(currentWriter.result());
         currentWriter = null;
     }

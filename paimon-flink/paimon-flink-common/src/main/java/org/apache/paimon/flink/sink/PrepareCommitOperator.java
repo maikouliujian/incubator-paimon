@@ -83,7 +83,7 @@ public abstract class PrepareCommitOperator<IN, OUT> extends AbstractStreamOpera
                                         environment.getTaskManagerInfo().getConfiguration(),
                                         environment.getUserCodeClassLoader().asClassLoader()));
     }
-
+    //todo checkpoint执行前，在operatorChain中执行的逻辑！！！
     @Override
     public void prepareSnapshotPreBarrier(long checkpointId) throws Exception {
         if (!endOfInput) {
@@ -108,6 +108,7 @@ public abstract class PrepareCommitOperator<IN, OUT> extends AbstractStreamOpera
 
     private void emitCommittables(boolean doCompaction, long checkpointId) throws IOException {
         prepareCommit(doCompaction, checkpointId)
+                //todo 将manifest元数据发送到下游！！！！！！
                 .forEach(committable -> output.collect(new StreamRecord<>(committable)));
     }
 

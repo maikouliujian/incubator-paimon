@@ -105,6 +105,7 @@ public class TableWriteImpl<T>
 
     public SinkRecord writeAndReturn(InternalRow row) throws Exception {
         SinkRecord record = toSinkRecord(row);
+        //todo 写入数据
         write.write(record.partition(), record.bucket(), recordExtractor.extract(record));
         return record;
     }

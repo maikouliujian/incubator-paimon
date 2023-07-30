@@ -45,10 +45,12 @@ public interface ActionFactory extends Factory {
     Optional<Action> create(MultipleParameterTool params);
 
     static Optional<Action> createAction(String[] args) {
+        //todo action参数
         String action = args[0].toLowerCase();
         String[] actionArgs = Arrays.copyOfRange(args, 1, args.length);
         ActionFactory actionFactory;
         try {
+            //todo 根据spi获取actionFactory
             actionFactory =
                     FactoryUtil.discoverFactory(
                             ActionFactory.class.getClassLoader(), ActionFactory.class, action);

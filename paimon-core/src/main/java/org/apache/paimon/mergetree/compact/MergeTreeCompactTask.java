@@ -78,6 +78,7 @@ public class MergeTreeCompactTask extends CompactTask {
                 // rewriting it
                 // But for small files, we will try to compact it
                 for (DataFileMeta file : run.files()) {
+                    //todo 小文件
                     if (file.fileSize() < minFileSize) {
                         // Smaller files are rewritten along with the previous files
                         candidate.add(singletonList(SortedRun.fromSingle(file)));

@@ -182,7 +182,7 @@ public abstract class AbstractFileStoreScan implements FileStoreScan {
 
     @Override
     public Plan plan() {
-
+        //tood 读取manifest逻辑
         Pair<Snapshot, List<ManifestEntry>> planResult = doPlan(this::readManifestFileMeta);
 
         final Snapshot readSnapshot = planResult.getLeft();
@@ -266,7 +266,7 @@ public abstract class AbstractFileStoreScan implements FileStoreScan {
         }
         return Pair.of(snapshot, files);
     }
-
+    //todo 读取Manifests
     private List<ManifestFileMeta> readManifests(Snapshot snapshot) {
         switch (scanKind) {
             case ALL:

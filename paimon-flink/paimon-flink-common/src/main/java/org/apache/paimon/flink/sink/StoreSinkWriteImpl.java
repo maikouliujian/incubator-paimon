@@ -150,6 +150,7 @@ public class StoreSinkWriteImpl implements StoreSinkWrite {
 
     @Override
     public SinkRecord write(InternalRow rowData) throws Exception {
+        //todo 写数据
         return write.writeAndReturn(rowData);
     }
 
@@ -185,6 +186,7 @@ public class StoreSinkWriteImpl implements StoreSinkWrite {
             try {
                 for (CommitMessage committable :
                         write.prepareCommit(this.waitCompaction || waitCompaction, checkpointId)) {
+                    //todo 将本次ckp的manifest元数据记录下来
                     committables.add(
                             new Committable(checkpointId, Committable.Kind.FILE, committable));
                 }

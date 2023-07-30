@@ -174,7 +174,7 @@ public abstract class AbstractFileStoreWrite<T>
                 Map.Entry<Integer, WriterContainer<T>> entry = bucketIter.next();
                 int bucket = entry.getKey();
                 WriterContainer<T> writerContainer = entry.getValue();
-
+                //todo prepareCommit
                 CommitIncrement increment = writerContainer.writer.prepareCommit(waitCompaction);
                 List<IndexFileMeta> newIndexFiles = new ArrayList<>();
                 if (writerContainer.indexMaintainer != null) {
@@ -235,7 +235,7 @@ public abstract class AbstractFileStoreWrite<T>
             lazyCompactExecutor.shutdownNow();
         }
     }
-
+    //todo checkpoint时，将元数据信息保存到状态中
     @Override
     public List<State<T>> checkpoint() {
         List<State<T>> result = new ArrayList<>();
@@ -261,6 +261,7 @@ public abstract class AbstractFileStoreWrite<T>
                 }
                 // writer.allFiles() must be fetched after writer.prepareCommit(), because
                 // compaction result might be updated during prepareCommit
+                //todo data文件的元数据
                 Collection<DataFileMeta> dataFiles = writerContainer.writer.dataFiles();
                 result.add(
                         new State<>(
@@ -325,6 +326,7 @@ public abstract class AbstractFileStoreWrite<T>
                 indexFactory == null
                         ? null
                         : indexFactory.createOrRestore(latestSnapshotId, partition, bucket);
+        //todo 创建写数据的writer
         RecordWriter<T> writer =
                 createWriter(partition.copy(), bucket, restoreFiles, null, compactExecutor());
         notifyNewWriter(writer);

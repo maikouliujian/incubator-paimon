@@ -61,6 +61,26 @@ import java.util.Objects;
  *       there is no compatibility issue.
  * </ul>
  */
+
+/***
+ * {
+ *   "version" : 3,
+ *   "id" : 9,
+ *   "schemaId" : 0,
+ *   "baseManifestList" : "manifest-list-f4a6c479-57af-40d0-94a5-b4198994740f-20”, //快照读
+ *   "deltaManifestList" : "manifest-list-f4a6c479-57af-40d0-94a5-b4198994740f-21”, //增量读
+ *   "changelogManifestList" : null,//产生changelog，增量读
+ *   "commitUser" : "16878733-332b-4a79-a583-84b1653aee73",
+ *   "commitIdentifier" : 5,
+ *   "commitKind" : "APPEND",
+ *   "timeMillis" : 1689008596942,
+ *   "logOffsets" : { },
+ *   "totalRecordCount" : 224,
+ *   "deltaRecordCount" : 9,
+ *   "changelogRecordCount" : 0,
+ *   "watermark" : -9223372036854775808
+ * }
+ */
 public class Snapshot {
 
     public static final long FIRST_SNAPSHOT_ID = 1;
@@ -346,7 +366,9 @@ public class Snapshot {
      */
     public List<ManifestFileMeta> dataManifests(ManifestList manifestList) {
         List<ManifestFileMeta> result = new ArrayList<>();
+        //todo basemanifest
         result.addAll(manifestList.read(baseManifestList));
+        //todo deltamanifest
         result.addAll(deltaManifests(manifestList));
         return result;
     }

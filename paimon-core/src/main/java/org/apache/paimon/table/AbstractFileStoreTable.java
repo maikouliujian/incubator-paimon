@@ -398,7 +398,7 @@ public abstract class AbstractFileStoreTable implements FileStoreTable {
             }
         };
     }
-
+    //todo 创建tag
     @Override
     public void createTag(String tagName, long fromSnapshotId) {
         SnapshotManager snapshotManager = snapshotManager();
@@ -406,7 +406,7 @@ public abstract class AbstractFileStoreTable implements FileStoreTable {
                 snapshotManager.snapshotExists(fromSnapshotId),
                 "Cannot create tag because given snapshot #%s doesn't exist.",
                 fromSnapshotId);
-
+        //todo 对哪个SnapshotId打tag
         Snapshot snapshot = snapshotManager.snapshot(fromSnapshotId);
         tagManager().createTag(snapshot, tagName);
     }

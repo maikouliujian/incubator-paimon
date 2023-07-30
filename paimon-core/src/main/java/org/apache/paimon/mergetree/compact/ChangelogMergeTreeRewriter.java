@@ -109,7 +109,9 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
 
         try {
             iterator = new RecordReaderIterator<>(ConcatRecordReader.create(sectionReaders));
+            //todo 创建新的data文件
             compactFileWriter = writerFactory.createRollingMergeTreeFileWriter(outputLevel);
+            //todo 创建新的changelog文件
             changelogFileWriter = writerFactory.createRollingChangelogFileWriter(outputLevel);
 
             while (iterator.hasNext()) {

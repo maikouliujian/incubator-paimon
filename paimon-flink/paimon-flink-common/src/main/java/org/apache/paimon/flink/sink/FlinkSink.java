@@ -90,7 +90,7 @@ public abstract class FlinkSink<T> implements Serializable {
                                 (fullCompactionThresholdMs
                                         / checkpointConfig.getCheckpointInterval());
             }
-
+            //todo FULL_COMPACTION 写算子
             if (changelogProducer == ChangelogProducer.FULL_COMPACTION || deltaCommits >= 0) {
                 int finalDeltaCommits = Math.max(deltaCommits, 1);
                 return (table, commitUser, state, ioManager, memoryPool) ->
@@ -106,7 +106,7 @@ public abstract class FlinkSink<T> implements Serializable {
                                 memoryPool);
             }
         }
-
+        //todo other 写算子
         return (table, commitUser, state, ioManager, memoryPool) ->
                 new StoreSinkWriteImpl(
                         table,
@@ -128,7 +128,7 @@ public abstract class FlinkSink<T> implements Serializable {
         String initialCommitUser = UUID.randomUUID().toString();
         return sinkFrom(input, initialCommitUser);
     }
-
+    //todo 构建write和commit算子
     public DataStreamSink<?> sinkFrom(DataStream<T> input, String initialCommitUser) {
         // do the actually writing action, no snapshot generated in this stage
         SingleOutputStreamOperator<Committable> written =
@@ -137,7 +137,7 @@ public abstract class FlinkSink<T> implements Serializable {
         // commit the committable to generate a new snapshot
         return doCommit(written, initialCommitUser);
     }
-
+    //todo 构建写算子
     public SingleOutputStreamOperator<Committable> doWrite(
             DataStream<T> input, String commitUser, Integer parallelism) {
         StreamExecutionEnvironment env = input.getExecutionEnvironment();
@@ -154,6 +154,7 @@ public abstract class FlinkSink<T> implements Serializable {
                                         + table.name(),
                                 new CommittableTypeInfo(),
                                 createWriteOperator(
+                                        //todo 写算子
                                         createWriteProvider(env.getCheckpointConfig(), isStreaming),
                                         commitUser))
                         .setParallelism(parallelism == null ? input.getParallelism() : parallelism);
@@ -171,7 +172,7 @@ public abstract class FlinkSink<T> implements Serializable {
         }
         return written;
     }
-
+    //todo 构建commit算子
     protected DataStreamSink<?> doCommit(DataStream<Committable> written, String commitUser) {
         StreamExecutionEnvironment env = written.getExecutionEnvironment();
         ReadableConfig conf = StreamExecutionEnvironmentUtils.getConfiguration(env);
