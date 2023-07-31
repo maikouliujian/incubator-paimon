@@ -50,6 +50,7 @@ public class FileStorePathFactory {
     private final Path root;
     private final String uuid;
     private final RowDataPartitionComputer partitionComputer;
+    //todo 文件的格式，比如parquet、orc
     private final String formatIdentifier;
 
     private final AtomicInteger manifestFileCount;

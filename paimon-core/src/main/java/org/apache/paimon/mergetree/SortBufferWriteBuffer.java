@@ -130,9 +130,10 @@ public class SortBufferWriteBuffer implements WriteBuffer {
         // TODO do not use iterator
         MergeIterator mergeIterator =
                 new MergeIterator(
+                        //todo 对buffer中的数据做快排
                         rawConsumer, buffer.sortedIterator(), keyComparator, mergeFunction);
         while (mergeIterator.hasNext()) {
-            //todo 写数据文件
+            //todo data writer写数据文件
             mergedConsumer.accept(mergeIterator.next());
         }
     }
@@ -148,9 +149,12 @@ public class SortBufferWriteBuffer implements WriteBuffer {
     }
 
     private class MergeIterator {
+        //todo 写changelog
         @Nullable private final KvConsumer rawConsumer;
+        //todo buffer排序后的数据
         private final MutableObjectIterator<BinaryRow> kvIter;
         private final Comparator<InternalRow> keyComparator;
+        //todo merge 函数
         private final ReducerMergeFunctionWrapper mergeFunctionWrapper;
 
         // previously read kv
@@ -179,6 +183,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
             this.previousRow = new BinaryRow(totalFieldCount);
             this.current = new KeyValueSerializer(keyType, valueType);
             this.currentRow = new BinaryRow(totalFieldCount);
+            //todo
             readOnce();
             this.advanced = false;
         }
@@ -208,22 +213,25 @@ public class SortBufferWriteBuffer implements WriteBuffer {
                 if (previousRow == null) {
                     return;
                 }
+                //todo 每一次进入，进行重置！！！！！！
                 mergeFunctionWrapper.reset();
                 mergeFunctionWrapper.add(previous.getReusedKv());
-
                 while (readOnce()) {
+                    //todo 由于数据是有序的，在这处理key相同的数据！！！！！！
+                    //todo 等于0说明key相同，循环处理！！！！！！
                     if (keyComparator.compare(
                                     previous.getReusedKv().key(), current.getReusedKv().key())
                             != 0) {
                         break;
                     }
+                    //todo 对数据做merge处理！！！！！！
                     mergeFunctionWrapper.add(current.getReusedKv());
                     swapSerializers();
                 }
                 result = mergeFunctionWrapper.getResult();
             } while (result == null);
         }
-
+        //todo 读取一条数据，变更current和currentRow的值！！！！！！
         private boolean readOnce() throws IOException {
             try {
                 currentRow = kvIter.next(currentRow);
@@ -231,14 +239,16 @@ public class SortBufferWriteBuffer implements WriteBuffer {
                 throw new RuntimeException(e);
             }
             if (currentRow != null) {
+                //todo current为当前读取的数据row
                 current.fromRow(currentRow);
                 if (rawConsumer != null) {
+                    //todo changelog写入数据！！！！！！
                     rawConsumer.accept(current.getReusedKv());
                 }
             }
             return currentRow != null;
         }
-
+        //todo 交换previous和current
         private void swapSerializers() {
             KeyValueSerializer tmp = previous;
             BinaryRow tmpRow = previousRow;

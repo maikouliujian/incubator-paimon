@@ -36,7 +36,7 @@ public class DeduplicateMergeFunction implements MergeFunction<KeyValue> {
     public void reset() {
         latestKv = null;
     }
-
+    //todo 去重，相同的key，只取最后一条！！！！！！
     @Override
     public void add(KeyValue kv) {
         latestKv = kv;

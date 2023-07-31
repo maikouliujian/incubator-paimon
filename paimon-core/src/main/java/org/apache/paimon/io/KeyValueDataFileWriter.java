@@ -104,7 +104,7 @@ public class KeyValueDataFileWriter
     @Override
     public void write(KeyValue kv) throws IOException {
         super.write(kv);
-
+        //todo 更新一些标识
         updateMinKey(kv);
         updateMaxKey(kv);
 

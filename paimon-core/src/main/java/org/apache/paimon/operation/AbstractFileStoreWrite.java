@@ -105,6 +105,7 @@ public abstract class AbstractFileStoreWrite<T>
     @Override
     public void write(BinaryRow partition, int bucket, T data) throws Exception {
         WriterContainer<T> container = getWriterWrapper(partition, bucket);
+        //todo 写数据！！！
         container.writer.write(data);
         if (container.indexMaintainer != null) {
             container.indexMaintainer.notifyNewRecord(data);

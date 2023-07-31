@@ -103,7 +103,7 @@ public class Levels {
     public int numberOfLevels() {
         return levels.size() + 1;
     }
-
+    //todo 求lsm的sortrun个数
     public int numberOfSortedRuns() {
         int numberOfSortedRuns = level0.size();
         for (SortedRun run : levels) {

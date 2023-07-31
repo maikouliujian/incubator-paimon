@@ -53,6 +53,7 @@ public class FirstRowMergeFunction implements MergeFunction<KeyValue> {
         RowKind rowKind = kv.valueKind();
         Preconditions.checkArgument(
                 rowKind.isAdd(), "First row merge engine don't accept %s message", rowKind);
+        //todo 相同的key只取第一条！！！！！！
         if (first == null) {
             this.first = kv.copy(keySerializer, valueSerializer);
         }

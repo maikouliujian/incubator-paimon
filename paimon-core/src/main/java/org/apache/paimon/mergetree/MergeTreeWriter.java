@@ -196,7 +196,8 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
             if (compactManager.shouldWaitForLatestCompaction()) {
                 waitForLatestCompaction = true;
             }
-
+            //todo 如果changelogProducer为input，则需要直接写changelog，否则不写changelog
+            //todo 写时，数据都是在0层级
             final RollingFileWriter<KeyValue, DataFileMeta> changelogWriter =
                     changelogProducer == ChangelogProducer.INPUT
                             ? writerFactory.createRollingChangelogFileWriter(0)
@@ -209,7 +210,9 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
                 writeBuffer.forEach(
                         keyComparator,
                         mergeFunction,
+                        //todo changelogWriter写的是全部的数据文件，所有的变化都会记录下来
                         changelogWriter == null ? null : changelogWriter::write,
+                        //todo dataWriter写的是merge后的数据文件
                         dataWriter::write);
             } finally {
                 if (changelogWriter != null) {

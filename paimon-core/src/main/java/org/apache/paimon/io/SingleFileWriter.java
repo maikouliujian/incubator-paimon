@@ -47,7 +47,7 @@ public abstract class SingleFileWriter<T, R> implements FileWriter<T, R> {
     protected final FileIO fileIO;
     protected final Path path;
     private final Function<T, InternalRow> converter;
-
+    //todo 真正写数据的writer
     private final FormatWriter writer;
     private PositionOutputStream out;
 
@@ -97,6 +97,7 @@ public abstract class SingleFileWriter<T, R> implements FileWriter<T, R> {
 
         try {
             InternalRow rowData = converter.apply(record);
+            //todo 写数据！！！！！！
             writer.addElement(rowData);
             recordCount++;
             return rowData;

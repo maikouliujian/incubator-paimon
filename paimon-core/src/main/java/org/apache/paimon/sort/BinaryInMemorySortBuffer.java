@@ -189,6 +189,7 @@ public class BinaryInMemorySortBuffer extends BinaryIndexedSortable implements S
     }
 
     private BinaryRow getRecordFromBuffer(BinaryRow reuse, long pointer) throws IOException {
+        //todo 设置recordBuffer的读取位置
         this.recordBuffer.setReadPosition(pointer);
         return this.serializer.mapFromPages(reuse, this.recordBuffer);
     }
@@ -200,6 +201,7 @@ public class BinaryInMemorySortBuffer extends BinaryIndexedSortable implements S
      *
      * @return An iterator returning the records in their logical order.
      */
+    //todo ！！！
     private MutableObjectIterator<BinaryRow> iterator() {
         tryInitialize();
 
@@ -214,13 +216,14 @@ public class BinaryInMemorySortBuffer extends BinaryIndexedSortable implements S
 
             @Override
             public BinaryRow next(BinaryRow target) {
+                //todo current索引
                 if (this.current < this.size) {
                     this.current++;
                     if (this.currentOffset > lastIndexEntryOffset) {
                         this.currentOffset = 0;
                         this.currentIndexSegment = sortIndex.get(++this.currentSegment);
                     }
-
+                    //todo 获取读取数据的offset
                     long pointer = this.currentIndexSegment.getLong(this.currentOffset);
                     this.currentOffset += indexEntrySize;
 

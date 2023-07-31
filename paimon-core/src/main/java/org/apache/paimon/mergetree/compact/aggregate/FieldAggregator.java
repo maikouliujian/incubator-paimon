@@ -29,7 +29,7 @@ public abstract class FieldAggregator implements Serializable {
     public FieldAggregator(DataType dataType) {
         this.fieldType = dataType;
     }
-
+    //todo 各个成员的聚合函数！！！！！！
     static FieldAggregator createFieldAggregator(
             DataType fieldType, String strAgg, boolean ignoreRetract, boolean isPrimaryKey) {
         FieldAggregator fieldAggregator;

@@ -30,7 +30,7 @@ import org.apache.paimon.KeyValue;
  * will be stored and the inner merge function will not be called, thus saving some computing time.
  */
 public class ReducerMergeFunctionWrapper implements MergeFunctionWrapper<KeyValue> {
-
+    //todo merge函数
     private final MergeFunction<KeyValue> mergeFunction;
 
     private KeyValue initialKv;

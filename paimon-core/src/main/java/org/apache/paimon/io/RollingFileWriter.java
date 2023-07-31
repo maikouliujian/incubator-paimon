@@ -42,7 +42,7 @@ public class RollingFileWriter<T, R> implements FileWriter<T, List<R>> {
     private static final Logger LOG = LoggerFactory.getLogger(RollingFileWriter.class);
 
     private static final int CHECK_ROLLING_RECORD_CNT = 1000;
-
+    //todo writer提供者，每次调用get，返回一个新的writer，写到新的文件中
     private final Supplier<? extends SingleFileWriter<T, R>> writerFactory;
     private final long targetFileSize;
     private final List<AbortExecutor> closedWriters;
@@ -81,7 +81,7 @@ public class RollingFileWriter<T, R> implements FileWriter<T, List<R>> {
 
             currentWriter.write(row);
             recordCount += 1;
-
+            //todo 如果currentWriter写入数据大于target，则关闭currentWriter；下次写数据时会新建一个writer写新的文件！！！！！！
             if (rollingFile()) {
                 closeCurrentWriter();
             }

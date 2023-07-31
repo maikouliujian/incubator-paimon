@@ -103,6 +103,7 @@ public class PartialUpdateMergeFunction implements MergeFunction<KeyValue> {
         if (fieldSequences.isEmpty()) {
             updateNonNullFields(kv);
         } else {
+            //todo 更新数据
             updateWithSequenceGroup(kv);
         }
     }
@@ -126,8 +127,10 @@ public class PartialUpdateMergeFunction implements MergeFunction<KeyValue> {
                 }
             } else {
                 Long currentSeq = sequenceGen.generateNullable(kv.value());
+                //todo 如果新增值是null，不更新！！！！！！
                 if (currentSeq != null) {
                     Long previousSeq = sequenceGen.generateNullable(row);
+                    //todo 保证有序才更新！！！！！！
                     if (previousSeq == null || currentSeq >= previousSeq) {
                         row.setField(i, field);
                     }
@@ -167,6 +170,22 @@ public class PartialUpdateMergeFunction implements MergeFunction<KeyValue> {
 
             List<String> fieldNames = rowType.getFieldNames();
             this.fieldSequences = new HashMap<>();
+            /***
+             * CREATE TABLE T (
+             *     k INT,
+             *     a INT,
+             *     b INT,
+             *     g_1 INT,
+             *     c INT,
+             *     d INT,
+             *     g_2 INT,
+             *     PRIMARY KEY (k) NOT ENFORCED
+             * ) WITH (
+             *     'merge-engine'='partial-update',
+             *     'fields.g_1.sequence-group'='a,b',
+             *     'fields.g_2.sequence-group'='c,d'
+             * );
+             */
             for (Map.Entry<String, String> entry : options.toMap().entrySet()) {
                 String k = entry.getKey();
                 String v = entry.getValue();

@@ -207,9 +207,11 @@ public class BinaryRowSerializer extends AbstractRowDataSerializer<BinaryRow> {
                 headerLessView.getCurrentSegmentLimit()
                         - headerLessView.getCurrentPositionInSegment();
         MemorySegment currSeg = headerLessView.getCurrentSegment();
+        //todo 当前读取的position
         int currPosInSeg = headerLessView.getCurrentPositionInSegment();
         if (remainInSegment >= length) {
             // all in one segment, that's good.
+            //todo 指向currPosInSeg
             reuse.pointTo(currSeg, currPosInSeg, length);
             headerLessView.skipBytesToRead(length);
         } else {

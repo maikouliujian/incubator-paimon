@@ -68,16 +68,20 @@ public class AggregateMergeFunction implements MergeFunction<KeyValue> {
     @Override
     public void add(KeyValue kv) {
         latestKv = kv;
+        //todo UPDATE_BEFORE和DELETE做回撤！！！！！！这样才能保证聚合值的准确性
         boolean isRetract =
                 kv.valueKind() != RowKind.INSERT && kv.valueKind() != RowKind.UPDATE_AFTER;
         for (int i = 0; i < getters.length; i++) {
             FieldAggregator fieldAggregator = aggregators[i];
+            //todo 累计的值
             Object accumulator = getters[i].getFieldOrNull(row);
+            //todo 新进入的值
             Object inputField = getters[i].getFieldOrNull(kv.value());
             Object mergedField =
                     isRetract
                             ? fieldAggregator.retract(accumulator, inputField)
                             : fieldAggregator.agg(accumulator, inputField);
+            //todo 更新累计的值
             row.setField(i, mergedField);
         }
     }
@@ -92,6 +96,7 @@ public class AggregateMergeFunction implements MergeFunction<KeyValue> {
         if (reused == null) {
             reused = new KeyValue();
         }
+        //todo 替换reused中所有的值
         return reused.replace(latestKv.key(), latestKv.sequenceNumber(), RowKind.INSERT, row);
     }
 
@@ -139,11 +144,13 @@ public class AggregateMergeFunction implements MergeFunction<KeyValue> {
                 DataType fieldType = fieldTypes.get(i);
                 // aggregate by primary keys, so they do not aggregate
                 boolean isPrimaryKey = primaryKeys.contains(fieldName);
+                //todo 用户定义对字段的聚合函数
                 String strAggFunc =
                         conf.get(
                                 key(FIELDS_PREFIX + "." + fieldName + "." + AGG_FUNCTION)
                                         .stringType()
                                         .noDefaultValue());
+                //todo 用户自定义的对字段忽略回撤
                 boolean ignoreRetract =
                         conf.get(
                                 key(FIELDS_PREFIX + "." + fieldName + "." + IGNORE_RETRACT)

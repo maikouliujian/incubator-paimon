@@ -41,6 +41,7 @@ public class KeyComparatorSupplier implements SerializableSupplier<Comparator<In
 
     @Override
     public RecordComparator get() {
+        //todo 生成一个新对象
         return genRecordComparator.newInstance(KeyComparatorSupplier.class.getClassLoader());
     }
 }
