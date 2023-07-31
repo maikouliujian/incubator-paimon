@@ -48,6 +48,7 @@ public abstract class KeyValueTableRead implements InnerTableRead {
 
     @Override
     public RecordReader<InternalRow> createReader(Split split) throws IOException {
+        //todo 获取reader
         return new RowDataRecordReader(read.createReader((DataSplit) split));
     }
 

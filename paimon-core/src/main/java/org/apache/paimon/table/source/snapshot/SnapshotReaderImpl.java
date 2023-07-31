@@ -59,7 +59,7 @@ import static org.apache.paimon.predicate.PredicateBuilder.transformFieldMapping
 
 /** Implementation of {@link SnapshotReader}. */
 public class SnapshotReaderImpl implements SnapshotReader {
-
+    //todo 扫描文件的类
     private final FileStoreScan scan;
     private final TableSchema tableSchema;
     private final CoreOptions options;
@@ -168,11 +168,12 @@ public class SnapshotReaderImpl implements SnapshotReader {
     }
 
     /** Get splits from {@link FileKind#ADD} files. */
+    //todo 扫描文件
     @Override
     public Plan read() {
         FileStoreScan.Plan plan = scan.plan();
         Long snapshotId = plan.snapshotId();
-
+        //todo 数据文件按照 <分区，<bucket,datafiles>>分组
         Map<BinaryRow, Map<Integer, List<DataFileMeta>>> files =
                 groupByPartFiles(plan.files(FileKind.ADD));
         if (options.scanPlanSortPartition()) {
@@ -330,13 +331,14 @@ public class SnapshotReaderImpl implements SnapshotReader {
         }
         return lazyPartitionComparator;
     }
-
+    //todo 生成数据切片
     @VisibleForTesting
     public static List<DataSplit> generateSplits(
             long snapshotId,
             boolean isStreaming,
             SplitGenerator splitGenerator,
             Map<BinaryRow, Map<Integer, List<DataFileMeta>>> groupedDataFiles) {
+        //todo 数据切片
         List<DataSplit> splits = new ArrayList<>();
         for (Map.Entry<BinaryRow, Map<Integer, List<DataFileMeta>>> entry :
                 groupedDataFiles.entrySet()) {
@@ -344,6 +346,7 @@ public class SnapshotReaderImpl implements SnapshotReader {
             Map<Integer, List<DataFileMeta>> buckets = entry.getValue();
             for (Map.Entry<Integer, List<DataFileMeta>> bucketEntry : buckets.entrySet()) {
                 int bucket = bucketEntry.getKey();
+                //todo datafiles manifest文件
                 List<DataFileMeta> bucketFiles = bucketEntry.getValue();
                 DataSplit.Builder builder =
                         DataSplit.builder()

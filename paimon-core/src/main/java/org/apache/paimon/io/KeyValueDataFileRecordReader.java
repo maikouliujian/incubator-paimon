@@ -35,7 +35,7 @@ import java.io.IOException;
 
 /** {@link RecordReader} for reading {@link KeyValue} data files. */
 public class KeyValueDataFileRecordReader implements RecordReader<KeyValue> {
-
+    //todo 真正读取数据的类，如parquet、orc
     private final RecordReader<InternalRow> reader;
     private final KeyValueSerializer serializer;
     private final int level;
@@ -58,7 +58,7 @@ public class KeyValueDataFileRecordReader implements RecordReader<KeyValue> {
         this.indexMapping = indexMapping;
         this.castMapping = castMapping;
     }
-
+    //todo 创建RecordIterator
     @Nullable
     @Override
     public RecordIterator<KeyValue> readBatch() throws IOException {

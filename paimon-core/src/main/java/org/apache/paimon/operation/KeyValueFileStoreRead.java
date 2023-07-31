@@ -176,7 +176,7 @@ public class KeyValueFileStoreRead implements FileStoreRead<KeyValue> {
         filtersForOverlappedSection = valueCountMode ? allFilters : pkFilters;
         return this;
     }
-
+    //todo 创建reader
     @Override
     public RecordReader<KeyValue> createReader(DataSplit split) throws IOException {
         RecordReader<KeyValue> reader = createReaderWithoutOuterProjection(split);
@@ -189,6 +189,7 @@ public class KeyValueFileStoreRead implements FileStoreRead<KeyValue> {
 
     private RecordReader<KeyValue> createReaderWithoutOuterProjection(DataSplit split)
             throws IOException {
+        //todo 流读
         if (split.isStreaming()) {
             KeyValueFileReaderFactory readerFactory =
                     readerFactoryBuilder.build(
@@ -196,11 +197,14 @@ public class KeyValueFileStoreRead implements FileStoreRead<KeyValue> {
             ReaderSupplier<KeyValue> beforeSupplier =
                     () -> new ReverseReader(streamingConcat(split.beforeFiles(), readerFactory));
             ReaderSupplier<KeyValue> dataSupplier =
+                    //todo 创建reader
                     () -> streamingConcat(split.dataFiles(), readerFactory);
+            //todo ！！！！！！
             return split.beforeFiles().isEmpty()
                     ? dataSupplier.get()
                     : ConcatRecordReader.create(Arrays.asList(beforeSupplier, dataSupplier));
         } else {
+            //todo 批读
             return split.beforeFiles().isEmpty()
                     ? batchMergeRead(
                             split.partition(), split.bucket(), split.dataFiles(), forceKeepDelete)
@@ -214,7 +218,7 @@ public class KeyValueFileStoreRead implements FileStoreRead<KeyValue> {
                             forceKeepDelete);
         }
     }
-
+    //todo 批读！！！！！！
     private RecordReader<KeyValue> batchMergeRead(
             BinaryRow partition, int bucket, List<DataFileMeta> files, boolean keepDelete)
             throws IOException {
@@ -227,6 +231,7 @@ public class KeyValueFileStoreRead implements FileStoreRead<KeyValue> {
                         partition, bucket, false, filtersForNonOverlappedSection);
 
         List<ReaderSupplier<KeyValue>> sectionReaders = new ArrayList<>();
+        //todo merge function
         MergeFunctionWrapper<KeyValue> mergeFuncWrapper =
                 new ReducerMergeFunctionWrapper(mfFactory.create(pushdownProjection));
         for (List<SortedRun> section : new IntervalPartition(files, keyComparator).partition()) {
@@ -259,6 +264,7 @@ public class KeyValueFileStoreRead implements FileStoreRead<KeyValue> {
                     () -> {
                         // We need to check extraFiles to be compatible with Paimon 0.2.
                         // See comments on DataFileMeta#extraFiles.
+                        //todo 流读先读changelog文件，没有changelog文件直接读取数据文件，不做去重，保留数据的所有变更！！！！！！
                         String fileName = changelogFile(file).orElse(file.fileName());
                         return readerFactory.createRecordReader(
                                 file.schemaId(), fileName, file.level());

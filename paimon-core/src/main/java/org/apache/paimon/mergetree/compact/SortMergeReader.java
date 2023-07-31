@@ -33,6 +33,7 @@ import java.util.List;
  *
  * <p>NOTE: {@link KeyValue}s from the same {@link RecordReader} must not contain the same key.
  */
+
 public interface SortMergeReader<T> extends RecordReader<T> {
 
     static <T> SortMergeReader<T> createSortMergeReader(

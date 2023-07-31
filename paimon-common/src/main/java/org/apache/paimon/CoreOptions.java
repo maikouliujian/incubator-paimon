@@ -429,7 +429,7 @@ public class CoreOptions implements Serializable {
                     .noDefaultValue()
                     .withDescription(
                             "Optional tag name used in case of \"from-snapshot\" scan mode.");
-
+    //todo 代表数据读取的终止条件！！！！！！
     public static final ConfigOption<Long> SCAN_BOUNDED_WATERMARK =
             key("scan.bounded.watermark")
                     .longType()
@@ -1042,7 +1042,7 @@ public class CoreOptions implements Serializable {
     public StartupMode startupMode() {
         return startupMode(options);
     }
-
+    //todo 读取数据的模式
     public static StartupMode startupMode(Options options) {
         StartupMode mode = options.get(SCAN_MODE);
         if (mode == StartupMode.DEFAULT) {

@@ -47,6 +47,7 @@ public class DataSplit implements Split {
 
     private BinaryRow partition;
     private int bucket = -1;
+    //todo datafile元数据！！！！！！
     private List<DataFileMeta> dataFiles;
 
     public DataSplit() {}

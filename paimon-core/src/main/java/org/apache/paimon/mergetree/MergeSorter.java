@@ -110,6 +110,7 @@ public class MergeSorter {
             MergeFunctionWrapper<T> mergeFunction)
             throws IOException {
         if (ioManager != null && lazyReaders.size() > spillThreshold) {
+            //todo
             return spillMergeSort(lazyReaders, keyComparator, mergeFunction);
         }
 
@@ -123,7 +124,7 @@ public class MergeSorter {
                 throw e;
             }
         }
-
+        //todo
         return SortMergeReader.createSortMergeReader(
                 readers, keyComparator, mergeFunction, sortEngine);
     }

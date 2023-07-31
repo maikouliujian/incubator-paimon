@@ -75,7 +75,7 @@ public class ReadBuilderImpl implements ReadBuilder {
     public StreamTableScan newStreamScan() {
         return (StreamTableScan) table.newStreamScan().withFilter(filter);
     }
-
+    //todo 构建reader
     @Override
     public TableRead newRead() {
         InnerTableRead read = table.newRead().withFilter(filter);

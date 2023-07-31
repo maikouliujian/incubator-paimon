@@ -92,6 +92,7 @@ public abstract class AbstractInnerTableScan implements InnerTableScan {
         if (consumerId != null) {
             ConsumerManager consumerManager = snapshotReader.consumerManager();
             Optional<Consumer> consumer = consumerManager.consumer(consumerId);
+            //todo 如果consumer存在，则接着上次consumerid接续读取数据
             if (consumer.isPresent()) {
                 return new ContinuousFromSnapshotStartingScanner(consumer.get().nextSnapshot());
             }

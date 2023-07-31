@@ -210,19 +210,22 @@ public class DataTableSource extends FlinkTableSource {
                         .withPredicate(predicate)
                         .withLimit(limit)
                         .withWatermarkStrategy(watermarkStrategy);
-
+        //todo 数据源！！！！！！
         return new PaimonDataStreamScanProvider(
                 !streaming, env -> configureSource(sourceBuilder, env));
     }
-
+    //todo 数据源！！！！！！
     private DataStream<RowData> configureSource(
             FlinkSourceBuilder sourceBuilder, StreamExecutionEnvironment env) {
         Options options = Options.fromMap(this.table.options());
         Integer parallelism = options.get(FlinkConnectorOptions.SCAN_PARALLELISM);
         if (parallelism == null && options.get(FlinkConnectorOptions.INFER_SCAN_PARALLELISM)) {
+            //todo 流读
             if (streaming) {
+                //todo streaming模式，bucket == parallelism
                 parallelism = options.get(CoreOptions.BUCKET);
             } else {
+                //todo 批读
                 scanSplitsForInference();
                 parallelism = splitStatistics.splitNumber();
                 if (null != limit && limit > 0) {
@@ -234,7 +237,7 @@ public class DataTableSource extends FlinkTableSource {
                 parallelism = Math.max(1, parallelism);
             }
         }
-
+        //todo 构建source
         return sourceBuilder.withParallelism(parallelism).withEnv(env).build();
     }
 

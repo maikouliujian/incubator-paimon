@@ -74,6 +74,7 @@ public class KeyValueFileReaderFactory {
 
     public RecordReader<KeyValue> createRecordReader(long schemaId, String fileName, int level)
             throws IOException {
+        //todo 文件格式
         String formatIdentifier = DataFilePathFactory.formatIdentifier(fileName);
         BulkFormatMapping bulkFormatMapping =
                 bulkFormatMappings.computeIfAbsent(

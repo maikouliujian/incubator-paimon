@@ -45,6 +45,7 @@ public class ContinuousCompactorFollowUpScanner implements FollowUpScanner {
 
     @Override
     public SnapshotReader.Plan scan(long snapshotId, SnapshotReader snapshotReader) {
+        //todo 读取
         return snapshotReader.withKind(ScanKind.DELTA).withSnapshot(snapshotId).read();
     }
 }

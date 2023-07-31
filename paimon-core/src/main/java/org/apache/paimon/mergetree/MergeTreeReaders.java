@@ -76,6 +76,7 @@ public class MergeTreeReaders {
         for (SortedRun run : section) {
             readers.add(() -> readerForRun(run, readerFactory));
         }
+        //todo
         return mergeSorter.mergeSort(readers, userKeyComparator, mergeFunctionWrapper);
     }
 
@@ -83,6 +84,7 @@ public class MergeTreeReaders {
             SortedRun run, KeyValueFileReaderFactory readerFactory) throws IOException {
         List<ReaderSupplier<KeyValue>> readers = new ArrayList<>();
         for (DataFileMeta file : run.files()) {
+            //todo 一个文件一个reader
             readers.add(
                     () ->
                             readerFactory.createRecordReader(

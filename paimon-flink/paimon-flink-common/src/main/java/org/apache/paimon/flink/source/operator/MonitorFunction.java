@@ -101,6 +101,7 @@ public class MonitorFunction extends RichSourceFunction<Split>
 
     @Override
     public void initializeState(FunctionInitializationContext context) throws Exception {
+        //todo 初始化，创建InnerStreamTableScanImpl
         this.scan = readBuilder.newStreamScan();
 
         this.checkpointState =
@@ -180,6 +181,8 @@ public class MonitorFunction extends RichSourceFunction<Split>
                     return;
                 }
                 try {
+                    //todo 读取到了DataSplit
+                    //todo 调用InnerStreamTableScanImpl#plan()
                     List<Split> splits = scan.plan().splits();
                     isEmpty = splits.isEmpty();
                     splits.forEach(ctx::collect);
@@ -187,6 +190,7 @@ public class MonitorFunction extends RichSourceFunction<Split>
                     if (emitSnapshotWatermark) {
                         Long watermark = scan.watermark();
                         if (watermark != null) {
+                            //todo 发射watermark
                             ctx.emitWatermark(new Watermark(watermark));
                         }
                     }
@@ -235,6 +239,7 @@ public class MonitorFunction extends RichSourceFunction<Split>
                         name + "-Monitor",
                         new JavaTypeInfo<>(Split.class))
                 .forceNonParallel()
+                //todo 按照bucket自定义分区
                 .partitionCustom(
                         (key, numPartitions) -> key % numPartitions,
                         split -> ((DataSplit) split).bucket())

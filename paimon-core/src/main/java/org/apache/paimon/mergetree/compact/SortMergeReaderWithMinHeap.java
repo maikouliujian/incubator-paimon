@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /** {@link SortMergeReader} implemented with min-heap. */
+//todo 多路归并算法！！！！！！
 public class SortMergeReaderWithMinHeap<T> implements SortMergeReader<T> {
 
     private final List<RecordReader<KeyValue>> nextBatchReaders;
@@ -66,6 +67,7 @@ public class SortMergeReaderWithMinHeap<T> implements SortMergeReader<T> {
     public RecordIterator<T> readBatch() throws IOException {
         for (RecordReader<KeyValue> reader : nextBatchReaders) {
             while (true) {
+                //todo 获取一个文件的reader，读取一批次数据
                 RecordIterator<KeyValue> iterator = reader.readBatch();
                 if (iterator == null) {
                     // no more batches, permanently remove this reader
@@ -78,6 +80,7 @@ public class SortMergeReaderWithMinHeap<T> implements SortMergeReader<T> {
                     iterator.releaseBatch();
                 } else {
                     // found next kv
+                    //todo 加入堆中途
                     minHeap.offer(new Element(kv, iterator, reader));
                     break;
                 }

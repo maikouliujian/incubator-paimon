@@ -76,6 +76,7 @@ public class RecordReaderIterator<T> implements CloseableIterator<T> {
                     break;
                 } else {
                     currentIterator.releaseBatch();
+                    //todo 读取batch数据【KeyValueDataFileRecordReader】
                     currentIterator = reader.readBatch();
                     if (currentIterator == null) {
                         break;

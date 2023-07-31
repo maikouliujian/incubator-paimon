@@ -190,7 +190,7 @@ public class FlinkSourceBuilder {
         if (env == null) {
             throw new IllegalArgumentException("StreamExecutionEnvironment should not be null.");
         }
-
+        //todo 流读
         if (isContinuous) {
             TableScanUtils.streamingReadingValidate(table);
 
@@ -213,12 +213,14 @@ public class FlinkSourceBuilder {
                 }
             } else {
                 if (conf.contains(CoreOptions.CONSUMER_ID)) {
+                    //todo 构建监听器算子
                     return buildContinuousStreamOperator();
                 } else {
                     return buildContinuousFileSource();
                 }
             }
         } else {
+            //todo 批读
             return buildStaticFileSource();
         }
     }

@@ -357,8 +357,10 @@ public abstract class AbstractFileStoreTable implements FileStoreTable {
 
     abstract InnerTableRead innerRead();
 
+    //todo 新建reader
     @Override
     public InnerTableRead newRead() {
+        //todo 由各子类实现，如ChangelogWithKeyFileStoreTable
         InnerTableRead innerTableRead = innerRead();
         DefaultValueAssigner defaultValueAssigner = DefaultValueAssigner.create(tableSchema);
         if (!defaultValueAssigner.needToAssign()) {
@@ -384,7 +386,7 @@ public abstract class AbstractFileStoreTable implements FileStoreTable {
                 innerTableRead.withIOManager(ioManager);
                 return this;
             }
-
+            //todo 获取reader
             @Override
             public RecordReader<InternalRow> createReader(Split split) throws IOException {
                 return defaultValueAssigner.assignFieldsDefaultValue(

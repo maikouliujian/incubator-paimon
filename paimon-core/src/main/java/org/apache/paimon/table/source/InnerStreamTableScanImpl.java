@@ -77,25 +77,31 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
         return this;
     }
 
+    //todo 重点方法【流读时，会被循环执行】
     @Override
     public Plan plan() {
         if (startingScanner == null) {
+            //todo 第一次读取的scanner，根据不同的参数生成不同的scanner
             startingScanner = createStartingScanner(true);
         }
         if (followUpScanner == null) {
+            //todo 非第一次读取的scanner
             followUpScanner = createFollowUpScanner();
         }
         if (boundedChecker == null) {
+            //todo 是否需要检测数据读取终止条件
             boundedChecker = createBoundedChecker();
         }
 
         if (nextSnapshotId == null) {
+            //todo 第一次读取
             return tryFirstPlan();
         } else {
+            //todo 非第一次读取
             return nextPlan();
         }
     }
-
+    //todo 第一次读取
     private Plan tryFirstPlan() {
         StartingScanner.Result result = startingScanner.scan(snapshotManager, snapshotReader);
         if (result instanceof ScannedResult) {
@@ -115,7 +121,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
         }
         return SnapshotNotExistPlan.INSTANCE;
     }
-
+    //todo 下一次读取
     private Plan nextPlan() {
         while (true) {
             if (isFullPhaseEnd) {
@@ -137,7 +143,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
                         nextSnapshotId);
                 return SnapshotNotExistPlan.INSTANCE;
             }
-
+            //todo 从下一个SnapshotId读取
             Snapshot snapshot = snapshotManager.snapshot(nextSnapshotId);
 
             if (boundedChecker.shouldEndInput(snapshot)) {
@@ -155,6 +161,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
                 return overwritePlan;
             } else if (followUpScanner.shouldScanSnapshot(snapshot)) {
                 LOG.debug("Find snapshot id {}.", nextSnapshotId);
+                //todo 根据nextSnapshotId扫文件
                 SnapshotReader.Plan plan = followUpScanner.scan(nextSnapshotId, snapshotReader);
                 currentWatermark = plan.watermark();
                 nextSnapshotId++;

@@ -84,6 +84,7 @@ public interface FileStoreScan {
         }
 
         /** Return a map group by partition and bucket. */
+        //todo 数据文件按照 <分区，<bucket,datafiles>>分组
         static Map<BinaryRow, Map<Integer, List<DataFileMeta>>> groupByPartFiles(
                 List<ManifestEntry> files) {
             Map<BinaryRow, Map<Integer, List<DataFileMeta>>> groupBy = new LinkedHashMap<>();

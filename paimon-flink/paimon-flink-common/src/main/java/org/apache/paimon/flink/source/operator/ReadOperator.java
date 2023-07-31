@@ -60,6 +60,7 @@ public class ReadOperator extends AbstractStreamOperator<RowData>
                                 .getEnvironment()
                                 .getIOManager()
                                 .getSpillingDirectoriesPaths());
+        //todo 构建新reader
         this.read = readBuilder.newRead().withIOManager(ioManager);
         this.reuseRow = new FlinkRowData(null);
         this.reuseRecord = new StreamRecord<>(reuseRow);
@@ -67,9 +68,11 @@ public class ReadOperator extends AbstractStreamOperator<RowData>
 
     @Override
     public void processElement(StreamRecord<Split> record) throws Exception {
+        //todo 获取reader！！！！！！
         try (CloseableIterator<InternalRow> iterator =
                 read.createReader(record.getValue()).toCloseableIterator()) {
             while (iterator.hasNext()) {
+                //todo 重置reuseRow中的值
                 reuseRow.replace(iterator.next());
                 output.collect(reuseRecord);
             }
