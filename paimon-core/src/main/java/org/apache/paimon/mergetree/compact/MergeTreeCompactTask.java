@@ -126,6 +126,7 @@ public class MergeTreeCompactTask extends CompactTask {
                 return;
             }
         }
+        //todo 合并SortedRuns
         CompactResult rewriteResult = rewriter.rewrite(outputLevel, dropDelete, candidate);
         toUpdate.merge(rewriteResult);
         candidate.clear();

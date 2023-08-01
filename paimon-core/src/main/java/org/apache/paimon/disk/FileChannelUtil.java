@@ -50,6 +50,7 @@ public class FileChannelUtil {
             BlockCompressionFactory compressionCodecFactory,
             int compressionBlockSize)
             throws IOException {
+        //todo 返回一个文件句柄
         BufferFileWriter bufferWriter = ioManager.createBufferFileWriter(channel);
         return new ChannelWriterOutputView(
                 bufferWriter, compressionCodecFactory, compressionBlockSize);

@@ -192,7 +192,8 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
     private void flushWriteBuffer(boolean waitForLatestCompaction, boolean forcedFullCompaction)
             throws Exception {
         if (writeBuffer.size() > 0) {
-            //todo 是否需要触发合并
+            //todo 是否需要等待最近的compaction完成，true则阻塞等待；false则不等待，可以理解为compaction是异步执行！！！！！！
+
             if (compactManager.shouldWaitForLatestCompaction()) {
                 waitForLatestCompaction = true;
             }

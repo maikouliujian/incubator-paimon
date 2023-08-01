@@ -98,6 +98,7 @@ public class FullChangelogMergeFunctionWrapper implements MergeFunctionWrapper<C
         mergeFunction.add(kv);
     }
 
+    //todo 获取compaction data和 changelog
     @Override
     public ChangelogResult getResult() {
         reusedResult.reset();

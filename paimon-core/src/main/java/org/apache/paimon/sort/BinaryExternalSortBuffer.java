@@ -129,6 +129,7 @@ public class BinaryExternalSortBuffer implements SortBuffer {
                 // did not fit in a fresh buffer, must be large...
                 throw new IOException("The record exceeds the maximum size of a sort buffer.");
             } else {
+                //todo 将inMemorySortBuffer中数据溢写磁盘！！！！！！
                 spill();
 
                 if (spillChannelIDs.size() >= maxNumFileHandles) {
@@ -178,6 +179,7 @@ public class BinaryExternalSortBuffer implements SortBuffer {
         }
 
         // open next channel
+        //todo 获取一个临时文件目录
         FileIOChannel.ID channel = enumerator.next();
         channelManager.addChannel(channel);
 
@@ -190,6 +192,7 @@ public class BinaryExternalSortBuffer implements SortBuffer {
                     FileChannelUtil.createOutputView(
                             ioManager, channel, compressionCodecFactory, compressionBlockSize);
             new QuickSort().sort(inMemorySortBuffer);
+            //todo 将内存的数据写入磁盘！！！！！！
             inMemorySortBuffer.writeToOutput(output);
             bytesInLastBuffer = output.close();
             blockCount = output.getBlockCount();

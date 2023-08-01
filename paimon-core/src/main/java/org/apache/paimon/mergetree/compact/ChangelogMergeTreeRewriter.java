@@ -83,6 +83,7 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
     public CompactResult rewrite(
             int outputLevel, boolean dropDelete, List<List<SortedRun>> sections) throws Exception {
         if (rewriteChangelog(outputLevel, dropDelete, sections)) {
+            //todo
             return rewriteChangelogCompaction(outputLevel, sections);
         } else {
             return rewriteCompaction(outputLevel, dropDelete, sections);
@@ -94,7 +95,7 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
         List<ConcatRecordReader.ReaderSupplier<ChangelogResult>> sectionReaders = new ArrayList<>();
         for (List<SortedRun> section : sections) {
             sectionReaders.add(
-                    () ->
+                    () ->   //todo 读取老数据的reader
                             MergeTreeReaders.readerForSection(
                                     section,
                                     readerFactory,

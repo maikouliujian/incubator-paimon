@@ -215,7 +215,7 @@ public class CoreOptions implements Serializable {
                     .enumType(SortEngine.class)
                     .defaultValue(SortEngine.LOSER_TREE)
                     .withDescription("Specify the sort engine for table with primary key.");
-
+    //todo 如果reader数太多，超过这个阈值，为了防止内存不够用，则会采用可溢写的排序ExternalSorterWithLevel来完成
     public static final ConfigOption<Integer> SORT_SPILL_THRESHOLD =
             key("sort-spill-threshold")
                     .intType()
@@ -309,7 +309,8 @@ public class CoreOptions implements Serializable {
                     .withDescription(
                             "The sorted run number to trigger compaction. Includes level0 files (one file one sorted run) and "
                                     + "high-level runs (one level one sorted run).");
-
+    //todo 当sortruns的数量大于该参数时，则会停止数据写入，等待compaction，即compaction变为了同步阻塞；
+    //todo 为了加速数据写入，可以将这参数设置很大，这样就不用等待compaction，即compaction变为了异步；
     public static final ConfigOption<Integer> NUM_SORTED_RUNS_STOP_TRIGGER =
             key("num-sorted-run.stop-trigger")
                     .intType()

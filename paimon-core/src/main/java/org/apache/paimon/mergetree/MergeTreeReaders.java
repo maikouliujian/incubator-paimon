@@ -76,7 +76,7 @@ public class MergeTreeReaders {
         for (SortedRun run : section) {
             readers.add(() -> readerForRun(run, readerFactory));
         }
-        //todo
+        //todo 读取老数据
         return mergeSorter.mergeSort(readers, userKeyComparator, mergeFunctionWrapper);
     }
 

@@ -47,9 +47,11 @@ public abstract class CompactFutureManager implements CompactManager {
     protected final Optional<CompactResult> innerGetCompactionResult(boolean blocking)
             throws ExecutionException, InterruptedException {
         if (taskFuture != null) {
+            //todo 如果阻塞等待 或者 taskFuture已经完成
             if (blocking || taskFuture.isDone()) {
                 CompactResult result;
                 try {
+                    //todo 阻塞等待
                     result = obtainCompactResult();
                 } catch (CancellationException e) {
                     return Optional.empty();

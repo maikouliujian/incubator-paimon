@@ -109,8 +109,9 @@ public class MergeSorter {
             Comparator<InternalRow> keyComparator,
             MergeFunctionWrapper<T> mergeFunction)
             throws IOException {
+        //todo 如果reader过多，则走spillMergeSort
         if (ioManager != null && lazyReaders.size() > spillThreshold) {
-            //todo
+            //todo 可以溢写磁盘的MergeSort
             return spillMergeSort(lazyReaders, keyComparator, mergeFunction);
         }
 
@@ -124,7 +125,7 @@ public class MergeSorter {
                 throw e;
             }
         }
-        //todo
+        //todo 纯内存中的MergeSort
         return SortMergeReader.createSortMergeReader(
                 readers, keyComparator, mergeFunction, sortEngine);
     }
@@ -204,7 +205,7 @@ public class MergeSorter {
             fields.addAll(valueType.getFields());
             RowType schemaWithLevel = new RowType(fields);
             InternalRowSerializer serializer = InternalSerializers.create(schemaWithLevel);
-
+            //todo 可溢写的buffer
             this.buffer =
                     new BinaryExternalSortBuffer(
                             new BinaryRowSerializer(serializer.getArity()),
