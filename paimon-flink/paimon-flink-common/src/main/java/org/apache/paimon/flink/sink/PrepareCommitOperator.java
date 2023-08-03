@@ -106,12 +106,12 @@ public abstract class PrepareCommitOperator<IN, OUT> extends AbstractStreamOpera
         }
     }
 
-    private void emitCommittables(boolean doCompaction, long checkpointId) throws IOException {
-        prepareCommit(doCompaction, checkpointId)
+    private void emitCommittables(boolean waitCompaction, long checkpointId) throws IOException {
+        prepareCommit(waitCompaction, checkpointId)
                 //todo 将manifest元数据发送到下游！！！！！！
                 .forEach(committable -> output.collect(new StreamRecord<>(committable)));
     }
 
-    protected abstract List<OUT> prepareCommit(boolean doCompaction, long checkpointId)
+    protected abstract List<OUT> prepareCommit(boolean waitCompaction, long checkpointId)
             throws IOException;
 }
