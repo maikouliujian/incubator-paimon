@@ -37,6 +37,7 @@ public class IntervalPartition {
 
     public IntervalPartition(List<DataFileMeta> inputFiles, Comparator<InternalRow> keyComparator) {
         this.files = new ArrayList<>(inputFiles);
+        //TODO 先按照minKey排序，后按照maxKey排序
         this.files.sort(
                 (o1, o2) -> {
                     int leftResult = keyComparator.compare(o1.minKey(), o2.minKey());
@@ -70,6 +71,7 @@ public class IntervalPartition {
         BinaryRow bound = null;
 
         for (DataFileMeta meta : files) {
+            //todo bound是上一个metadata的maxKey，当前metadata的minKey比上一个metadata的maxKey还大，说明二者key没有重叠
             if (!section.isEmpty() && keyComparator.compare(meta.minKey(), bound) > 0) {
                 // larger than current right bound, conclude current section and create a new one
                 result.add(partition(section));

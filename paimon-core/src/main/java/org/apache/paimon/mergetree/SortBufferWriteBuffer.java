@@ -71,7 +71,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
         // user key + sequenceNumber
         List<DataType> sortKeyTypes = new ArrayList<>(keyType.getFieldTypes());
         sortKeyTypes.add(new BigIntType(false));
-
+        //todo 数据有序！！！！！！
         // for sort binary buffer
         NormalizedKeyComputer normalizedKeyComputer =
                 CodeGenUtils.newNormalizedKeyComputer(sortKeyTypes, "MemTableKeyComputer");

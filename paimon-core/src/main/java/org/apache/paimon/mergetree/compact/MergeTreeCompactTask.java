@@ -54,6 +54,7 @@ public class MergeTreeCompactTask extends CompactTask {
         this.minFileSize = minFileSize;
         this.rewriter = rewriter;
         this.outputLevel = unit.outputLevel();
+        //todo 处理files文件
         this.partitioned = new IntervalPartition(unit.files(), keyComparator).partition();
         this.dropDelete = dropDelete;
 

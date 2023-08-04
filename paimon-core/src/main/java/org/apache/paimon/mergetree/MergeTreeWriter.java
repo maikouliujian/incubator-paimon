@@ -151,7 +151,7 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
         //todo 内存不够，写入失败，返回false
         boolean success = writeBuffer.put(sequenceNumber, kv.valueKind(), kv.key(), kv.value());
         if (!success) {
-            //todo 先刷写磁盘！！！！！！
+            //todo 先刷写磁盘！！！！！！刷写到第0层
             flushWriteBuffer(false, false);
             //todo 再写入内存
             success = writeBuffer.put(sequenceNumber, kv.valueKind(), kv.key(), kv.value());
