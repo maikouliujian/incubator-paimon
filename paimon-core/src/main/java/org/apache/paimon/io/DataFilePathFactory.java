@@ -42,6 +42,7 @@ public class DataFilePathFactory {
 
     public DataFilePathFactory(Path root, String partition, int bucket, String formatIdentifier) {
         this.bucketDir = bucketPath(root, partition, bucket);
+        //todo 只给新文件用
         this.uuid = UUID.randomUUID().toString();
 
         this.pathCount = new AtomicInteger(0);

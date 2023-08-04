@@ -96,6 +96,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
         Optional<CompactUnit> optionalUnit;
         List<LevelSortedRun> runs = levels.levelSortedRuns();
         if (fullCompaction) {
+            //todo 触发fullCompaction时，上一次的compaction必须完成
             Preconditions.checkState(
                     taskFuture == null,
                     "A compaction task is still running while the user "
@@ -115,6 +116,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                 LOG.debug("Trigger normal compaction. Picking from the following runs\n{}", runs);
             }
             optionalUnit =
+                    //todo 不同的compaction策略
                     strategy.pick(levels.numberOfLevels(), runs)
                             .filter(unit -> unit.files().size() > 0)
                             .filter(
@@ -183,6 +185,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
     @Override
     public Optional<CompactResult> getCompactionResult(boolean blocking)
             throws ExecutionException, InterruptedException {
+        //todo 拿到compaction的结果！！！！！！
         Optional<CompactResult> result = innerGetCompactionResult(blocking);
         result.ifPresent(
                 r -> {
@@ -192,6 +195,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                                 r.before(),
                                 r.after());
                     }
+                    //todo 更新lsm树！！！！！！
                     levels.update(r.before(), r.after());
                     if (LOG.isDebugEnabled()) {
                         LOG.debug(

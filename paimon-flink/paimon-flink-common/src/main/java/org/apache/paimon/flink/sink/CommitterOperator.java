@@ -155,7 +155,7 @@ public class CommitterOperator<CommitT, GlobalCommitT> extends AbstractStreamOpe
     private void commitUpToCheckpoint(long checkpointId) throws Exception {
         NavigableMap<Long, GlobalCommitT> headMap =
                 committablesPerCheckpoint.headMap(checkpointId, true);
-        //todo 提交
+        //todo 提交元数据信息
         committer.commit(committables(headMap));
         headMap.clear();
     }

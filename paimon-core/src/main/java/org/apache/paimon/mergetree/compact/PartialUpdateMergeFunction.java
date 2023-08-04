@@ -152,16 +152,20 @@ public class PartialUpdateMergeFunction implements MergeFunction<KeyValue> {
 
     private void retractWithSequenceGroup(KeyValue kv) {
         for (int i = 0; i < getters.length; i++) {
+            //todo 每一个成员对应的sequenceGen
             SequenceGenerator sequenceGen = fieldSequences.get(i);
             if (sequenceGen != null) {
                 Long currentSeq = sequenceGen.generateNullable(kv.value());
                 if (currentSeq != null) {
                     Long previousSeq = sequenceGen.generateNullable(row);
+                    //todo currentSeq >= previousSeq才更新
                     if (previousSeq == null || currentSeq >= previousSeq) {
                         if (sequenceGen.index() == i) {
+                            //todo 说明i对应的字段是sg字段
                             // update sequence field
                             row.setField(i, getters[i].getFieldOrNull(kv.value()));
                         } else {
+                            //todo 说明i对应的字段是非sg字段，非sg字段置为null
                             // retract normal field
                             row.setField(i, null);
                         }
@@ -228,6 +232,7 @@ public class PartialUpdateMergeFunction implements MergeFunction<KeyValue> {
                                     k.length() - SEQUENCE_GROUP.length() - 1);
                     SequenceGenerator sequenceGen =
                             new SequenceGenerator(sequenceFieldName, rowType);
+                    //todo v是被sg管理的字段
                     Arrays.stream(v.split(","))
                             .map(fieldNames::indexOf)
                             .forEach(
@@ -238,6 +243,7 @@ public class PartialUpdateMergeFunction implements MergeFunction<KeyValue> {
                                                             "Field %s is defined repeatedly by multiple groups: %s",
                                                             fieldNames.get(field), k));
                                         }
+                                        //todo 每一个字段指向管理该字段的sg
                                         fieldSequences.put(field, sequenceGen);
                                     });
 

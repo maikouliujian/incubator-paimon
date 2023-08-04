@@ -189,6 +189,7 @@ public abstract class FlinkSink<T> implements Serializable {
                 written.transform(
                                 GLOBAL_COMMITTER_NAME + " -> " + table.name(),
                                 new CommittableTypeInfo(),
+                                //todo 提交operator
                                 new CommitterOperator<>(
                                         streamingCheckpointEnabled,
                                         commitUser,

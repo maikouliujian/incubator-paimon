@@ -55,6 +55,7 @@ public class UniversalCompaction implements CompactStrategy {
         int maxLevel = numLevels - 1;
 
         // 1 checking for reducing size amplification
+        //todo 非最后一层大小/最后一层大小 > maxSizeAmp
         CompactUnit unit = pickForSizeAmp(maxLevel, runs);
         if (unit != null) {
             if (LOG.isDebugEnabled()) {
@@ -64,6 +65,8 @@ public class UniversalCompaction implements CompactStrategy {
         }
 
         // 2 checking for size ratio
+        //todo 上一层数据 * (100 + size ratio) > 下一层    迭代
+        //todo  将0～runCount-1层的数据文件合并到runCount层级
         unit = pickForSizeRatio(maxLevel, runs);
         if (unit != null) {
             if (LOG.isDebugEnabled()) {
@@ -90,13 +93,14 @@ public class UniversalCompaction implements CompactStrategy {
         if (runs.size() < numRunCompactionTrigger) {
             return null;
         }
-
+        //todo 除最后一层外的总大小
         long candidateSize =
+                //todo 除最后一层外
                 runs.subList(0, runs.size() - 1).stream()
                         .map(LevelSortedRun::run)
                         .mapToLong(SortedRun::totalSize)
                         .sum();
-
+        //todo 最后一层的总大小
         long earliestRunSize = runs.get(runs.size() - 1).run().totalSize();
 
         // size amplification = percentage of additional size
@@ -123,6 +127,7 @@ public class UniversalCompaction implements CompactStrategy {
 
     public CompactUnit pickForSizeRatio(
             int maxLevel, List<LevelSortedRun> runs, int candidateCount, boolean forcePick) {
+        //todo 第0层数据大小
         long candidateSize = candidateSize(runs, candidateCount);
         for (int i = candidateCount; i < runs.size(); i++) {
             LevelSortedRun next = runs.get(i);
@@ -170,7 +175,7 @@ public class UniversalCompaction implements CompactStrategy {
                 }
             }
         }
-
+        //todo 将0～runCount-1层的数据文件合并到runCount层级
         return CompactUnit.fromLevelRuns(outputLevel, runs.subList(0, runCount));
     }
 }

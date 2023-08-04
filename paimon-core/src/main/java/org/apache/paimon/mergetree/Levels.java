@@ -145,11 +145,12 @@ public class Levels {
         }
         return runs;
     }
-
+    //todo 更新lsm树的引用！！！！！！
     public void update(List<DataFileMeta> before, List<DataFileMeta> after) {
         Map<Integer, List<DataFileMeta>> groupedBefore = groupByLevel(before);
         Map<Integer, List<DataFileMeta>> groupedAfter = groupByLevel(after);
         for (int i = 0; i < numberOfLevels(); i++) {
+            //todo 更新lsm树的引用！！！！！！
             updateLevel(
                     i,
                     groupedBefore.getOrDefault(i, emptyList()),
@@ -161,12 +162,13 @@ public class Levels {
                     before.stream().map(DataFileMeta::fileName).collect(Collectors.toSet());
             // exclude upgrade files
             after.stream().map(DataFileMeta::fileName).forEach(droppedFiles::remove);
+            //todo 在缓存里清除文件引用
             for (DropFileCallback callback : dropFileCallbacks) {
                 droppedFiles.forEach(callback::notifyDropFile);
             }
         }
     }
-
+    //todo lsm各个层级删除before，添加after
     private void updateLevel(int level, List<DataFileMeta> before, List<DataFileMeta> after) {
         if (before.isEmpty() && after.isEmpty()) {
             return;

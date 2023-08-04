@@ -54,7 +54,7 @@ public class MergeTreeCompactTask extends CompactTask {
         this.minFileSize = minFileSize;
         this.rewriter = rewriter;
         this.outputLevel = unit.outputLevel();
-        //todo 处理files文件
+        //todo 处理files文件，保证每一个SortedRun中的DataFileMeta都是有序且没有key重叠！！！！！！
         this.partitioned = new IntervalPartition(unit.files(), keyComparator).partition();
         this.dropDelete = dropDelete;
 
@@ -85,6 +85,7 @@ public class MergeTreeCompactTask extends CompactTask {
                         candidate.add(singletonList(SortedRun.fromSingle(file)));
                     } else {
                         // Large file appear, rewrite previous and upgrade it
+                        //todo 出现大文件，开始写之前的小文件
                         rewrite(candidate, result);
                         upgrade(file, result);
                     }

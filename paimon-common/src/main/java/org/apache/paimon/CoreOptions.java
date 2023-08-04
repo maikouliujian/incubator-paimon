@@ -107,7 +107,7 @@ public class CoreOptions implements Serializable {
                     .defaultValue(0.05)
                     .withDescription(
                             "Define the default false positive probability for bloom filters.");
-
+    //todo 定义lsm 每一层的数据压缩格式
     public static final ConfigOption<Map<String, String>> FILE_COMPRESSION_PER_LEVEL =
             key("file.compression.per.level")
                     .mapType()
@@ -117,7 +117,7 @@ public class CoreOptions implements Serializable {
                                     + " 'file.compression.per.level' = '0:lz4,1:zlib', for orc file format, the compression value "
                                     + "could be NONE, ZLIB, SNAPPY, LZO, LZ4, for parquet file format, the compression value could be "
                                     + "UNCOMPRESSED, SNAPPY, GZIP, LZO, BROTLI, LZ4, ZSTD.");
-
+    //todo 定义lsm 每一层的数据格式
     public static final ConfigOption<Map<String, String>> FILE_FORMAT_PER_LEVEL =
             key("file.format.per.level")
                     .mapType()
@@ -489,7 +489,7 @@ public class CoreOptions implements Serializable {
                     .defaultValue(false)
                     .withDescription(
                             "Whether to create underlying storage when reading and writing the table.");
-
+    //todo 是否流度overwrite数据，默认不读！！！！！！
     public static final ConfigOption<Boolean> STREAMING_READ_OVERWRITE =
             key("streaming-read-overwrite")
                     .booleanType()

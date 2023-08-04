@@ -151,6 +151,7 @@ public class InnerStreamTableScanImpl extends AbstractInnerTableScan
             }
 
             // first check changes of overwrite
+            //todo 是否流读Overwrite，默认false！！！！！！
             if (snapshot.commitKind() == Snapshot.CommitKind.OVERWRITE
                     && supportStreamingReadOverwrite) {
                 LOG.debug("Find overwrite snapshot id {}.", nextSnapshotId);

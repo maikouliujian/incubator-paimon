@@ -163,6 +163,7 @@ public class TableCommitImpl implements InnerTableCommit {
                 // TODO maybe it can be produced by CommitterOperator
                 committable = new ManifestCommittable(Long.MAX_VALUE);
             }
+            //todo overwrite 提交
             commit.overwrite(overwritePartition, committable, Collections.emptyMap());
             expire(committable.identifier());
         }

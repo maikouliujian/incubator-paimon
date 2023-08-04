@@ -58,6 +58,7 @@ public class PartialUpdateMergeFunctionTest {
 
     @Test
     public void testSequenceGroup() {
+
         Options options = new Options();
         options.set("fields.f3.sequence-group", "f1,f2");
         options.set("fields.f6.sequence-group", "f4,f5");

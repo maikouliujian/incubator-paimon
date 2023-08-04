@@ -238,12 +238,13 @@ public class SnapshotReaderImpl implements SnapshotReader {
             throw new IllegalStateException(
                     "Cannot read overwrite splits from a non-overwrite snapshot.");
         }
-
+        //todo 过滤delete
         Map<BinaryRow, Map<Integer, List<DataFileMeta>>> beforeFiles =
                 groupByPartFiles(plan.files(FileKind.DELETE));
+        //todo 过滤add
         Map<BinaryRow, Map<Integer, List<DataFileMeta>>> dataFiles =
                 groupByPartFiles(plan.files(FileKind.ADD));
-
+        //todo 先出delete，后出add
         return toChangesPlan(true, plan, beforeFiles, dataFiles);
     }
 

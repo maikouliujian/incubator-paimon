@@ -279,9 +279,11 @@ public class MergeTreeWriter implements RecordWriter<KeyValue>, MemoryOwner {
 
     //todo compaction结束后，会更新CompactResult
     private void updateCompactResult(CompactResult result) {
+        //todo compaction后的数据文件
         Set<String> afterFiles =
                 result.after().stream().map(DataFileMeta::fileName).collect(Collectors.toSet());
         for (DataFileMeta file : result.before()) {
+            //todo 如果compactAfter中有file，直接删除
             if (compactAfter.remove(file)) {
                 // This is an intermediate file (not a new data file), which is no longer needed
                 // after compaction and can be deleted directly, but upgrade file is required by

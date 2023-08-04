@@ -175,7 +175,7 @@ public abstract class AbstractFileStoreWrite<T>
                 Map.Entry<Integer, WriterContainer<T>> entry = bucketIter.next();
                 int bucket = entry.getKey();
                 WriterContainer<T> writerContainer = entry.getValue();
-                //todo prepareCommit
+                //todo prepareCommit的结果，包含要写入manifest的结果
                 CommitIncrement increment = writerContainer.writer.prepareCommit(waitCompaction);
                 List<IndexFileMeta> newIndexFiles = new ArrayList<>();
                 if (writerContainer.indexMaintainer != null) {

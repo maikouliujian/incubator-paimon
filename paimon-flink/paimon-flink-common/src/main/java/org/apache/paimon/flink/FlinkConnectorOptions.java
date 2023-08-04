@@ -42,7 +42,7 @@ import static org.apache.paimon.options.description.TextElement.text;
 public class FlinkConnectorOptions {
 
     public static final String NONE = "none";
-
+    //todo 可以将数据写入kafka + filestore
     public static final ConfigOption<String> LOG_SYSTEM =
             ConfigOptions.key("log.system")
                     .stringType()
@@ -182,6 +182,7 @@ public class FlinkConnectorOptions {
                             "The mode used by StaticFileStoreSplitEnumerator to assign splits.");
 
     /* Sink writer allocate segments from managed memory. */
+    //todo 是否使用管理内存
     public static final ConfigOption<Boolean> SINK_USE_MANAGED_MEMORY =
             ConfigOptions.key("sink.use-managed-memory-allocator")
                     .booleanType()

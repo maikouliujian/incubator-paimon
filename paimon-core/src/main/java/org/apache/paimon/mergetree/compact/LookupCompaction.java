@@ -35,6 +35,7 @@ public class LookupCompaction implements CompactStrategy {
 
     @Override
     public Optional<CompactUnit> pick(int numLevels, List<LevelSortedRun> runs) {
+        //todo 普通的触发策略
         Optional<CompactUnit> pick = universalCompaction.pick(numLevels, runs);
         if (pick.isPresent()) {
             return pick;

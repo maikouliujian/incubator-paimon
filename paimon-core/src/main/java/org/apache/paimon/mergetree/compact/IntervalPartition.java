@@ -65,6 +65,7 @@ public class IntervalPartition {
      * }
      * }</pre>
      */
+    //todo 保证每一个SortedRun中的DataFileMeta都是有序且没有key重叠！！！！！！
     public List<List<SortedRun>> partition() {
         List<List<SortedRun>> result = new ArrayList<>();
         List<DataFileMeta> section = new ArrayList<>();
@@ -91,7 +92,7 @@ public class IntervalPartition {
 
         return result;
     }
-
+    //todo 保证每一个SortedRun中的DataFileMeta都是有序且没有key重叠！！！！！！
     private List<SortedRun> partition(List<DataFileMeta> metas) {
         PriorityQueue<List<DataFileMeta>> queue =
                 new PriorityQueue<>(

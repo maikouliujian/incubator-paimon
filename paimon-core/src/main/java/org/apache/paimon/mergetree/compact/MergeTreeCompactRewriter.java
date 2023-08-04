@@ -76,6 +76,7 @@ public class MergeTreeCompactRewriter extends AbstractCompactRewriter {
                         mergeSorter);
         writer.write(new RecordReaderIterator<>(sectionsReader));
         writer.close();
+        //todo extractFilesFromSections(sections) compaction之前的数据文件
         return new CompactResult(extractFilesFromSections(sections), writer.result());
     }
 }

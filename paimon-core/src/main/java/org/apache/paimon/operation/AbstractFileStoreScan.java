@@ -343,6 +343,7 @@ public abstract class AbstractFileStoreScan implements FileStoreScan {
         Function<InternalRow, Integer> totalBucketGetter =
                 ManifestEntrySerializer.totalBucketGetter();
         return row -> {
+            //todo 过滤！！！！！！
             if ((partitionFilter != null
                     && !partitionFilter.test(
                             partitionConverter.convert(partitionGetter.apply(row))))) {

@@ -482,6 +482,7 @@ public class Snapshot {
         /** Changes by compacting existing data files. */
         COMPACT,
 
+        //todo OVERWRITE
         /** Changes that clear up the whole partition and then add new records. */
         OVERWRITE
     }

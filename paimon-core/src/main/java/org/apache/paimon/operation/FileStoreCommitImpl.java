@@ -512,7 +512,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             }
         }
     }
-
+    //todo 提交overwrite
     private void tryOverwrite(
             Predicate partitionFilter,
             List<ManifestEntry> changes,
@@ -532,6 +532,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
                                 .plan()
                                 .files();
                 for (ManifestEntry entry : currentEntries) {
+                    //todo 被overwrite的数据被标识为delete！！！！！！
                     changesWithOverwrite.add(
                             new ManifestEntry(
                                     FileKind.DELETE,

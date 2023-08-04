@@ -191,9 +191,12 @@ public class KeyValueFileWriterFactory {
                 int bucket,
                 RowType rowType,
                 FileFormat defaultFormat,
+                //todo <数据格式,创建该数据格式文件的Factory>
                 Map<String, FileStorePathFactory> parentFactories,
                 CoreOptions options) {
+            //todo lsm树每一层的数据格式
             Map<Integer, String> fileFormatPerLevel = options.fileFormatPerLevel();
+            //todo 根据level获取数据格式
             this.level2Format =
                     level ->
                             fileFormatPerLevel.getOrDefault(
@@ -201,11 +204,14 @@ public class KeyValueFileWriterFactory {
 
             String defaultCompress = options.fileCompression();
             Map<Integer, String> fileCompressionPerLevel = options.fileCompressionPerLevel();
+            //todo 根据level获取数据压缩格式
             this.level2Compress =
                     level -> fileCompressionPerLevel.getOrDefault(level, defaultCompress);
-
+            //todo <文件格式,表状态信息>
             this.format2Extractor = new HashMap<>();
+            //todo <文件格式,写数据的path>
             this.format2PathFactory = new HashMap<>();
+            //todo <文件格式,写数据的writer>
             this.format2WriterFactory = new HashMap<>();
             FieldStatsCollector.Factory[] statsCollectorFactories =
                     StatsCollectorFactories.createStatsFactories(options, rowType.getFieldNames());

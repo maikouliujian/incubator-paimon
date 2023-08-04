@@ -46,6 +46,7 @@ public class RollingFileWriter<T, R> implements FileWriter<T, List<R>> {
     private final Supplier<? extends SingleFileWriter<T, R>> writerFactory;
     private final long targetFileSize;
     private final List<AbortExecutor> closedWriters;
+    //todo compaction后的新的数据文件的集合
     private final List<R> results;
 
     private SingleFileWriter<T, R> currentWriter = null;

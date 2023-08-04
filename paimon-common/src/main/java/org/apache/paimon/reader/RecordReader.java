@@ -104,6 +104,7 @@ public interface RecordReader<T> extends Closeable {
                         if (next == null) {
                             return null;
                         }
+                        //todo 过滤数据！！！！！！
                         if (filter.test(next)) {
                             return next;
                         }

@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 
 /** Generate sequence number. */
 public class SequenceGenerator {
+    //todo sg字段的index
     private final int index;
 
     private final Generator generator;

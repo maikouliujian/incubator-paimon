@@ -150,6 +150,7 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
                 writerFactoryBuilder.build(partition, bucket, options);
         Comparator<InternalRow> keyComparator = keyComparatorSupplier.get();
         Levels levels = new Levels(keyComparator, restoreFiles, options.numLevels());
+        //todo compaction策略！！！！！！
         UniversalCompaction universalCompaction =
                 new UniversalCompaction(
                         options.maxSizeAmplificationPercent(),
