@@ -111,6 +111,7 @@ public abstract class FlinkTableSinkBase
 
         LogSinkProvider logSinkProvider = null;
         if (logStoreTableFactory != null) {
+            //todo 写数据到文件的同时也将数据写入queue，目前只支持kafka
             logSinkProvider = logStoreTableFactory.createSinkProvider(this.context, context);
         }
 
@@ -120,9 +121,11 @@ public abstract class FlinkTableSinkBase
                 overwrite ? null : (logSinkProvider == null ? null : logSinkProvider.createSink());
         return new PaimonDataStreamSinkProvider(
                 (dataStream) ->
+                        //todo FileStoreTable只区分主键表和append表
                         new FlinkSinkBuilder((FileStoreTable) table)
                                 .withInput(
                                         new DataStream<>(
+                                                //todo 上游dataStream
                                                 dataStream.getExecutionEnvironment(),
                                                 dataStream.getTransformation()))
                                 .withLogSinkFunction(logSinkFunction)

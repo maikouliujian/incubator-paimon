@@ -90,6 +90,7 @@ public class GlobalDynamicBucketSink extends FlinkWriteSink<Tuple2<InternalRow, 
                                 new InternalTypeInfo<>(
                                         new KeyWithRowSerializer<>(
                                                 bootstrapSerializer, rowSerializer)),
+                                //todo IndexBootstrapOperator：获取历史文件中所有的key，并将【key和数据】都发送到下游
                                 new IndexBootstrapOperator<>(new IndexBootstrap(table), r -> r))
                         .setParallelism(input.getParallelism());
 
@@ -104,6 +105,7 @@ public class GlobalDynamicBucketSink extends FlinkWriteSink<Tuple2<InternalRow, 
 
         KeyPartRowChannelComputer channelComputer =
                 new KeyPartRowChannelComputer(rowType, bootstrapType, primaryKeys);
+        //todo 进行分区
         DataStream<Tuple2<KeyPartOrRow, InternalRow>> partitionByKeyHash =
                 partition(bootstraped, channelComputer, assignerParallelism);
 
@@ -115,6 +117,7 @@ public class GlobalDynamicBucketSink extends FlinkWriteSink<Tuple2<InternalRow, 
                         .transform(
                                 "dynamic-bucket-assigner",
                                 rowWithBucketType,
+                                //todo GlobalIndexAssignerOperator
                                 GlobalIndexAssignerOperator.forRowData(table))
                         .setParallelism(partitionByKeyHash.getParallelism());
 

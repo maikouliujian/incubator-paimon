@@ -70,9 +70,11 @@ public class GlobalIndexAssignerOperator
         InternalRow value = tuple2.f1;
         switch (tuple2.f0) {
             case KEY_PART:
+                //todo 处理key
                 assigner.bootstrapKey(value);
                 break;
             case ROW:
+                //todo 处理数据
                 assigner.processInput(value);
                 break;
         }

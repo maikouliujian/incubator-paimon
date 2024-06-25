@@ -48,6 +48,7 @@ public class DynamicBucketCompactSink extends RowDynamicBucketSink {
         // for each record, and sink them to table.
 
         // bucket-assigner
+        //todo bucket-assigner 函数
         HashBucketAssignerOperator<InternalRow> assignerOperator =
                 new HashBucketAssignerOperator<>(
                         initialCommitUser, table, null, extractorFunction(), true);

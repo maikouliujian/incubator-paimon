@@ -91,6 +91,7 @@ public class FlinkSinkBuilder {
 
     public DataStreamSink<?> build() {
         DataStream<InternalRow> input = MapToInternalRow.map(this.input, table.rowType());
+        //todo 如果开启了local merge，那么在sink之前需要进行local merge
         if (table.coreOptions().localMergeEnabled() && table.schema().primaryKeys().size() > 0) {
             input =
                     input.forward()
@@ -104,10 +105,13 @@ public class FlinkSinkBuilder {
         BucketMode bucketMode = table.bucketMode();
         switch (bucketMode) {
             case FIXED:
+                //todo 固定bucket数
                 return buildForFixedBucket(input);
             case DYNAMIC:
+                //todo 动态bucket，非global
                 return buildDynamicBucketSink(input, false);
             case GLOBAL_DYNAMIC:
+                //todo 动态bucket，global
                 return buildDynamicBucketSink(input, true);
             case UNAWARE:
                 return buildUnawareBucketSink(input);
@@ -121,8 +125,10 @@ public class FlinkSinkBuilder {
         checkArgument(logSinkFunction == null, "Dynamic bucket mode can not work with log system.");
         return compactSink && !globalIndex
                 // todo support global index sort compact
+                //todo 动态bucket，非global
                 ? new DynamicBucketCompactSink(table, overwritePartition).build(input, parallelism)
                 : globalIndex
+                        //todo 全局动态bucket
                         ? new GlobalDynamicBucketSink(table, overwritePartition)
                                 .build(input, parallelism)
                         : new RowDynamicBucketSink(table, overwritePartition)
@@ -133,6 +139,8 @@ public class FlinkSinkBuilder {
         DataStream<InternalRow> partitioned =
                 partition(
                         input,
+                        //todo bucket分区器，按照bucket数进行分区
+                        //todo 一个subtask对应一个bucket
                         new RowDataChannelComputer(table.schema(), logSinkFunction != null),
                         parallelism);
         FixedBucketSink sink = new FixedBucketSink(table, overwritePartition, logSinkFunction);

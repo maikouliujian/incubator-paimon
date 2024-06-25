@@ -56,6 +56,7 @@ public class SimpleHashBucketAssigner implements BucketAssigner {
     private class SimplePartitionIndex {
 
         public final Int2ShortHashMap hash2Bucket = new Int2ShortHashMap();
+        //todo <bucket,rows>
         private final Map<Integer, Long> bucketInformation;
         private int currentBucket;
 
@@ -71,6 +72,7 @@ public class SimpleHashBucketAssigner implements BucketAssigner {
             }
 
             Long num = bucketInformation.computeIfAbsent(currentBucket, i -> 0L);
+            //todo 当相同bucket中的数据量超过目标值时，新建bucket
             if (num >= targetBucketRowNumber) {
                 loadNewBucket();
             }
@@ -82,6 +84,7 @@ public class SimpleHashBucketAssigner implements BucketAssigner {
         private void loadNewBucket() {
             for (int i = 0; i < Short.MAX_VALUE; i++) {
                 if (i % numAssigners == assignId && !bucketInformation.containsKey(i)) {
+                    //todo 分配新的bucketid
                     currentBucket = i;
                     return;
                 }

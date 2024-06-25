@@ -237,7 +237,7 @@ public class CoreOptions implements Serializable {
                     .withDescription(
                             "Max split size should be cached for one task while scanning. "
                                     + "If splits size cached in enumerator are greater than tasks size multiply by this value, scanner will pause scanning.");
-
+    //todo 不同的merge-engine有不同的merge函数
     @Immutable
     public static final ConfigOption<MergeEngine> MERGE_ENGINE =
             key("merge-engine")
@@ -818,7 +818,7 @@ public class CoreOptions implements Serializable {
                     .defaultValue(false)
                     .withDescription(
                             "Whether to ignore consumer progress for the newly started job.");
-
+    //todo 动态bucket时，一个bucket下数据行数控制
     public static final ConfigOption<Long> DYNAMIC_BUCKET_TARGET_ROW_NUM =
             key("dynamic-bucket.target-row-num")
                     .longType()

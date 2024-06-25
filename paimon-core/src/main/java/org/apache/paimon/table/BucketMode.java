@@ -22,6 +22,7 @@ package org.apache.paimon.table;
  * Bucket mode of the table, it affects the writing process and also affects the data skipping in
  * reading.
  */
+//todo bucket类型
 public enum BucketMode {
 
     /**
@@ -30,26 +31,26 @@ public enum BucketMode {
      * (default is primary key), and the reading end can perform data skipping based on the
      * filtering conditions of the bucket key.
      */
-    FIXED,
+    FIXED,//todo 固定bucket数
 
     /**
      * The Dynamic bucket mode records which bucket the key corresponds to through the index files.
      * This mode cannot support multiple concurrent writes or data skipping for reading filter
      * conditions. This mode only works for changelog table.
      */
-    DYNAMIC,
+    DYNAMIC,//todo 动态bucket数
 
     /**
      * Compared with the DYNAMIC mode, this mode not only dynamically allocates buckets for
      * Partition table, but also updates data across partitions. The primary key does not contain
      * partition fields.
      */
-    GLOBAL_DYNAMIC,
+    GLOBAL_DYNAMIC,//todo 主键不能包含分区字段
 
     /**
      * Ignoring buckets can be equivalent to understanding that all data enters the global bucket,
      * and data is randomly written to the table. The data in the bucket has no order relationship
      * at all. This mode only works for append-only table.
      */
-    UNAWARE
+    UNAWARE//todo append only表
 }

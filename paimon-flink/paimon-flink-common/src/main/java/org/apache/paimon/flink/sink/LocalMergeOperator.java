@@ -95,6 +95,7 @@ public class LocalMergeOperator extends AbstractStreamOperator<InternalRow>
         recordCount = 0;
         sequenceGenerator = SequenceGenerator.create(schema, options);
         rowKindGenerator = RowKindGenerator.create(schema, options);
+        //todo 针对PrimaryKey表创建mergeFunction，有多种mergeFunction，具体见：MergeEngine
         mergeFunction =
                 PrimaryKeyTableUtils.createMergeFunctionFactory(
                                 schema,
@@ -143,6 +144,7 @@ public class LocalMergeOperator extends AbstractStreamOperator<InternalRow>
         long sequenceNumber =
                 sequenceGenerator == null ? recordCount : sequenceGenerator.generate(row);
         if (!buffer.put(sequenceNumber, rowKind, key, row)) {
+            //todo 如果buffer满了，那么需要将buffer中的数据进行merge
             flushBuffer();
             if (!buffer.put(sequenceNumber, rowKind, key, row)) {
                 // change row kind back
@@ -193,6 +195,7 @@ public class LocalMergeOperator extends AbstractStreamOperator<InternalRow>
                 kv -> {
                     InternalRow row = kv.value();
                     row.setRowKind(kv.valueKind());
+                    //todo 将合并的数据发送到下游
                     output.collect(new StreamRecord<>(row));
                 });
         buffer.clear();

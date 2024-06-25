@@ -48,6 +48,7 @@ public class IndexBootstrapOperator<T> extends AbstractStreamOperator<Tuple2<Key
     @Override
     public void initializeState(StateInitializationContext context) throws Exception {
         super.initializeState(context);
+        //todo 获取历史文件中所有的key
         bootstrap.bootstrap(
                 getRuntimeContext().getNumberOfParallelSubtasks(),
                 getRuntimeContext().getIndexOfThisSubtask(),

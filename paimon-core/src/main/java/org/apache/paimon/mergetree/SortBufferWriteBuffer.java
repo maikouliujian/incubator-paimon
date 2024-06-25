@@ -123,6 +123,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
     @Override
     public void forEach(
             Comparator<InternalRow> keyComparator,
+            //todo merge函数
             MergeFunction<KeyValue> mergeFunction,
             @Nullable KvConsumer rawConsumer,
             KvConsumer mergedConsumer)
@@ -131,6 +132,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
         MergeIterator mergeIterator =
                 new MergeIterator(
                         rawConsumer, buffer.sortedIterator(), keyComparator, mergeFunction);
+        //todo 迭代器模式
         while (mergeIterator.hasNext()) {
             mergedConsumer.accept(mergeIterator.next());
         }
@@ -150,6 +152,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
         @Nullable private final KvConsumer rawConsumer;
         private final MutableObjectIterator<BinaryRow> kvIter;
         private final Comparator<InternalRow> keyComparator;
+        //todo merge函数
         private final ReducerMergeFunctionWrapper mergeFunctionWrapper;
 
         // previously read kv
@@ -183,6 +186,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
         }
 
         public boolean hasNext() throws IOException {
+            //todo merge
             advanceIfNeeded();
             return previousRow != null;
         }
@@ -216,6 +220,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
                             != 0) {
                         break;
                     }
+                    //todo 进行merge
                     mergeFunctionWrapper.add(current.getReusedKv());
                     swapSerializers();
                 }

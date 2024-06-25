@@ -41,7 +41,7 @@ public class FlinkStreamPartitioner<T> extends StreamPartitioner<T> {
         super.setup(numberOfChannels);
         channelComputer.setup(numberOfChannels);
     }
-
+    //todo 进行分区
     @Override
     public int selectChannel(SerializationDelegate<StreamRecord<T>> record) {
         return channelComputer.channel(record.getInstance().getValue());

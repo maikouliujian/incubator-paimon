@@ -147,6 +147,7 @@ public class GlobalIndexAssigner implements Serializable, Closeable {
                         rocksdbOptions,
                         coreOptions.crossPartitionUpsertIndexTtl());
         RowType keyType = table.schema().logicalTrimmedPrimaryKeysType();
+        //todo 启动了一个rocksdb实例，创建RocksDBState，维护全局key，还做了缓存
         this.keyIndex =
                 stateFactory.valueState(
                         INDEX_NAME,

@@ -46,7 +46,7 @@ public class RowDataChannelComputer implements ChannelComputer<InternalRow> {
         this.numChannels = numChannels;
         this.extractor = new FixedBucketRowKeyExtractor(schema);
     }
-
+    //todo 计算channel
     @Override
     public int channel(InternalRow record) {
         extractor.setRecord(record);
@@ -56,6 +56,7 @@ public class RowDataChannelComputer implements ChannelComputer<InternalRow> {
     public int channel(BinaryRow partition, int bucket) {
         // log sinks like Kafka only consider bucket and don't care about partition
         // so same bucket, even from different partition, must go to the same channel
+        //todo kafka sink不需要关注partition
         return hasLogSink
                 ? ChannelComputer.select(bucket, numChannels)
                 : ChannelComputer.select(partition, bucket, numChannels);

@@ -85,6 +85,7 @@ public class IndexBootstrap implements Serializable {
                         .withProjection(keyProjection);
 
         AbstractInnerTableScan tableScan = (AbstractInnerTableScan) readBuilder.newScan();
+        //todo 过滤出当前subtask对应的bucket
         List<Split> splits =
                 tableScan
                         .withBucketFilter(bucket -> bucket % numAssigners == assignId)
@@ -92,6 +93,7 @@ public class IndexBootstrap implements Serializable {
                         .splits();
 
         CoreOptions options = CoreOptions.fromMap(table.options());
+        //todo ttl，过滤出ttl之内的文件，如果ttl为0，则需要读取所有文件
         Duration indexTtl = options.crossPartitionUpsertIndexTtl();
         if (indexTtl != null) {
             long indexTtlMillis = indexTtl.toMillis();

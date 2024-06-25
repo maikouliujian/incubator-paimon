@@ -76,7 +76,9 @@ public class HashBucketAssignerOperator<T> extends AbstractStreamOperator<Tuple2
 
         int numberTasks = getRuntimeContext().getNumberOfParallelSubtasks();
         int taskId = getRuntimeContext().getIndexOfThisSubtask();
+        //todo 动态bucket时，一个bucket下数据行数控制
         long targetRowNum = table.coreOptions().dynamicBucketTargetRowNum();
+        //todo assigner
         this.assigner =
                 overwrite
                         ? new SimpleHashBucketAssigner(numberTasks, taskId, targetRowNum)
@@ -95,6 +97,7 @@ public class HashBucketAssignerOperator<T> extends AbstractStreamOperator<Tuple2
     public void processElement(StreamRecord<T> streamRecord) throws Exception {
         T value = streamRecord.getValue();
         int bucket =
+                //todo 分配bucketid！！！！！！！
                 assigner.assign(
                         extractor.partition(value), extractor.trimmedPrimaryKey(value).hashCode());
         output.collect(new StreamRecord<>(new Tuple2<>(value, bucket)));
