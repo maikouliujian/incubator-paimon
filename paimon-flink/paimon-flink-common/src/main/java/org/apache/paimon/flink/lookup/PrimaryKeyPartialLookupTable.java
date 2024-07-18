@@ -53,6 +53,7 @@ import static org.apache.paimon.CoreOptions.StreamScanMode.FILE_MONITOR;
 public class PrimaryKeyPartialLookupTable implements LookupTable {
 
     private final Function<Predicate, QueryExecutor> executorFactory;
+    //todo 固定bucket
     private final FixedBucketFromPkExtractor extractor;
     @Nullable private final ProjectedRow keyRearrange;
     @Nullable private final ProjectedRow trimmedKeyRearrange;
@@ -120,14 +121,16 @@ public class PrimaryKeyPartialLookupTable implements LookupTable {
             adjustedKey = keyRearrange.replaceRow(adjustedKey);
         }
         extractor.setRecord(adjustedKey);
+        //todo 寻找adjustedKey对应的bucket
         int bucket = extractor.bucket();
+        //todo 寻找adjustedKey对应的partition
         BinaryRow partition = extractor.partition();
 
         InternalRow trimmedKey = key;
         if (trimmedKeyRearrange != null) {
             trimmedKey = trimmedKeyRearrange.replaceRow(trimmedKey);
         }
-
+        //todo 寻找trimmedKey对应的value
         InternalRow kv = queryExecutor.lookup(partition, bucket, trimmedKey);
         if (kv == null) {
             return Collections.emptyList();
@@ -138,6 +141,7 @@ public class PrimaryKeyPartialLookupTable implements LookupTable {
 
     @Override
     public void refresh() {
+        //todo
         queryExecutor.refresh();
     }
 
@@ -191,6 +195,7 @@ public class PrimaryKeyPartialLookupTable implements LookupTable {
         @Override
         public InternalRow lookup(BinaryRow partition, int bucket, InternalRow key)
                 throws IOException {
+            //todo 对表执行lookup操作
             return tableQuery.lookup(partition, bucket, key);
         }
 

@@ -40,7 +40,7 @@ import java.util.Arrays;
 public class ProjectedRow implements InternalRow {
 
     protected final int[] indexMapping;
-
+    //todo 真正的row
     protected InternalRow row;
 
     protected ProjectedRow(int[] indexMapping) {

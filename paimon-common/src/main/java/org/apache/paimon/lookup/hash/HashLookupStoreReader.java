@@ -111,7 +111,7 @@ public class HashLookupStoreReader
                             context.bloomFilterBytes);
         }
     }
-
+    //todo lookup
     @Override
     public byte[] lookup(byte[] key) throws IOException {
         int keyLength = key.length;

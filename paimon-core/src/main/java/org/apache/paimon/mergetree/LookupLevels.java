@@ -121,27 +121,29 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
     public T lookup(InternalRow key, int startLevel) throws IOException {
         return LookupUtils.lookup(levels, key, startLevel, this::lookup, this::lookupLevel0);
     }
-
+    //todo 点查第0层
     @Nullable
     private T lookupLevel0(InternalRow key, TreeSet<DataFileMeta> level0) throws IOException {
         return LookupUtils.lookupLevel0(keyComparator, key, level0, this::lookup);
     }
-
+    //todo 点查第1～n层
     @Nullable
     private T lookup(InternalRow key, SortedRun level) throws IOException {
         return LookupUtils.lookup(keyComparator, key, level, this::lookup);
     }
-
+    //todo 从文件中点查key
     @Nullable
     private T lookup(InternalRow key, DataFileMeta file) throws IOException {
         LookupFile lookupFile = lookupFiles.getIfPresent(file.fileName());
 
         while (lookupFile == null || lookupFile.isClosed) {
+            //todo 根据元数据文件 获取 文件
             lookupFile = createLookupFile(file);
             lookupFiles.put(file.fileName(), lookupFile);
         }
 
         byte[] keyBytes = keySerializer.serializeToBytes(key);
+        //todo 从文件中获取key
         byte[] valueBytes = lookupFile.get(keyBytes);
         if (valueBytes == null) {
             return null;
@@ -170,9 +172,11 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
         if (!localFile.createNewFile()) {
             throw new IOException("Can not create new file: " + localFile);
         }
+        //todo 创建文件写入器
         LookupStoreWriter kvWriter =
                 lookupStoreFactory.createWriter(localFile, bfGenerator.apply(file.rowCount()));
         LookupStoreFactory.Context context;
+        //todo 创建reader
         try (RecordReader<KeyValue> reader = fileReaderFactory.apply(file)) {
             KeyValue kv;
             if (valueProcessor.withPosition()) {
@@ -192,6 +196,7 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
                     while ((kv = batch.next()) != null) {
                         byte[] keyBytes = keySerializer.serializeToBytes(kv.key());
                         byte[] valueBytes = valueProcessor.persistToDisk(kv);
+                        //todo 写出
                         kvWriter.put(keyBytes, valueBytes);
                     }
                     batch.releaseBatch();

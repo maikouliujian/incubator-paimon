@@ -85,6 +85,7 @@ public class DynamicPartitionLoader implements Serializable {
         }
 
         BinaryRow previous = this.partition;
+        //todo 获取最新分区
         partition = scan.listPartitions().stream().max(comparator).orElse(null);
         lastRefresh = LocalDateTime.now();
 

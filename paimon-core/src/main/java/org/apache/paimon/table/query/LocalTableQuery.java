@@ -166,7 +166,7 @@ public class LocalTableQuery implements TableQuery {
         if (lookupLevels == null) {
             return null;
         }
-
+        //todo lsm树下进行lookup
         KeyValue kv = lookupLevels.lookup(key, startLevel);
         if (kv == null || kv.valueKind().isRetract()) {
             return null;

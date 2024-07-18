@@ -92,7 +92,7 @@ public class KeyValueFileReaderFactory implements FileReaderFactory<KeyValue> {
         this.bulkFormatMappings = new HashMap<>();
         this.dvFactory = dvFactory;
     }
-
+    //todo 根据文件元数据创建读取文件数据的RecordReader
     @Override
     public RecordReader<KeyValue> createRecordReader(DataFileMeta file) throws IOException {
         return createRecordReader(file.schemaId(), file.fileName(), file.fileSize(), file.level());
@@ -101,6 +101,7 @@ public class KeyValueFileReaderFactory implements FileReaderFactory<KeyValue> {
     public RecordReader<KeyValue> createRecordReader(
             long schemaId, String fileName, long fileSize, int level) throws IOException {
         if (fileSize >= asyncThreshold && fileName.endsWith("orc")) {
+            //todo 异步读取文件数据
             return new AsyncRecordReader<>(
                     () -> createRecordReader(schemaId, fileName, level, false, 2, fileSize));
         }

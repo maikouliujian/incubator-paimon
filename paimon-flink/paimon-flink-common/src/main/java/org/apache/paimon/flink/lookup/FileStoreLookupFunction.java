@@ -88,6 +88,7 @@ public class FileStoreLookupFunction implements Serializable, Closeable {
 
     private transient Duration refreshInterval;
     private transient File path;
+    //todo lookup table
     private transient LookupTable lookupTable;
 
     // timestamp when cache expires
@@ -98,6 +99,7 @@ public class FileStoreLookupFunction implements Serializable, Closeable {
         TableScanUtils.streamingReadingValidate(table);
 
         this.table = table;
+        //todo 用于分区加载
         this.partitionLoader = DynamicPartitionLoader.of(table);
 
         // join keys are based on projection fields
@@ -157,6 +159,7 @@ public class FileStoreLookupFunction implements Serializable, Closeable {
 
         if (options.get(LOOKUP_CACHE_MODE) == LookupCacheMode.AUTO
                 && new HashSet<>(table.primaryKeys()).equals(new HashSet<>(joinKeys))) {
+            //todo 创建不同的lookup table
             if (isRemoteServiceAvailable(storeTable)) {
                 this.lookupTable =
                         PrimaryKeyPartialLookupTable.createRemoteTable(
@@ -202,7 +205,7 @@ public class FileStoreLookupFunction implements Serializable, Closeable {
         }
         return adjustedPredicate;
     }
-
+    //todo look up执行入口
     public Collection<RowData> lookup(RowData keyRow) {
         try {
             checkRefresh();
@@ -215,7 +218,7 @@ public class FileStoreLookupFunction implements Serializable, Closeable {
                 }
                 key = JoinedRow.join(key, partition);
             }
-
+            //todo 获取lookup结果
             List<InternalRow> results = lookupTable.get(key);
             List<RowData> rows = new ArrayList<>(results.size());
             for (InternalRow matchedRow : results) {
@@ -296,7 +299,7 @@ public class FileStoreLookupFunction implements Serializable, Closeable {
     LookupTable lookupTable() {
         return lookupTable;
     }
-
+    //todo 刷新lookupTable
     private void refresh() throws Exception {
         lookupTable.refresh();
     }

@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 
 /** {@link RecordReader} for reading {@link KeyValue} data files. */
+//todo 读取数据
 public class KeyValueDataFileRecordReader implements RecordReader<KeyValue> {
 
     private final RecordReader<InternalRow> reader;
@@ -45,6 +46,7 @@ public class KeyValueDataFileRecordReader implements RecordReader<KeyValue> {
     @Nullable
     @Override
     public RecordIterator<KeyValue> readBatch() throws IOException {
+        //todo 真正读数据
         RecordReader.RecordIterator<InternalRow> iterator = reader.readBatch();
         if (iterator == null) {
             return null;

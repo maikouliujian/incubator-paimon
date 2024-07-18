@@ -38,9 +38,9 @@ import static org.apache.paimon.utils.Preconditions.checkArgument;
 public class Levels {
 
     private final Comparator<InternalRow> keyComparator;
-
+    //todo 第0层
     private final TreeSet<DataFileMeta> level0;
-
+    //todo 1～n层
     private final List<SortedRun> levels;
 
     private final List<DropFileCallback> dropFileCallbacks = new ArrayList<>();

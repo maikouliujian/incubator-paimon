@@ -43,6 +43,7 @@ public class NewLookupFunction extends LookupFunction {
 
     @Override
     public Collection<RowData> lookup(RowData keyRow) throws IOException {
+        //todo look up
         return function.lookup(keyRow);
     }
 

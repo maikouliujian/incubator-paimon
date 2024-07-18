@@ -31,7 +31,7 @@ import java.util.TreeSet;
 
 /** Utils for lookup. */
 public class LookupUtils {
-
+    //todo 对lsm数进行点查
     public static <T> T lookup(
             Levels levels,
             InternalRow key,
@@ -41,10 +41,13 @@ public class LookupUtils {
             throws IOException {
 
         T result = null;
+        //todo 遍历lsm树的所有层
         for (int i = startLevel; i < levels.numberOfLevels(); i++) {
             if (i == 0) {
+                //todo 处理第0层
                 result = level0Lookup.apply(key, levels.level0());
             } else {
+                //todo 处理第1～n层
                 SortedRun level = levels.runOfLevel(i);
                 result = lookup.apply(key, level);
             }
@@ -55,7 +58,7 @@ public class LookupUtils {
 
         return result;
     }
-
+    //todo 点查 0 层 【key有重叠】
     public static <T> T lookupLevel0(
             Comparator<InternalRow> keyComparator,
             InternalRow target,
@@ -64,6 +67,7 @@ public class LookupUtils {
             throws IOException {
         T result = null;
         for (DataFileMeta file : level0) {
+            //todo 元信息中记录了最大key和最小key
             if (keyComparator.compare(file.maxKey(), target) >= 0
                     && keyComparator.compare(file.minKey(), target) <= 0) {
                 result = lookup.apply(target, file);
@@ -75,7 +79,8 @@ public class LookupUtils {
 
         return result;
     }
-
+    //todo 点查 1～n 层
+    //todo 二分查找到对应的文件【key不重叠可以这么做，一个key只会出现在一个文件中】
     public static <T> T lookup(
             Comparator<InternalRow> keyComparator,
             InternalRow target,
