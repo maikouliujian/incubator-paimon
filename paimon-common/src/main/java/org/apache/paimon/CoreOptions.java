@@ -1094,7 +1094,7 @@ public class CoreOptions implements Serializable {
                     .booleanType()
                     .defaultValue(false)
                     .withDescription("Whether to force create snapshot on commit.");
-
+    //todo 是否开启deletion-vectors
     public static final ConfigOption<Boolean> DELETION_VECTORS_ENABLED =
             key("deletion-vectors.enabled")
                     .booleanType()

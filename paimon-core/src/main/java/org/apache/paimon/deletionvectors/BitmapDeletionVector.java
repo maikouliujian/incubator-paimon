@@ -29,6 +29,8 @@ import java.io.IOException;
  * A {@link DeletionVector} based on {@link RoaringBitmap32}, it only supports files with row count
  * not exceeding {@link RoaringBitmap32#MAX_VALUE}.
  */
+//todo BitmapDeletionVector
+//todo 记录被删除的位置，一个position代表file中被删除的一行数据
 public class BitmapDeletionVector implements DeletionVector {
 
     public static final int MAGIC_NUMBER = 1581511376;

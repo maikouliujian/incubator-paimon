@@ -37,6 +37,7 @@ import static org.apache.paimon.deletionvectors.DeletionVectorsIndexFile.DELETIO
 public class DeletionVectorsMaintainer {
 
     private final IndexFileHandler indexFileHandler;
+    //todo 维护<fileName,DeletionVector>的映射关系
     private final Map<String, DeletionVector> deletionVectors;
     private boolean modified;
 
@@ -66,6 +67,7 @@ public class DeletionVectorsMaintainer {
      * @param fileName The name of the file where the deletion occurred.
      * @param position The row position within the file that has been deleted.
      */
+    //todo 记录新的删除，为每一个文件维护一个BitmapDeletionVector
     public void notifyNewDeletion(String fileName, long position) {
         DeletionVector deletionVector =
                 deletionVectors.computeIfAbsent(fileName, k -> new BitmapDeletionVector());

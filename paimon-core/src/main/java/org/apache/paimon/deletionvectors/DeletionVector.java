@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 /**
  * The DeletionVector can efficiently record the positions of rows that are deleted in a file, which
  * can then be used to filter out deleted rows when processing the file.

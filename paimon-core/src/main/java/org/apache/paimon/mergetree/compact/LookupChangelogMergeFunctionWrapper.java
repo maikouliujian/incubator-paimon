@@ -134,6 +134,7 @@ public class LookupChangelogMergeFunctionWrapper<T>
                 if (lookupStrategy.deletionVector) {
                     PositionedKeyValue positionedKeyValue = (PositionedKeyValue) lookupResult;
                     highLevel = positionedKeyValue.keyValue();
+                    //todo 标记新的删除
                     deletionVectorsMaintainer.notifyNewDeletion(
                             positionedKeyValue.fileName(), positionedKeyValue.rowPosition());
                 } else {

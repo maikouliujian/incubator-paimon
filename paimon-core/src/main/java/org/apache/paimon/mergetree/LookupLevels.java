@@ -337,7 +337,7 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
         public byte[] persistToDisk(KeyValue kv) {
             throw new UnsupportedOperationException();
         }
-
+        //todo 持久化数据
         @Override
         public byte[] persistToDisk(KeyValue kv, long rowPosition) {
             if (persistValue) {
