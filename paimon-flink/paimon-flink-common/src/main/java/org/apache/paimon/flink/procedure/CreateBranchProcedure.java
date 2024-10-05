@@ -35,6 +35,7 @@ import org.apache.flink.table.procedure.ProcedureContext;
  *  CALL sys.create_branch('tableId', 'branchName', 'tagName')
  * </code></pre>
  */
+//todo create_branch语法
 public class CreateBranchProcedure extends ProcedureBase {
 
     public static final String IDENTIFIER = "create_branch";
@@ -55,8 +56,10 @@ public class CreateBranchProcedure extends ProcedureBase {
             throws Catalog.TableNotExistException {
         Table table = catalog.getTable(Identifier.fromString(tableId));
         if (!StringUtils.isBlank(tagName)) {
+            //todo 依据tag创建分支
             table.createBranch(branchName, tagName);
         } else {
+            //todo 创建分支
             table.createBranch(branchName);
         }
         return new String[] {"Success"};

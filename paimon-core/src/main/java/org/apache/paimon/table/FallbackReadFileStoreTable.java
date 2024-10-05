@@ -288,12 +288,13 @@ public class FallbackReadFileStoreTable extends DelegatedFileStoreTable {
                 splits.add(dataSplit);
                 completePartitions.add(dataSplit.partition());
             }
-
+            //todo 过滤出main branch不包含但fallback branch包含的分区
             List<BinaryRow> remainingPartitions =
                     fallbackScan.listPartitions().stream()
                             .filter(p -> !completePartitions.contains(p))
                             .collect(Collectors.toList());
             if (!remainingPartitions.isEmpty()) {
+                //todo fallbackScan中添加分区过滤
                 fallbackScan.withPartitionFilter(remainingPartitions);
                 for (Split split : fallbackScan.plan().splits()) {
                     splits.add((DataSplit) split);

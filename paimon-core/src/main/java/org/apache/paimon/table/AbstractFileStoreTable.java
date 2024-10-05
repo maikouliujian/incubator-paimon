@@ -220,7 +220,7 @@ abstract class AbstractFileStoreTable implements FileStoreTable {
                 name(),
                 store().newIndexFileHandler());
     }
-
+    //todo batch scan
     @Override
     public DataTableBatchScan newScan() {
         return new DataTableBatchScan(
@@ -229,7 +229,7 @@ abstract class AbstractFileStoreTable implements FileStoreTable {
                 newSnapshotReader(),
                 DefaultValueAssigner.create(tableSchema));
     }
-
+    //todo stream scan
     @Override
     public StreamDataTableScan newStreamScan() {
         return new DataTableStreamScan(
@@ -581,6 +581,7 @@ abstract class AbstractFileStoreTable implements FileStoreTable {
                         store().createTagCallbacks());
     }
 
+    //todo 创建branch本质是创建了一个branch的新目录
     @Override
     public void createBranch(String branchName) {
         branchManager().createBranch(branchName);

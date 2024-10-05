@@ -129,7 +129,7 @@ public abstract class AbstractFileStoreScan implements FileStoreScan {
         this.partitionFilter = PartitionPredicate.fromMultiple(partitionType, partitions);
         return this;
     }
-
+    //todo 添加分区过滤
     @Override
     public FileStoreScan withPartitionFilter(PartitionPredicate predicate) {
         this.partitionFilter = predicate;

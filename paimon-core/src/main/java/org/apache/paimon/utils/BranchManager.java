@@ -37,11 +37,12 @@ import static org.apache.paimon.utils.FileUtils.listVersionedDirectories;
 import static org.apache.paimon.utils.FileUtils.listVersionedFileStatus;
 import static org.apache.paimon.utils.Preconditions.checkArgument;
 
+//todo paimon branch
 /** Manager for {@code Branch}. */
 public class BranchManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(BranchManager.class);
-
+    //todo branch前缀
     public static final String BRANCH_PREFIX = "branch-";
     public static final String DEFAULT_MAIN_BRANCH = "main";
 
@@ -86,6 +87,7 @@ public class BranchManager {
     }
 
     /** Create empty branch. */
+    //todo 创建空分支，只有schema信息
     public void createBranch(String branchName) {
         checkArgument(
                 !isMainBranch(branchName),
@@ -113,7 +115,7 @@ public class BranchManager {
                     e);
         }
     }
-
+    //todo 【CALL sys.create_branch('default.T', 'branch1', 'tag1');】
     public void createBranch(String branchName, String tagName) {
         checkArgument(
                 !isMainBranch(branchName),
@@ -179,7 +181,7 @@ public class BranchManager {
                     String.format("Failed to determine if path '%s' exists.", path), e);
         }
     }
-
+    //todo 合并branch到main
     public void fastForward(String branchName) {
         checkArgument(
                 !branchName.equals(DEFAULT_MAIN_BRANCH),
@@ -187,15 +189,18 @@ public class BranchManager {
                 branchName);
         checkArgument(!StringUtils.isBlank(branchName), "Branch name '%s' is blank.", branchName);
         checkArgument(branchExists(branchName), "Branch name '%s' doesn't exist.", branchName);
-
+       //todo 获取分支最早的快照id
         Long earliestSnapshotId = snapshotManager.copyWithBranch(branchName).earliestSnapshotId();
+        //todo 获取分支最早的快照
         Snapshot earliestSnapshot =
                 snapshotManager.copyWithBranch(branchName).snapshot(earliestSnapshotId);
+        //todo 获取分支最早的SchemaId
         long earliestSchemaId = earliestSnapshot.schemaId();
 
         try {
             // Delete snapshot, schema, and tag from the main branch which occurs after
             // earliestSnapshotId
+            //todo 删除main分支中大于等于branch分支中最早快照id的元数据
             List<Path> deleteSnapshotPaths =
                     listVersionedFileStatus(
                                     fileIO, snapshotManager.snapshotDirectory(), "snapshot-")
@@ -234,6 +239,7 @@ public class BranchManager {
             snapshotManager.deleteLatestHint();
 
             fileIO.deleteFilesQuietly(deletePaths);
+            //todo 复制branch的数据到main
             fileIO.copyFiles(
                     snapshotManager.copyWithBranch(branchName).snapshotDirectory(),
                     snapshotManager.snapshotDirectory(),
@@ -260,7 +266,7 @@ public class BranchManager {
         Path branchPath = branchPath(branchName);
         return fileExists(branchPath);
     }
-
+    //todo 获取表的所有branch
     /** Get all branches for the table. */
     public List<String> branches() {
         try {

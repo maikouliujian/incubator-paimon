@@ -89,10 +89,12 @@ public class FileStoreTableFactory {
                         fileIO, tablePath, tableSchema, dynamicOptions, catalogEnvironment);
 
         Options options = new Options(table.options());
+        //todo 是否配置了scan.fallback-branch
         String fallbackBranch = options.get(CoreOptions.SCAN_FALLBACK_BRANCH);
         if (!StringUtils.isNullOrWhitespaceOnly(fallbackBranch)) {
             Options branchOptions = new Options(dynamicOptions.toMap());
             branchOptions.set(CoreOptions.BRANCH, fallbackBranch);
+            //todo fallbackTable
             FileStoreTable fallbackTable =
                     createWithoutFallbackBranch(
                             fileIO,

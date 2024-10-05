@@ -123,7 +123,7 @@ public class CoreOptions implements Serializable {
                     .stringType()
                     .noDefaultValue()
                     .withDescription("The file path of this table in the filesystem.");
-
+    //todo 默认main
     public static final ConfigOption<String> BRANCH =
             key("branch").stringType().defaultValue("main").withDescription("Specify branch name.");
 
@@ -708,7 +708,7 @@ public class CoreOptions implements Serializable {
                     .defaultValue(false)
                     .withDescription(
                             "Whether to create underlying storage when reading and writing the table.");
-
+    //todo streaming-read-overwrite！！！！！！
     public static final ConfigOption<Boolean> STREAMING_READ_OVERWRITE =
             key("streaming-read-overwrite")
                     .booleanType()
@@ -1319,7 +1319,7 @@ public class CoreOptions implements Serializable {
                     .withDescription(
                             "The maximum number of concurrent deleting files. "
                                     + "By default is the number of processors available to the Java virtual machine.");
-
+    //todo scan.fallback-branch
     public static final ConfigOption<String> SCAN_FALLBACK_BRANCH =
             key("scan.fallback-branch")
                     .stringType()
