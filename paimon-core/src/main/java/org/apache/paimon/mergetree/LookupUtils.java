@@ -43,8 +43,10 @@ public class LookupUtils {
         T result = null;
         for (int i = startLevel; i < levels.numberOfLevels(); i++) {
             if (i == 0) {
+                //todo 处理第0层
                 result = level0Lookup.apply(key, levels.level0());
             } else {
+                //todo 处理1～n层
                 SortedRun level = levels.runOfLevel(i);
                 result = lookup.apply(key, level);
             }
@@ -64,6 +66,7 @@ public class LookupUtils {
             throws IOException {
         T result = null;
         for (DataFileMeta file : level0) {
+            //todo 通过文件中的最大和最小值来判断是否该文件中
             if (keyComparator.compare(file.maxKey(), target) >= 0
                     && keyComparator.compare(file.minKey(), target) <= 0) {
                 result = lookup.apply(target, file);
@@ -75,7 +78,7 @@ public class LookupUtils {
 
         return result;
     }
-
+    //todo 二分查找1～n层
     public static <T> T lookup(
             Comparator<InternalRow> keyComparator,
             InternalRow target,

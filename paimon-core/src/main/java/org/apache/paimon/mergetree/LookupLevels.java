@@ -108,22 +108,22 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
     public void notifyDropFile(String file) {
         lookupFileCache.invalidate(file);
     }
-
+    //todo 点查入口
     @Nullable
     public T lookup(InternalRow key, int startLevel) throws IOException {
         return LookupUtils.lookup(levels, key, startLevel, this::lookup, this::lookupLevel0);
     }
-
+    //todo 点查第0层
     @Nullable
     private T lookupLevel0(InternalRow key, TreeSet<DataFileMeta> level0) throws IOException {
         return LookupUtils.lookupLevel0(keyComparator, key, level0, this::lookup);
     }
-
+    //todo 点查第1～n层
     @Nullable
     private T lookup(InternalRow key, SortedRun level) throws IOException {
         return LookupUtils.lookup(keyComparator, key, level, this::lookup);
     }
-
+    //todo 检索数据
     @Nullable
     private T lookup(InternalRow key, DataFileMeta file) throws IOException {
         LookupFile lookupFile = lookupFileCache.getIfPresent(file.fileName());
@@ -137,6 +137,7 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
         byte[] valueBytes;
         try {
             byte[] keyBytes = keySerializer.serializeToBytes(key);
+            //todo 点查！！！！！！
             valueBytes = lookupFile.get(keyBytes);
         } finally {
             if (newCreatedLookupFile) {

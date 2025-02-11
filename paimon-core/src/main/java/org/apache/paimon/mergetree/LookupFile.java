@@ -69,6 +69,7 @@ public class LookupFile {
     public byte[] get(byte[] key) throws IOException {
         checkArgument(!isClosed);
         requestCount++;
+        //todo 通过key查询数据
         byte[] res = reader.lookup(key);
         if (res != null) {
             hitCount++;

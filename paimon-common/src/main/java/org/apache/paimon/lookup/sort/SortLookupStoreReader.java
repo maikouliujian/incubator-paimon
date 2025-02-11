@@ -83,7 +83,7 @@ public class SortLookupStoreReader implements LookupStoreReader {
                         fileSize - Footer.ENCODED_LENGTH, Footer.ENCODED_LENGTH, b -> b, true);
         return Footer.readFooter(MemorySlice.wrap(footerData).toInput());
     }
-
+    //todo lookup
     @Nullable
     @Override
     public byte[] lookup(byte[] key) throws IOException {
