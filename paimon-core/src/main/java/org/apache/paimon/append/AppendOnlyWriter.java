@@ -158,6 +158,7 @@ public class AppendOnlyWriter implements BatchRecordWriter, MemoryOwner {
                 "Append-only writer can only accept insert or update_after row kind, but current row kind is: %s. "
                         + "You can configure 'ignore-delete' to ignore retract records.",
                 rowData.getRowKind());
+        //todo 写数据！！！！！！！
         boolean success = sinkWriter.write(rowData);
         if (!success) {
             flush(false, false);

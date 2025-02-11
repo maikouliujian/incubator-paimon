@@ -48,6 +48,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /** Compact manager for {@link KeyValueFileStore}. */
+//todo for primary key table
 public class MergeTreeCompactManager extends CompactFutureManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(MergeTreeCompactManager.class);
@@ -171,6 +172,7 @@ public class MergeTreeCompactManager extends CompactFutureManager {
                                                                         file.fileSize()))
                                                 .collect(Collectors.joining(", ")));
                     }
+                    //todo 提交compaction
                     submitCompaction(unit, dropDelete);
                 });
     }
@@ -182,13 +184,14 @@ public class MergeTreeCompactManager extends CompactFutureManager {
 
     private void submitCompaction(CompactUnit unit, boolean dropDelete) {
         Supplier<CompactDeletionFile> compactDfSupplier = () -> null;
+        //todo dvMaintainer
         if (dvMaintainer != null) {
             compactDfSupplier =
                     lazyGenDeletionFile
                             ? () -> CompactDeletionFile.lazyGeneration(dvMaintainer)
                             : () -> CompactDeletionFile.generateFiles(dvMaintainer);
         }
-
+        //todo MergeTreeCompactTask
         MergeTreeCompactTask task =
                 new MergeTreeCompactTask(
                         keyComparator,

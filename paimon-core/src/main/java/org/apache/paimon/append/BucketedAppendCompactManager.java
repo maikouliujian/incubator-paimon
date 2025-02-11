@@ -49,6 +49,7 @@ import java.util.concurrent.ExecutorService;
 import static java.util.Collections.emptyList;
 
 /** Compact manager for {@link AppendOnlyFileStore}. */
+//todo for append table
 public class BucketedAppendCompactManager extends CompactFutureManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(BucketedAppendCompactManager.class);
@@ -90,6 +91,7 @@ public class BucketedAppendCompactManager extends CompactFutureManager {
     @Override
     public void triggerCompaction(boolean fullCompaction) {
         if (fullCompaction) {
+            //todo full compaction
             triggerFullCompaction();
         } else {
             triggerCompactionWithBestEffort();
@@ -109,6 +111,7 @@ public class BucketedAppendCompactManager extends CompactFutureManager {
 
         taskFuture =
                 executor.submit(
+                        //todo full compact task
                         new FullCompactTask(
                                 dvMaintainer,
                                 toCompact,
@@ -255,6 +258,7 @@ public class BucketedAppendCompactManager extends CompactFutureManager {
             while (!toCompact.isEmpty()) {
                 DataFileMeta file = toCompact.peekFirst();
                 // the data file with deletion file always need to be compacted.
+                //todo 剔除文件大小大于目录大小，且没有deletion文件！！！！！！
                 if (file.fileSize() >= targetFileSize && !hasDeletionFile(file)) {
                     toCompact.poll();
                     continue;
@@ -263,11 +267,13 @@ public class BucketedAppendCompactManager extends CompactFutureManager {
             }
 
             // do compaction
+            //todo 有delete vector的情况
             if (dvMaintainer != null) {
                 // if deletion vector enables, always trigger compaction.
                 return compact(dvMaintainer, toCompact, rewriter);
             } else {
                 // compute small files
+                //todo 没有delete vector的情况
                 int big = 0;
                 int small = 0;
                 for (DataFileMeta file : toCompact) {
@@ -277,7 +283,9 @@ public class BucketedAppendCompactManager extends CompactFutureManager {
                         small++;
                     }
                 }
+                //todo 小文件数据大于大文件数，且需要合并的文件大于FULL_COMPACT_MIN_FILE
                 if (small > big && toCompact.size() >= FULL_COMPACT_MIN_FILE) {
+                    //todo compact
                     return compact(null, toCompact, rewriter);
                 } else {
                     return result(emptyList(), emptyList());
@@ -326,6 +334,7 @@ public class BucketedAppendCompactManager extends CompactFutureManager {
             List<DataFileMeta> toCompact,
             CompactRewriter rewriter)
             throws Exception {
+        //todo compact writer【本质上就是合并小文件为大文件】
         List<DataFileMeta> rewrite = rewriter.rewrite(toCompact);
         CompactResult result = result(toCompact, rewrite);
         if (dvMaintainer != null) {

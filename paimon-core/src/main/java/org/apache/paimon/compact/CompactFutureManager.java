@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /** Base implementation of {@link CompactManager} which runs compaction in a separate thread. */
+//todo compact的顶级父类
 public abstract class CompactFutureManager implements CompactManager {
 
     protected Future<CompactResult> taskFuture;

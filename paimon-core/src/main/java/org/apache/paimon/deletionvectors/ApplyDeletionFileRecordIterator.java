@@ -64,6 +64,7 @@ public class ApplyDeletionFileRecordIterator implements FileRecordIterator<Inter
             if (next == null) {
                 return null;
             }
+            //todo 如果数据被删除，则跳过！！！！！！
             if (!deletionVector.isDeleted(returnedPosition())) {
                 return next;
             }

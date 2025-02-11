@@ -33,7 +33,7 @@ import java.util.Objects;
 public class BitmapDeletionVector implements DeletionVector {
 
     public static final int MAGIC_NUMBER = 1581511376;
-
+    //todo 在RoaringBitmap32中记录了所有被删除的位置信息
     private final RoaringBitmap32 roaringBitmap;
 
     public BitmapDeletionVector() {

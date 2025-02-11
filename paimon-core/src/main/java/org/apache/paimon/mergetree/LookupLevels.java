@@ -335,8 +335,11 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
 
     /** {@link KeyValue} with file name and row position for DeletionVector. */
     public static class PositionedKeyValue {
+        //todo 数据
         private final @Nullable KeyValue keyValue;
+        //todo 文件名
         private final String fileName;
+        //todo 数据的行号
         private final long rowPosition;
 
         public PositionedKeyValue(@Nullable KeyValue keyValue, String fileName, long rowPosition) {

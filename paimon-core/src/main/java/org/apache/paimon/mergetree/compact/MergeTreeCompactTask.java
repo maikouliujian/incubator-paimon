@@ -154,6 +154,7 @@ public class MergeTreeCompactTask extends CompactTask {
 
     private void rewriteImpl(List<List<SortedRun>> candidate, CompactResult toUpdate)
             throws Exception {
+        //todo ！！！！！！
         CompactResult rewriteResult = rewriter.rewrite(outputLevel, dropDelete, candidate);
         toUpdate.merge(rewriteResult);
         candidate.clear();
