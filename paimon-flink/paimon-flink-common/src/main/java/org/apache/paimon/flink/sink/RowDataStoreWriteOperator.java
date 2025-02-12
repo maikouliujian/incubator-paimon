@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Objects;
 
 /** A {@link PrepareCommitOperator} to write {@link InternalRow}. Record schema is fixed. */
+//todo 写数据的算子
 public class RowDataStoreWriteOperator extends TableWriteOperator<InternalRow> {
 
     private static final long serialVersionUID = 3L;
@@ -134,6 +135,7 @@ public class RowDataStoreWriteOperator extends TableWriteOperator<InternalRow> {
 
         SinkRecord record;
         try {
+            //todo 写数据的入口！！！！！！
             record = write.write(element.getValue());
         } catch (Exception e) {
             throw new IOException(e);

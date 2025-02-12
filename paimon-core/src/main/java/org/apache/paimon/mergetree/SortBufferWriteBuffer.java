@@ -151,7 +151,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
     public void forEach(
             Comparator<InternalRow> keyComparator,
             MergeFunction<KeyValue> mergeFunction,
-            @Nullable KvConsumer rawConsumer,
+            @Nullable KvConsumer rawConsumer,//todo changelog writer
             KvConsumer mergedConsumer)
             throws IOException {
         // TODO do not use iterator
@@ -259,6 +259,7 @@ public class SortBufferWriteBuffer implements WriteBuffer {
             if (currentRow != null) {
                 current.fromRow(currentRow);
                 if (rawConsumer != null) {
+                    //todo changelog writer
                     rawConsumer.accept(current.getReusedKv());
                 }
             }

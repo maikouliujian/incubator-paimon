@@ -164,7 +164,7 @@ public class LookupMergeTreeCompactRewriter<T> extends ChangelogMergeTreeRewrite
             this.lookupStrategy = lookupStrategy;
             this.userDefinedSeqComparator = userDefinedSeqComparator;
         }
-
+        //todo
         @Override
         public MergeFunctionWrapper<ChangelogResult> create(
                 MergeFunctionFactory<KeyValue> mfFactory,

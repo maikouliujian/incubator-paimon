@@ -119,6 +119,7 @@ public class LookupChangelogMergeFunctionWrapper<T>
                     highLevel = kv;
                 }
             } else {
+                //todo 包含第0层
                 containLevel0 = true;
             }
         }
@@ -126,6 +127,7 @@ public class LookupChangelogMergeFunctionWrapper<T>
         // 2. Lookup if latest high level record is absent
         if (highLevel == null) {
             InternalRow lookupKey = candidates.get(0).key();
+            //todo 如果不包含highlevel，需要采用lookup去high level查询数据
             T lookupResult = lookup.apply(lookupKey);
             if (lookupResult != null) {
                 if (lookupStrategy.deletionVector) {
@@ -144,7 +146,9 @@ public class LookupChangelogMergeFunctionWrapper<T>
 
         // 4. Set changelog when there's level-0 records
         reusedResult.reset();
+        //todo 包含0层，且产生changelog时
         if (containLevel0 && lookupStrategy.produceChangelog) {
+            //todo 设置changelog日志，high level是before，第0层是after
             setChangelog(highLevel, result);
         }
 

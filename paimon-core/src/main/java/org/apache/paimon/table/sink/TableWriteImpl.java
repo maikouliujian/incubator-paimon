@@ -163,7 +163,7 @@ public class TableWriteImpl<T> implements InnerTableWrite, Restorable<List<State
             }
         }
     }
-
+    //todo 写数据
     @Nullable
     public SinkRecord writeAndReturn(InternalRow row) throws Exception {
         checkNullability(row);
@@ -171,7 +171,9 @@ public class TableWriteImpl<T> implements InnerTableWrite, Restorable<List<State
         if (ignoreDelete && rowKind.isRetract()) {
             return null;
         }
+        //todo 数据格式转化(SinkRecord：包含 分区、bucket、主键)
         SinkRecord record = toSinkRecord(row);
+        //todo 写数据
         write.write(record.partition(), record.bucket(), recordExtractor.extract(record, rowKind));
         return record;
     }
@@ -184,6 +186,7 @@ public class TableWriteImpl<T> implements InnerTableWrite, Restorable<List<State
             return null;
         }
         SinkRecord record = toSinkRecord(row, bucket);
+        //todo 写数据
         write.write(record.partition(), bucket, recordExtractor.extract(record, rowKind));
         return record;
     }

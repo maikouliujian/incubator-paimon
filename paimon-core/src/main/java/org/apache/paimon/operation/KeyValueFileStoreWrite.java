@@ -206,10 +206,11 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
                 options.needLookup()
                         ? new ForceUpLevel0Compaction(universalCompaction)
                         : universalCompaction;
+        //todo CompactManager用来产生changelog
         CompactManager compactManager =
                 createCompactManager(
                         partition, bucket, compactStrategy, compactExecutor, levels, dvMaintainer);
-
+        //todo MergeTreeWriter
         return new MergeTreeWriter(
                 bufferSpillable(),
                 options.writeBufferSpillDiskSize(),
@@ -244,6 +245,7 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
         } else {
             Comparator<InternalRow> keyComparator = keyComparatorSupplier.get();
             @Nullable FieldsComparator userDefinedSeqComparator = udsComparatorSupplier.get();
+            //todo compaction writer
             CompactRewriter rewriter =
                     createRewriter(
                             partition,
@@ -286,8 +288,10 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
         MergeSorter mergeSorter = new MergeSorter(options, keyType, valueType, ioManager);
         int maxLevel = options.numLevels() - 1;
         MergeEngine mergeEngine = options.mergeEngine();
+        //todo ChangelogProducer
         ChangelogProducer changelogProducer = options.changelogProducer();
         LookupStrategy lookupStrategy = options.lookupStrategy();
+        //todo for full compaction
         if (changelogProducer.equals(FULL_COMPACTION)) {
             return new FullChangelogMergeTreeCompactRewriter(
                     maxLevel,
@@ -299,6 +303,7 @@ public class KeyValueFileStoreWrite extends MemoryFileStoreWrite<KeyValue> {
                     mfFactory,
                     mergeSorter,
                     logDedupEqualSupplier.get());
+            //todo changelog producer lookup
         } else if (lookupStrategy.needLookup) {
             LookupLevels.ValueProcessor<?> processor;
             LookupMergeTreeCompactRewriter.MergeFunctionWrapperFactory<?> wrapperFactory;

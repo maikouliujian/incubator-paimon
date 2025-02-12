@@ -96,12 +96,14 @@ public class MergeTreeCompactTask extends CompactTask {
                         candidate.add(singletonList(SortedRun.fromSingle(file)));
                     } else {
                         // Large file appear, rewrite previous and upgrade it
+                        //todo 触发compation
                         rewrite(candidate, result);
                         upgrade(file, result);
                     }
                 }
             }
         }
+        //todo 触发compation
         rewrite(candidate, result);
         result.setDeletionFile(compactDfSupplier.get());
         return result;
@@ -149,6 +151,7 @@ public class MergeTreeCompactTask extends CompactTask {
                 return;
             }
         }
+        //todo
         rewriteImpl(candidate, toUpdate);
     }
 

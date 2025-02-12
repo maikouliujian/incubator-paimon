@@ -182,7 +182,7 @@ public class StoreSinkWriteImpl implements StoreSinkWrite {
         this.insertOnly = insertOnly;
         write.withInsertOnly(insertOnly);
     }
-
+    //todo 写数据！！！！！！
     @Override
     @Nullable
     public SinkRecord write(InternalRow rowData) throws Exception {

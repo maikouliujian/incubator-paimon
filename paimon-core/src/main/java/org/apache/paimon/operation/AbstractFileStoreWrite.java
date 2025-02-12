@@ -154,6 +154,7 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
 
     @Override
     public void write(BinaryRow partition, int bucket, T data) throws Exception {
+        //todo 获取writer！！！！！！
         WriterContainer<T> container = getWriterWrapper(partition, bucket);
         container.writer.write(data);
         if (container.indexMaintainer != null) {
@@ -396,7 +397,7 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
         }
         return result;
     }
-
+    //todo 一个分区下是多个bucket，一个bucket对应一个writer！！！！！！
     protected WriterContainer<T> getWriterWrapper(BinaryRow partition, int bucket) {
         Map<Integer, WriterContainer<T>> buckets = writers.get(partition);
         if (buckets == null) {
@@ -404,13 +405,14 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
             writers.put(partition.copy(), buckets);
         }
         return buckets.computeIfAbsent(
+                //todo 创建writer
                 bucket, k -> createWriterContainer(partition.copy(), bucket, ignorePreviousFiles));
     }
 
     private long writerNumber() {
         return writers.values().stream().mapToLong(e -> e.values().size()).sum();
     }
-
+    //todo 创建写数据的writer
     @VisibleForTesting
     public WriterContainer<T> createWriterContainer(
             BinaryRow partition, int bucket, boolean ignorePreviousFiles) {
@@ -441,6 +443,7 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
                         ? null
                         : dvMaintainerFactory.createOrRestore(
                                 ignorePreviousFiles ? null : latestSnapshotId, partition, bucket);
+        //todo 创建writer！！！！！！
         RecordWriter<T> writer =
                 createWriter(
                         latestSnapshotId,

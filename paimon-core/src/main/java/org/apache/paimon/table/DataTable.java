@@ -29,6 +29,7 @@ import org.apache.paimon.utils.SnapshotManager;
 import org.apache.paimon.utils.TagManager;
 
 /** A {@link Table} for data. */
+//todo 数据表的顶级父类
 public interface DataTable extends InnerTable {
 
     @Override

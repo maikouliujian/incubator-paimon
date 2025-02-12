@@ -120,6 +120,7 @@ public abstract class AppendOnlyFileStoreWrite extends MemoryFileStoreWrite<Inte
                 restoredMaxSeqNumber,
                 getCompactManager(partition, bucket, restoredFiles, compactExecutor, dvMaintainer),
                 // it is only for new files, no dv
+                //todo append table没有dv
                 files -> createFilesIterator(partition, bucket, files, null),
                 options.commitForceCompact(),
                 pathFactory.createDataFilePathFactory(partition, bucket),

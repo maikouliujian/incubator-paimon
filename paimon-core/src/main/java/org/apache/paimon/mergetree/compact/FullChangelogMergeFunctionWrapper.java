@@ -92,11 +92,12 @@ public class FullChangelogMergeFunctionWrapper implements MergeFunctionWrapper<C
     private void merge(KeyValue kv) {
         mergeFunction.add(kv);
     }
-
+    //todo full compaction 添加changelog
     @Override
     public ChangelogResult getResult() {
         reusedResult.reset();
         if (isInitialized) {
+            //todo 不同的merge逻辑产生不同的changelog
             KeyValue merged = mergeFunction.getResult();
             if (topLevelKv == null) {
                 if (merged.isAdd()) {

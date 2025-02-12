@@ -102,6 +102,7 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
     @Override
     public CompactResult rewrite(
             int outputLevel, boolean dropDelete, List<List<SortedRun>> sections) throws Exception {
+        //todo 包含第0层
         if (rewriteChangelog(outputLevel, dropDelete, sections)) {
             return rewriteOrProduceChangelog(outputLevel, sections, dropDelete, true);
         } else {
@@ -148,6 +149,7 @@ public abstract class ChangelogMergeTreeRewriter extends MergeTreeCompactRewrite
                         && (!dropDelete || keyValue.isAdd())) {
                     compactFileWriter.write(keyValue);
                 }
+                //todo 写change log
                 if (produceChangelog) {
                     for (KeyValue kv : result.changelogs()) {
                         changelogFileWriter.write(kv);
