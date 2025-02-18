@@ -87,12 +87,14 @@ public class SortLookupStoreReader implements LookupStoreReader {
     @Nullable
     @Override
     public byte[] lookup(byte[] key) throws IOException {
+        //todo 过滤器
         if (bloomFilter != null && !bloomFilter.testHash(MurmurHashUtils.hashBytes(key))) {
             return null;
         }
 
         MemorySlice keySlice = MemorySlice.wrap(key);
         // seek the index to the block containing the key
+        //todo 二分
         indexBlockIterator.seekTo(keySlice);
 
         // if indexIterator does not have a next, it means the key does not exist in this iterator

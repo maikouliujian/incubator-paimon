@@ -45,6 +45,7 @@ import static org.apache.paimon.memory.MemorySegmentUtils.allocateReuseBytes;
 import static org.apache.paimon.utils.VarLengthIntUtils.encodeInt;
 
 /** A {@link LookupStoreWriter} for sorting. */
+//todo look up writer for sort！！！！！！
 public class SortLookupStoreWriter implements LookupStoreWriter {
 
     private static final Logger LOG =

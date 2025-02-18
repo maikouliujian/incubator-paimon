@@ -63,7 +63,7 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
     private final Function<String, File> localFileFactory;
     private final LookupStoreFactory lookupStoreFactory;
     private final Function<Long, BloomFilter.Builder> bfGenerator;
-
+    //todo 每一个文件对应的lookupfile映射关系
     private final Cache<String, LookupFile> lookupFileCache;
     private final Set<String> ownCachedFiles;
 
@@ -123,13 +123,15 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
     private T lookup(InternalRow key, SortedRun level) throws IOException {
         return LookupUtils.lookup(keyComparator, key, level, this::lookup);
     }
-    //todo 检索数据
+    //todo 检索数据【从file中检索对应的key的数据】
     @Nullable
     private T lookup(InternalRow key, DataFileMeta file) throws IOException {
+        //todo 从缓存中获取文件对应的lookup file
         LookupFile lookupFile = lookupFileCache.getIfPresent(file.fileName());
 
         boolean newCreatedLookupFile = false;
         if (lookupFile == null) {
+            //todo 构建file对应的lookup file
             lookupFile = createLookupFile(file);
             newCreatedLookupFile = true;
         }
@@ -153,10 +155,12 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
     }
 
     private LookupFile createLookupFile(DataFileMeta file) throws IOException {
+        //todo 构建本地文件
         File localFile = localFileFactory.apply(file.fileName());
         if (!localFile.createNewFile()) {
             throw new IOException("Can not create new file: " + localFile);
         }
+        //todo 创建look up writer，写入本地文件
         LookupStoreWriter kvWriter =
                 lookupStoreFactory.createWriter(localFile, bfGenerator.apply(file.rowCount()));
         LookupStoreFactory.Context context;
@@ -169,6 +173,7 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
                         byte[] keyBytes = keySerializer.serializeToBytes(kv.key());
                         byte[] valueBytes =
                                 valueProcessor.persistToDisk(kv, batch.returnedPosition());
+                        //todo 写数据
                         kvWriter.put(keyBytes, valueBytes);
                     }
                     batch.releaseBatch();
@@ -179,6 +184,7 @@ public class LookupLevels<T> implements Levels.DropFileCallback, Closeable {
                     while ((kv = batch.next()) != null) {
                         byte[] keyBytes = keySerializer.serializeToBytes(kv.key());
                         byte[] valueBytes = valueProcessor.persistToDisk(kv);
+                        //todo 写数据
                         kvWriter.put(keyBytes, valueBytes);
                     }
                     batch.releaseBatch();
